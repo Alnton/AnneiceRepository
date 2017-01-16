@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    >
+<SurfaceView  
+    android:layout_width="fill_parent" 
+    android:layout_height="270dip" 
+    android:id="@+id/surfaceView"
+    />
+    
+    <LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:gravity="right"
+	    >
+	    <Button
+	        android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content" 
+		    android:text="@string/record"
+		    android:id="@+id/record"
+		    />
+		<Button
+	        android:layout_width="wrap_content" 
+		    android:layout_height="wrap_content" 
+		    android:layout_marginLeft="20dip"
+		    android:text="@string/stop"
+		    android:id="@+id/stop"
+		    />
+	</LinearLayout>    
+</LinearLayout>

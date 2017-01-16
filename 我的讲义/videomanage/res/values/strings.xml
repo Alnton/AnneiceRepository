@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="app_name">上传视频资讯</string>
+    <string name="name">视频名称</string>
+    <string name="timelength">时长</string>
+    <string name="button">保存</string>
+    <string name="success">数据保存成功</string>
+    <string name="fail">数据保存失败</string>
+    <string name="error">网络连接失败</string>
+    <string name="videofile">视频文件</string>
+</resources>

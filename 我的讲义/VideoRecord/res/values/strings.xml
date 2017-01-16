@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainActvity!</string>
+    <string name="app_name">视频刻录</string>
+    <string name="record">刻录</string>
+    <string name="stop">停止</string>
+    <string name="success">视频刻录完成</string>
+    <string name="sdcarderror">SDCard不存在，或者写保护</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="app_name">视频播放器</string>
+    <string name="sdcarderror">SDCard不存在</string>
+    <string name="noexsit">文件不存在</string>
+    <string name="filename">视频文件</string>
+</resources>
