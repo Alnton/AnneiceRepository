@@ -1,0 +1,11 @@
+混淆代码后bug定位源码
+
+在命令行下操作
+1) 将mapping.txt 和错误日志(txt保存一下)拷贝到你的这个目录下：
+<android_sdk_root>/tools/proguard/bin.
+2) 在windows下，进入到对应目录，运行命令（确保你的错误文件名字是对的）:
+
+retrace.bat -verbose mapping.txt stacktrace.txt > out.txt
+3) out.txt 就是解混淆之后的错误日志了.
+
+现在加上源码，就比较容易定位问题了。

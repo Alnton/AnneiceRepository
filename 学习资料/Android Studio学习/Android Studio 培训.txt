@@ -1,0 +1,206 @@
+Android Studio 培训
+
+
+
+
+
+环境相关 http://www.androiddevtools.cn
+
+
+
+
+
+
+
+
+SVN
+svn://10.108.26.249/BusinessDivision/trunk/xiaoliu/TechnologyDep/android/Demo/trunk/DemoApp
+
+更新  提交
+Revert
+合并
+查看历史
+Browse Subversion Reposisitory
+
+Android Studio 中建议过滤的文件：
+- .idea 文件夹
+- .gradle 文件夹
+- 所有的 build 文件夹
+- 所有的 .iml 文件
+- local.properties 文件
+
+
+
+
+
+改进的几个特性：
+默认自动保存
+本地默认保存历史更改数据,即使文件关闭依然可以回退N个历史
+Instant Run
+颜色、图片在布局和代码中可以实时预览
+string可以实时预览
+Logcat
+Monitors
+
+缺点：
+构建慢，对磁盘性能要求高，内存占用高
+
+
+
+
+
+反编译APK
+
+
+
+
+目录结构
+Android Studio每个Project，相当于Eclipse 的WorkSpace；每个Module相当于Eclipse 的Project。
+settings.gradle： 每个Moudle 要在这里注册
+build.gradle：每个Project 的配置
+
+
+
+
+
+
+
+
+
+//TODO
+
+
+
+
+
+
+
+
+
+快捷键建议
+
+
+
+
+
+
+
+
+
+Live Templates
+fori
+sout
+psfs
+loge
+非常多，可直接查看模板
+如何自定义
+
+
+
+
+
+
+
+
+
+设置：
+SDK设置
+
+
+
+
+显示行号 Show line numbers
+
+
+
+
+
+自动导包 AutoImport
+Optimizes imports on the fly
+Add unambiguous imports on the fly
+
+
+
+
+
+
+Logcat颜色 Android Logcat
+Assert:#AA66CC
+Debug:#33B5E5
+Error:#FF4444
+Info:#99CC00
+Verbose:#FFFFFF
+Warning:#FFBB33
+
+
+
+
+自定义代码配色
+Editor | Color & Fonts | Java
+网站：http://color-themes.com/?view=index
+
+
+
+
+
+
+
+
+
+插件：
+1.GsonFormat
+2.Selector Drawable Generator
+3.ADB Idea
+4.ADB WIFI
+5.Android Parcelable code generator
+6.Find View By Me
+
+
+
+
+
+
+
+
+
+Gradle:
+dependencies
+compile fileTree(dir: 'xxx', include: ['*.jar', "*.xxx"])：将某个目录下所有符合扩展名的文件作为依赖
+compile 'com.xx.xx:ProjectName:Version'：配置Maven库作为依赖；在 Maven 库中心 可以搜索自己想用的库进行依赖；
+
+
+compile 'com.squareup.okhttp:okhttp:2.4.0'
+
+compile 'com.github.bumptech.glide:glide:3.7.0'
+
+
+
+打包
+buildTypes {
+        release {
+            signingConfig signingConfigs.myConfig
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    
+    signingConfigs {
+        myConfig {
+            storeFile file("/Users/kael/Work")
+            //签名文件
+            storePassword "password"
+            keyAlias "xiaoliu"
+            keyPassword "password"  //签名密码
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+Generated Signed APK

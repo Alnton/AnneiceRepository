@@ -1,0 +1,67 @@
+信令解析的流程
+qclog.so 库中的函数读取系统的设备文件/dev/Daig 吐出的数据.
+jniQcLogger/src/qcloggerviewer.c 的init_logger_handler()
+函数会向qclog.so库中注册俩个函数.分别是user_decode_diag_log(),
+用于接收普通参数的log信息;user_decode_daig_event(),用于接收高通
+事件的log信息.
+两个函数对原始数据过滤判错以后都会把数据交给data_arriver_indication()
+函数来处理.
+在该函数中对传过来的数据根据logid的不同分别做些析处理.大概可分为四类
+gsm参数的解析;lte_参数的解析;lte消息的解析;高通事件的解析;自定义时间的
+解析.解析处理完的数据通过调用安卓的回调函数来出给安卓层.
+
+回调函数
+回调函数的注册方式参见jni使用说明.
+如果要修改或添加参数.需要修改的只有init_notifier()函数中GetStaticMethodID()
+里的字符串对应的参数类型.具体什么字符对应什么类型问百度.
+
+解析函数
+判断不同类型的logid以后,会跳到对应类型的解析函数.在该函数中会由switch语句判断
+出具体的logid后调用具体的解析函数.解析规则可根据文档判断,也可以根据QCat判断.
+
+数据结构
+在最终具体的解析函数的里将解析完的数据存档传进来的结构体中的对应字段中.数据返回
+后结构体中的数据处在一个二维数组中.android层根据数组的下标找到要取的数值.
+
+NDK的配置
+1.从官网下载NDK工具链的压缩包.
+2.在某个目录下解压.
+   例如我在 /home/rank/tools/ 目录下解压
+   该目录下会生成一个android_ndk_r9d的目录文件夹
+3.将该目录配置到环境变量.
+   在~/.bashrc 配置文件的文件尾添加
+	export NDK_PATH=/home/rank/tools/android_ndk_r9d
+	export PATH=$NDK_PATH:$PATH
+    source ~/.bashrc
+    查看配置是否生效
+    rank@jarvis:~$ ndk-build -v
+    GNU Make 3.81
+    Copyright (C) 2006  Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.
+    There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+    PARTICULAR PURPOSE.
+
+    This program built for x86_64-pc-linux-gnu
+
+NDK的使用
+在源码目录 src/ 的上级目录下建立编译脚本.
+脚本内容: 
+ndk-build NDK_PROJECT_PATH=./src  APP_BUILD_SCRIPT=./src/Android.mk
+NDK_PROJECT_PATH 指定源码的目录, APP_BUILD_SCRIPT 指定Makefiel 文件.
+
+Android文件
+LOCAL_MODULE:= xxx 生成目标文件的文件名
+
+LOCAL_C_INCLUDES := xxx   头文件的路径
+
+LOCAL_SRC_FILES:= xxx.c  生成目标文件的源文件名
+
+LOCAL_LDLIBS += -Lxxx     链接库的路径
+
+LOCAL_SHARED_LIBRARIES += xxx    生成目标文件依赖的共享库
+
+include $(BUILD_EXECUTABLE)   生成目标文件的类型(可执行文件) 或
+< include $(BUILD_SHARED_LIBRARY) 生成目标文件的类型(共享库) >
+
+
+

@@ -1,0 +1,339 @@
+
+<!-- saved from url=(0067)http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta content="Android Studio系列教程四--Gradle基础 - stormzhang" property="og:title">
+    <title>Android Studio系列教程四--Gradle基础 - stormzhang</title>
+    <link href="http://stormzhang.com/image/logo_66.png" rel="shortcut icon">
+<!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css' /> -->
+<link href="./Android Studio系列教程四--Gradle基础 - stormzhang_files/style.css" rel="stylesheet" type="text/css">
+<link href="./Android Studio系列教程四--Gradle基础 - stormzhang_files/syntax.css" rel="stylesheet" type="text/css">
+<link href="./Android Studio系列教程四--Gradle基础 - stormzhang_files/responsive.css" rel="stylesheet" type="text/css">
+<!-- - -->
+<script src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/hm.js.下载"></script><script src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/jquery.js.下载" type="text/javascript"></script>
+<script src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/pd.js.下载" type="text/javascript"></script>
+<script src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/basics.js.下载" type="text/javascript"></script>
+<!-- - -->
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
+
+<meta content="/wx_public_258.jpg" property="og:image">
+
+  <meta content="/devtools/2014/12/18/android-studio-tutorial4/" property="og:url">
+  <meta content="  版权声明：本文为 stormzhang 原创文章，可以随意转载，但必须在明确位置注明出处！！！其实很早之前也写了一篇Gradle的基础博客，但是时间很久了，现在Gradle已经更新了很多，所以暂且结合Stduio 1.0正式版与最..." property="og:description">
+  <meta content="article" property="og:type">
+
+<!-- - -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?92023bc9036265eef08542358c998ea3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+  <script type="text/javascript" async="" src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/embed.js.下载" charset="UTF-8"></script><link type="text/css" rel="stylesheet" href="./Android Studio系列教程四--Gradle基础 - stormzhang_files/embed.bluebox.css"></head>
+  <body>
+    <header>
+<a id="go-back-home" href="http://stormzhang.com/posts"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/logo_128.png" alt="logo" width="66" height="66"></a>
+<p>stormzhang</p>
+<p>做好现在的事！</p>
+</header>
+    <div id="container">
+      <div class="block">
+  
+    <a target="_top" class="main" href="http://stormzhang.com/posts">
+       Blog
+     </a>
+  
+    <a target="_top" class="main" href="http://stormzhang.com/about">
+       About
+     </a>
+  
+    <a target="_blank" class="main" href="http://github.com/stormzhang">
+       GitHub
+     </a>
+  
+    <a target="_top" class="main" href="http://stormzhang.com/friends">
+       Friends
+     </a>
+  
+</div>
+      <div class="content">
+        <section class="post">
+          <h1 class="upcase">
+            Android Studio系列教程四--Gradle基础
+          </h1>
+          <blockquote>
+  <p><strong>版权声明：本文为 stormzhang 原创文章，可以随意转载，但必须在明确位置注明出处！！！</strong></p>
+</blockquote>
+
+<p>其实很早之前也写了一篇Gradle的基础博客，但是时间很久了，现在Gradle已经更新了很多，所以暂且结合Stduio 1.0正式版与最新的Gradle语法来详细讲解下，小伙伴们直接跟我一步步来学习吧。</p>
+
+<h2 id="gradle">什么是Gradle？</h2>
+
+<p>Gradle是一种依赖管理工具，基于Groovy语言，面向Java应用为主，它抛弃了基于XML的各种繁琐配置，取而代之的是一种基于Groovy的内部领域特定（DSL）语言。</p>
+
+<h2 id="gradle-1">安装Gradle</h2>
+
+<p>在<a href="http://stormzhang.com/devtools/2014/11/25/android-studio-tutorial1">Android Studio系列教程一–下载与安装</a>中新建项目成功后会下载Gradle，貌似这个过程不翻墙也是可以下载，但是访问特别慢，建议翻墙下载。那么下载的Gradle到什么地方呢？</p>
+
+<ul>
+  <li>
+    <p>Mac上会默认下载到 **/Users/&lt;用户名&gt;/.gradle/wrapper/dists** 目录<!--用户名--></p>
+  </li>
+  <li>
+    <p>Win平台会默认下载到 <strong>C:\Documents and Settings&lt;用户名&gt;.gradle\wrapper\dists</strong> 目录</p>
+  </li>
+</ul>
+
+<p>你会看到这个目录下有个 gradle-x.xx-all 的文件夹, 如果下载实在太慢，但是又不想翻墙的话，可以自己手动到<a href="http://www.gradle.org/downloads">Gradle官网</a>下载对应的版本，然后将下载的.zip文件(也可以解压)复制到上述的gradle-x.xx-all 文件夹下，不过还是建议让它直接下载的好。</p>
+
+<h2 id="gradle-">Gradle 基本概念</h2>
+
+<p>下面就以我的开源项目 <a href="https://github.com/stormzhang/9GAG"><strong>9GAG</strong></a> 来详细讲解下和Gradle相关的知识, 和Gradle相关的几个文件一般有如下几个：</p>
+
+<p><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/gradle1.png"></p>
+
+<p>红色标记部分从上到下咱们来一步步分析：</p>
+
+<h4 id="gagappbuildgradle">1. 9GAG/app/build.gradle</h4>
+
+<p>这个文件是app文件夹下这个Module的gradle配置文件，也可以算是整个项目最主要的gradle配置文件，我们来看下这个文件的内容：</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">//</span> <span class="err">声明是</span><span class="no">Android</span><span class="err">程序</span>
+<span class="n">apply</span> <span class="ss">plugin: </span><span class="s1">'com.android.application'</span>
+
+<span class="n">android</span> <span class="p">{</span>
+    <span class="sr">//</span> <span class="err">编译</span><span class="no">SDK</span><span class="err">的版本</span>
+    <span class="n">compileSdkVersion</span> <span class="mi">21</span>
+    <span class="sr">//</span> <span class="n">build</span> <span class="n">tools</span><span class="err">的版本</span>
+    <span class="n">buildToolsVersion</span> <span class="s2">"21.1.1"</span>
+
+    <span class="n">defaultConfig</span> <span class="p">{</span>
+    	<span class="sr">//</span> <span class="err">应用的包名</span>
+        <span class="n">applicationId</span> <span class="s2">"me.storm.ninegag"</span>
+        <span class="n">minSdkVersion</span> <span class="mi">14</span>
+        <span class="n">targetSdkVersion</span> <span class="mi">21</span>
+        <span class="n">versionCode</span> <span class="mi">1</span>
+        <span class="n">versionName</span> <span class="s2">"1.0.0"</span>
+    <span class="p">}</span>
+
+    <span class="sr">//</span> <span class="n">java</span><span class="err">版本</span>
+    <span class="n">compileOptions</span> <span class="p">{</span>
+        <span class="n">sourceCompatibility</span> <span class="no">JavaVersion</span><span class="o">.</span><span class="no">VERSION_1_7</span>
+        <span class="n">targetCompatibility</span> <span class="no">JavaVersion</span><span class="o">.</span><span class="no">VERSION_1_7</span>
+    <span class="p">}</span>
+    
+    <span class="n">buildTypes</span> <span class="p">{</span>
+        <span class="n">debug</span> <span class="p">{</span>
+            <span class="sr">//</span> <span class="n">debug</span><span class="err">模式</span>
+        <span class="p">}</span>
+        
+        <span class="n">release</span> <span class="p">{</span>
+            <span class="sr">//</span> <span class="err">是否进行混淆</span>
+            <span class="n">minifyEnabled</span> <span class="kp">false</span>
+            <span class="sr">//</span> <span class="err">混淆文件的位置</span>
+            <span class="n">proguardFiles</span> <span class="n">getDefaultProguardFile</span><span class="p">(</span><span class="s1">'proguard-android.txt'</span><span class="p">),</span> <span class="s1">'proguard-rules.txt'</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="sr">//</span> <span class="err">移除</span><span class="n">lint</span><span class="err">检查的</span><span class="n">error</span>
+    <span class="n">lintOptions</span> <span class="p">{</span>
+      <span class="n">abortOnError</span> <span class="kp">false</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">dependencies</span> <span class="p">{</span>
+    <span class="sr">//</span> <span class="err">编译</span><span class="n">libs</span><span class="err">目录下的所有</span><span class="n">jar</span><span class="err">包</span>
+    <span class="n">compile</span> <span class="n">fileTree</span><span class="p">(</span><span class="ss">dir: </span><span class="s1">'libs'</span><span class="p">,</span> <span class="ss">include: </span><span class="p">[</span><span class="s1">'*.jar'</span><span class="p">])</span>
+    <span class="n">compile</span> <span class="s1">'com.android.support:support-v4:21.0.2'</span>
+    <span class="n">compile</span> <span class="s1">'com.etsy.android.grid:library:1.0.5'</span>
+    <span class="n">compile</span> <span class="s1">'com.alexvasilkov:foldable-layout:1.0.1'</span>
+    <span class="sr">//</span> <span class="err">编译</span><span class="n">extras</span><span class="err">目录下的</span><span class="no">ShimmerAndroid</span><span class="err">模块</span>
+    <span class="n">compile</span> <span class="n">project</span><span class="p">(</span><span class="s1">':extras:ShimmerAndroid'</span><span class="p">)</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>这里需要说明几点：</p>
+
+<ul>
+  <li>
+    <p>文件开头apply plugin是最新gradle版本的写法，以前的写法是apply plugin: ‘android’, 如果还是以前的写法，请改正过来。</p>
+  </li>
+  <li>
+    <p>buildToolsVersion这个需要你本地安装该版本才行，很多人导入新的第三方库，失败的原因之一是build version的版本不对，这个可以手动更改成你本地已有的版本或者打开 <strong>SDK Manager</strong> 去下载对应版本。</p>
+  </li>
+  <li>
+    <p>applicationId代表应用的包名，也是最新的写法，这里就不在多说了。</p>
+  </li>
+  <li>
+    <p>android 5.0开始默认安装jdk1.7才能编译，但是由于mac系统自带jdk的版本是1.6，所以需要手动下载jdk1.7并配置下，具体可以见我这篇博客<a href="http://stormzhang.com/android/2014/06/27/manage-java-on-macosx">Mac下安装和管理Java</a></p>
+  </li>
+  <li>
+    <p>minifyEnabled也是最新的语法，很早之前是runProguard,这个也需要更新下。</p>
+  </li>
+  <li>
+    <p>proguardFiles这部分有两段，前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，免去了我们很多事，这个文件的目录在 **<sdk目录>/tools/proguard/proguard-android.txt** , 后一部分是我们项目里的自定义的混淆文件，目录就在 **app/proguard-rules.txt** , 如果你用Studio 1.0创建的新项目默认生成的文件名是 **proguard-rules.pro** , 这个名字没关系，在这个文件里你可以声明一些第三方依赖的一些混淆规则，由于是开源项目，9GAG里并未进行混淆，具体混淆的语法也不是本篇博客讨论的范围。最终混淆的结果是这两部分文件共同作用的。</sdk目录></p>
+  </li>
+  <li>
+    <p>compile project(‘:extras:ShimmerAndroid’)这一行是因为9GAG中存在其他Module，不知道Module的概念可以看下这篇博客<a href="http://stormzhang.com/devtools/2014/11/28/android-studio-tutorial2">Android Studio系列教程二–基本设置与运行</a>, 总之你可以理解成Android Library，由于Gradle的普及以及远程仓库的完善，这种依赖渐渐的会变得非常不常见，但是你需要知道有这种依赖的。</p>
+  </li>
+  <li>
+    <p>以上文件里的内容只是基本配置，其实还有很多自定义部分，如自动打包debug，release，beta等环境，签名，多渠道打包等，后续会单独拿出来讲解。</p>
+  </li>
+</ul>
+
+<h4 id="gagextrasshimmerandroidbuildgradle">2. 9GAG/extras/ShimmerAndroid/build.gradle</h4>
+
+<p>每一个Module都需要有一个gradle配置文件，语法都是一样，唯一不同的是开头声明的是 <strong>apply plugin: ‘com.android.library’</strong></p>
+
+<h4 id="gaggradle">3. 9GAG/gradle</h4>
+
+<p>这个目录下有个 <strong>wrapper</strong> 文件夹，里面可以看到有两个文件，我们主要看下 <strong>gradle-wrapper.properties</strong> 这个文件的内容：</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#Thu Dec 18 16:02:24 CST 2014</span>
+<span class="n">distributionBase</span><span class="o">=</span><span class="no">GRADLE_USER_HOME</span>
+<span class="n">distributionPath</span><span class="o">=</span><span class="n">wrapper</span><span class="o">/</span><span class="n">dists</span>
+<span class="n">zipStoreBase</span><span class="o">=</span><span class="no">GRADLE_USER_HOME</span>
+<span class="n">zipStorePath</span><span class="o">=</span><span class="n">wrapper</span><span class="o">/</span><span class="n">dists</span>
+<span class="n">distributionUrl</span><span class="o">=</span><span class="n">https</span><span class="p">\</span><span class="ss">:/</span><span class="o">/</span><span class="n">services</span><span class="p">.</span><span class="nf">gradle</span><span class="p">.</span><span class="nf">org</span><span class="o">/</span><span class="n">distributions</span><span class="o">/</span><span class="n">gradle</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">-</span><span class="n">all</span><span class="p">.</span><span class="nf">zip</span></code></pre></figure>
+
+<p>可以看到里面声明了gradle的目录与下载路径以及当前项目使用的gradle版本，这些默认的路径我们一般不会更改的，这个文件里指明的gradle版本不对也是很多导包不成功的原因之一。</p>
+
+<h2 id="gagbuildgradle">4. 9GAG/build.gradle</h2>
+
+<p>这个文件是整个项目的gradle基础配置文件,我们来看看这里面的内容</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">//</span> <span class="no">Top</span><span class="o">-</span><span class="n">level</span> <span class="n">build</span> <span class="n">file</span> <span class="n">where</span> <span class="n">you</span> <span class="n">can</span> <span class="n">add</span> <span class="n">configuration</span> <span class="n">options</span> <span class="n">common</span> <span class="n">to</span> <span class="n">all</span> <span class="nb">sub</span><span class="o">-</span><span class="n">projects</span><span class="o">/</span><span class="n">modules</span><span class="p">.</span>
+
+<span class="nf">buildscript</span> <span class="p">{</span>
+    <span class="n">repositories</span> <span class="p">{</span>
+        <span class="n">jcenter</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="n">dependencies</span> <span class="p">{</span>
+        <span class="n">classpath</span> <span class="s1">'com.android.tools.build:gradle:1.0.0'</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">allprojects</span> <span class="p">{</span>
+    <span class="n">repositories</span> <span class="p">{</span>
+        <span class="n">jcenter</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>内容主要包含了两个方面：一个是声明仓库的源，这里可以看到是指明的jcenter(), 之前版本则是mavenCentral(), jcenter可以理解成是一个新的中央远程仓库，兼容maven中心仓库，而且性能更优。另一个是声明了android gradle plugin的版本，android studio 1.0正式版必须要求支持gradle plugin 1.0的版本。</p>
+
+<h2 id="gagsettingsgradle">5. 9GAG/settings.gradle</h2>
+
+<p>这个文件是全局的项目配置文件，里面主要声明一些需要加入gradle的module，我们来看看9GAG该文件的内容：</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="kp">include</span> <span class="s1">':app'</span><span class="p">,</span> <span class="s1">':extras:ShimmerAndroid'</span></code></pre></figure>
+
+<p>文件中的 <strong>app</strong>, <strong>extras:ShimmerAndroid</strong> 都是module，如果还有其他module都需要按照如上格式加进去。</p>
+
+<h2 id="section">总结</h2>
+
+<p>关于gradle的基础知识就介绍到这里，接下来会介绍一种我常用的快速方便的编译查看第三方开源项目的方法，如何导入Android Studio，Gradle常用基本命令，多渠道打包配置等。有疑问或者发现错误欢迎大家直接博客留言。</p>
+
+<blockquote>
+  <p>推荐关注我的微信公众号 <strong>AndroidDeveloper「googdev」</strong>，第一时间获取博客更新！</p>
+</blockquote>
+
+<blockquote>
+  <p align="center"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/wx_public_258.jpg"></p>
+</blockquote>
+
+
+          <br>
+
+<p>stormzhang</p>
+
+<p>12/18/2014</p>
+
+<br>
+
+          
+<hr>
+
+<p>
+<a href="http://gold.xitu.io/welcome/android?utm_source=blog_stormzhang&amp;utm_medium=banner&amp;utm_content=gaoshou&amp;utm_campaign=q3_personal">
+掘金
+</a>
+是一个高质量的技术社区，从 RxJava 到 React Native，性能优化到优秀开源库，让你不错过 Android 开发的每一个技术干货。各大应用市场搜索「<a href="http://gold.xitu.io/welcome/android?utm_source=blog_stormzhang&amp;utm_medium=banner&amp;utm_content=gaoshou&amp;utm_campaign=q3_personal">掘金</a>」，技术干货尽在掌握中。
+</p><p>
+
+<a href="http://gold.xitu.io/welcome/android?utm_source=blog_stormzhang&amp;utm_medium=banner&amp;utm_content=gaoshou&amp;utm_campaign=q3_personal">
+<img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/juejin_banner.png">
+</a>
+
+</p><hr>
+          
+<p>
+    <a href="http://stormzhang.com/java/2014/12/14/java-lang-exceptionininitializererror/">
+        上一篇：java.lang.ExceptionInInitializerError
+    </a>
+</p>
+
+
+<p>
+    <a href="http://stormzhang.com/other/2014/12/24/boohee-jobs/">
+        下一篇：高薪招聘中(高)级Android工程师
+    </a>
+</p>
+
+          <hr style="height:1px;border:none;border-top:1px dashed #0066CC;">
+          <!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/devtools/2014/12/18/android-studio-tutorial4" data-title="Android Studio系列教程四--Gradle基础" data-url="/devtools/2014/12/18/android-studio-tutorial4/" id="ds-thread"><div id="ds-reset"><div class="ds-meta" style="display: none;"><a href="javascript:void(0)" class="ds-like-thread-button ds-rounded"><span class="ds-icon ds-icon-heart"></span> <span class="ds-thread-like-text">喜欢</span><span class="ds-thread-cancel-like">取消喜欢</span></a><span class="ds-like-panel"><span class="ds-highlight">66</span> 人喜欢</span></div><div class="ds-rounded" id="ds-hot-posts"><div class="ds-header ds-gradient-bg">被顶起来的评论</div><ul><li class="ds-post" data-post-id="1182773245300965675"><div class="ds-post-self" data-post-id="1182773245300965675" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Taylor Sun"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">Taylor Sun</span></div><p>Storm有机会说说gradle添加so库和NDK开发方面的知识吧。Thanks！</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2014-12-27T23:47:00+08:00" title="2014年12月27日 下午11:47:00">2014年12月27日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(3)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6235870072481514241"><div class="ds-post-self" data-post-id="6235870072481514241" data-thread-id="1182773245300965517" data-root-id="6226354577462002433" data-source="duoshuo"><div class="ds-avatar" data-user-id="5274099"><a rel="nofollow author" target="_blank" href="http://t.qq.com/aaa1240184197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=5274099&#39;;" title="Conan"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50" alt="Conan"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/aaa1240184197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=5274099&#39;;" rel="nofollow" target="_blank" data-user-id="5274099">Conan</a></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="6226354577462002433"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Dilid"></div><div class="ds-ctx-body"><div class="ds-ctx-head">Dilid<a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-12-10T02:35:43+08:00" title="2015年12月10日 上午2:35:43">2015年12月10日</a><div class="ds-ctx-nth" title="2015年12月10日 上午2:35:43">1楼</div></div><div class="ds-ctx-content">现在是凌晨2：35分，半个月前跨入android开发的大门，android入门之曲折，一直带着问题在网上寻寻觅觅。看到楼主这篇文章，在表示对楼主的感激之情的同时有些疑问，楼主是如何、通过什么渠道来获取到这些知识的，也是书籍+博客？android开发有什么好书籍、博客、论坛推荐？恳切期待楼主的回答！　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p><a href="http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants" target="_blank" rel="nofollow">http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants</a></p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-01-04T18:00:42+08:00" title="2016年1月4日 下午6:00:42">1月4日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6226354577462002433"><div class="ds-post-self" data-post-id="6226354577462002433" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Dilid"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">Dilid</span></div><p>现在是凌晨2：35分，半个月前跨入android开发的大门，android入门之曲折，一直带着问题在网上寻寻觅觅。看到楼主这篇文章，在表示对楼主的感激之情的同时有些疑问，楼主是如何、通过什么渠道来获取到这些知识的，也是书籍+博客？android开发有什么好书籍、博客、论坛推荐？恳切期待楼主的回答！</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-12-10T02:35:43+08:00" title="2015年12月10日 上午2:35:43">2015年12月10日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li></ul></div><div class="ds-comments-info"><div class="ds-sort"><a class="ds-order-desc ds-current">最新</a><a class="ds-order-asc">最早</a><a class="ds-order-hot">最热</a></div><ul class="ds-comments-tabs"><li class="ds-tab"><a class="ds-comments-tab-duoshuo ds-current" href="javascript:void(0);"><span class="ds-highlight">75</span>条评论</a></li> <li class="ds-tab"><a class="ds-comments-tab-weibo" href="javascript:void(0);"><span class="ds-highlight">5</span>条新浪微博</a></li> </ul></div><ul class="ds-comments"><li class="ds-post" data-post-id="6332951981451117314"><div class="ds-post-self" data-post-id="6332951981451117314" data-thread-id="1182773245300965517" data-root-id="6226354577462002433" data-source="duoshuo"><div class="ds-avatar" data-user-id="6332951876387996417"><a rel="nofollow author" target="_blank" href="http://weibo.com/2913391197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6332951876387996417&#39;;" title="华南虎赤焰军StevenLee"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/ada6d25djw8ex4zgn8uqsj205205k3yf.jpg" alt="华南虎赤焰军StevenLee"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/2913391197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6332951876387996417&#39;;" rel="nofollow" target="_blank" data-user-id="6332951876387996417">华南虎赤焰军StevenLee</a></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="6226354577462002433"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Dilid"></div><div class="ds-ctx-body"><div class="ds-ctx-head">Dilid<a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-12-10T02:35:43+08:00" title="2015年12月10日 上午2:35:43">2015年12月10日</a><div class="ds-ctx-nth" title="2015年12月10日 上午2:35:43">1楼</div></div><div class="ds-ctx-content">现在是凌晨2：35分，半个月前跨入android开发的大门，android入门之曲折，一直带着问题在网上寻寻觅觅。看到楼主这篇文章，在表示对楼主的感激之情的同时有些疑问，楼主是如何、通过什么渠道来获取到这些知识的，也是书籍+博客？android开发有什么好书籍、博客、论坛推荐？恳切期待楼主的回答！　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li><li class="ds-ctx-entry" data-post-id="6235870072481514241"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://t.qq.com/aaa1240184197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=5274099&#39;;" title="Conan"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50" alt="Conan"></a></div><div class="ds-ctx-body"><div class="ds-ctx-head"><a rel="nofollow author" target="_blank" href="http://t.qq.com/aaa1240184197">Conan</a><a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2016-01-04T18:00:42+08:00" title="2016年1月4日 下午6:00:42">1月4日</a><div class="ds-ctx-nth" title="2016年1月4日 下午6:00:42">2楼</div></div><div class="ds-ctx-content"><a href="http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants" target="_blank" rel="nofollow">http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants</a>　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p>注意身体啊</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-09-22T08:48:06+08:00" title="2016年9月22日 上午8:48:06">9月22日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6328668240402711297"><div class="ds-post-self" data-post-id="6328668240402711297" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="6291894887205831425"><a rel="nofollow author" target="_blank" href="http://www.qiuchengjia.cn/" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6291894887205831425&#39;;" title="戎码人生"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/241114.jpg" alt="戎码人生"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://www.qiuchengjia.cn/" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6291894887205831425&#39;;" rel="nofollow" target="_blank" data-user-id="6291894887205831425">戎码人生</a></div><p>非常好的文章，收藏了</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-09-10T19:44:59+08:00" title="2016年9月10日 下午7:44:59">9月10日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6318889906919703298"><div class="ds-post-self" data-post-id="6318889906919703298" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="6318889854000169730"><a rel="nofollow author" target="_blank" href="http://weibo.com/5101657177" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6318889854000169730&#39;;" title="这个人看起来好像一条狗啊"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/005zg25bjw8f62n9k3djlj30ig0igjsa.jpg" alt="这个人看起来好像一条狗啊"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/5101657177" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6318889854000169730&#39;;" rel="nofollow" target="_blank" data-user-id="6318889854000169730">这个人看起来好像一条狗啊</a></div><p>大赞！！</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-08-15T11:20:04+08:00" title="2016年8月15日 上午11:20:04">8月15日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6314055879943521026"><div class="ds-post-self" data-post-id="6314055879943521026" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="6225373403818230529"><a rel="nofollow author" target="_blank" href="http://t.qq.com/o666666o93" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6225373403818230529&#39;;" title="忧嘻"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50(1)" alt="忧嘻"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/o666666o93" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6225373403818230529&#39;;" rel="nofollow" target="_blank" data-user-id="6225373403818230529">忧嘻</a></div><p>学习了，非常感谢</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-08-02T10:41:34+08:00" title="2016年8月2日 上午10:41:34">8月2日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6295109000207794945"><div class="ds-post-self" data-post-id="6295109000207794945" data-thread-id="1182773245300965517" data-root-id="6226354577462002433" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="芦一发"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">芦一发</span></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="6226354577462002433"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Dilid"></div><div class="ds-ctx-body"><div class="ds-ctx-head">Dilid<a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-12-10T02:35:43+08:00" title="2015年12月10日 上午2:35:43">2015年12月10日</a><div class="ds-ctx-nth" title="2015年12月10日 上午2:35:43">1楼</div></div><div class="ds-ctx-content">现在是凌晨2：35分，半个月前跨入android开发的大门，android入门之曲折，一直带着问题在网上寻寻觅觅。看到楼主这篇文章，在表示对楼主的感激之情的同时有些疑问，楼主是如何、通过什么渠道来获取到这些知识的，也是书籍+博客？android开发有什么好书籍、博客、论坛推荐？恳切期待楼主的回答！　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li><li class="ds-ctx-entry" data-post-id="6235870072481514241"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://t.qq.com/aaa1240184197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=5274099&#39;;" title="Conan"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50" alt="Conan"></a></div><div class="ds-ctx-body"><div class="ds-ctx-head"><a rel="nofollow author" target="_blank" href="http://t.qq.com/aaa1240184197">Conan</a><a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2016-01-04T18:00:42+08:00" title="2016年1月4日 下午6:00:42">1月4日</a><div class="ds-ctx-nth" title="2016年1月4日 下午6:00:42">2楼</div></div><div class="ds-ctx-content"><a href="http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants" target="_blank" rel="nofollow">http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants</a>　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p>推荐你一本书，第一行代码</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-06-12T09:18:00+08:00" title="2016年6月12日 上午9:18:00">6月12日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6276305141805089537"><div class="ds-post-self" data-post-id="6276305141805089537" data-thread-id="1182773245300965517" data-root-id="1182773245300966156" data-source="duoshuo"><div class="ds-avatar" data-user-id="6275951659726144257"><a rel="nofollow author" target="_blank" href="http://weibo.com/3827993776" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6275951659726144257&#39;;" title="Android菜鸟1994"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1" alt="Android菜鸟1994"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/3827993776" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6275951659726144257&#39;;" rel="nofollow" target="_blank" data-user-id="6275951659726144257">Android菜鸟1994</a></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="1182773245300966156"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/1696136891" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=3559167&#39;;" title="木偶人Conn"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1(1)" alt="木偶人Conn"></a></div><div class="ds-ctx-body"><div class="ds-ctx-head"><a rel="nofollow author" target="_blank" href="http://weibo.com/1696136891">木偶人Conn</a><a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-03-13T10:23:19+08:00" title="2015年3月13日 上午10:23:19">2015年3月13日</a><div class="ds-ctx-nth" title="2015年3月13日 上午10:23:19">1楼</div></div><div class="ds-ctx-content">请教下您都是从哪里学习到这些知识的　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p>百度学到的</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-04-22T17:09:25+08:00" title="2016年4月22日 下午5:09:25">4月22日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6275558717584835329"><div class="ds-post-self" data-post-id="6275558717584835329" data-thread-id="1182773245300965517" data-root-id="6226354577462002433" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="请教我雷锋"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">请教我雷锋</span></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="6226354577462002433"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Dilid"></div><div class="ds-ctx-body"><div class="ds-ctx-head">Dilid<a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-12-10T02:35:43+08:00" title="2015年12月10日 上午2:35:43">2015年12月10日</a><div class="ds-ctx-nth" title="2015年12月10日 上午2:35:43">1楼</div></div><div class="ds-ctx-content">现在是凌晨2：35分，半个月前跨入android开发的大门，android入门之曲折，一直带着问题在网上寻寻觅觅。看到楼主这篇文章，在表示对楼主的感激之情的同时有些疑问，楼主是如何、通过什么渠道来获取到这些知识的，也是书籍+博客？android开发有什么好书籍、博客、论坛推荐？恳切期待楼主的回答！　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p>官网 外国技术网站</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-04-20T16:52:55+08:00" title="2016年4月20日 下午4:52:55">4月20日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6266999010184135426"><div class="ds-post-self" data-post-id="6266999010184135426" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="6266998734404453121"><a rel="nofollow author" target="_blank" href="http://t.qq.com/cfman5212009" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6266998734404453121&#39;;" title="吙綫灬渶譹"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50(2)" alt="吙綫灬渶譹"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/cfman5212009" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6266998734404453121&#39;;" rel="nofollow" target="_blank" data-user-id="6266998734404453121">吙綫灬渶譹</a></div><p>有帮助</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-03-28T15:16:53+08:00" title="2016年3月28日 下午3:16:53">3月28日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6259226934044001025"><div class="ds-post-self" data-post-id="6259226934044001025" data-thread-id="1182773245300965517" data-root-id="1182773245300966149" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="wapeyang"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">wapeyang</span></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="1182773245300966149"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=11098445&#39;;" title="music旮旯"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1(2)" alt="music旮旯"></a></div><div class="ds-ctx-body"><div class="ds-ctx-head"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120">music旮旯</a><a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-03-12T16:47:41+08:00" title="2015年3月12日 下午4:47:41">2015年3月12日</a><div class="ds-ctx-nth" title="2015年3月12日 下午4:47:41">1楼</div></div><div class="ds-ctx-content">楼主,我使用百度sdk的时候,需要引用so库, 我的写法是这样的 <br>
+sourceSets.main {<br>
+        manifest.srcFile 'AndroidManifest.xml'<br>
+        java.srcDirs = ['src']<br>
+        resources.srcDirs = ['src']<br>
+        res.srcDirs = ['res']<br>
+        jniLibs.srcDir ['libs/armeabi']<br>
+    }<br>
+但是在编译运行之后,却提示so Failed to load.  No implementation found for native Lcom/baidu/platform/comjni/map/commonmemcache/JNICommonMemCache;.Create:()I<br>
+百度出是因为so为成功引用的原因 怎么破,谢谢楼主　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li><li class="ds-ctx-entry"><a href="javascript:void(0);" class="ds-expand">还有1条评论</a></li><li class="ds-ctx-entry" style="display:none" data-post-id="1182773245300966157"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=11098445&#39;;" title="music旮旯"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1(2)" alt="music旮旯"></a></div><div class="ds-ctx-body"><div class="ds-ctx-head"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120">music旮旯</a><a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-03-13T10:33:41+08:00" title="2015年3月13日 上午10:33:41">2015年3月13日</a><div class="ds-ctx-nth" title="2015年3月13日 上午10:33:41">2楼</div></div><div class="ds-ctx-content">问题已解决　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li><li class="ds-ctx-entry" data-post-id="1182773245300966760"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="= ="></div><div class="ds-ctx-body"><div class="ds-ctx-head">= =<a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-08-25T08:34:17+08:00" title="2015年8月25日 上午8:34:17">2015年8月25日</a><div class="ds-ctx-nth" title="2015年8月25日 上午8:34:17">3楼</div></div><div class="ds-ctx-content">問題解決也不說怎么解決　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p>jniLibs.srcDir ['libs/armeabi']  改成  jniLibs.srcDir ['libs']</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-03-07T16:37:15+08:00" title="2016年3月7日 下午4:37:15">3月7日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6235870072481514241"><div class="ds-post-self" data-post-id="6235870072481514241" data-thread-id="1182773245300965517" data-root-id="6226354577462002433" data-source="duoshuo"><div class="ds-avatar" data-user-id="5274099"><a rel="nofollow author" target="_blank" href="http://t.qq.com/aaa1240184197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=5274099&#39;;" title="Conan"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50" alt="Conan"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/aaa1240184197" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=5274099&#39;;" rel="nofollow" target="_blank" data-user-id="5274099">Conan</a></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="6226354577462002433"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Dilid"></div><div class="ds-ctx-body"><div class="ds-ctx-head">Dilid<a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-12-10T02:35:43+08:00" title="2015年12月10日 上午2:35:43">2015年12月10日</a><div class="ds-ctx-nth" title="2015年12月10日 上午2:35:43">1楼</div></div><div class="ds-ctx-content">现在是凌晨2：35分，半个月前跨入android开发的大门，android入门之曲折，一直带着问题在网上寻寻觅觅。看到楼主这篇文章，在表示对楼主的感激之情的同时有些疑问，楼主是如何、通过什么渠道来获取到这些知识的，也是书籍+博客？android开发有什么好书籍、博客、论坛推荐？恳切期待楼主的回答！　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p><a href="http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants" target="_blank" rel="nofollow">http://developer.android.com/tools/building/configuring-gradle.html#workBuildVariants</a></p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2016-01-04T18:00:42+08:00" title="2016年1月4日 下午6:00:42">1月4日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6226354577462002433"><div class="ds-post-self" data-post-id="6226354577462002433" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="Dilid"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">Dilid</span></div><p>现在是凌晨2：35分，半个月前跨入android开发的大门，android入门之曲折，一直带着问题在网上寻寻觅觅。看到楼主这篇文章，在表示对楼主的感激之情的同时有些疑问，楼主是如何、通过什么渠道来获取到这些知识的，也是书籍+博客？android开发有什么好书籍、博客、论坛推荐？恳切期待楼主的回答！</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-12-10T02:35:43+08:00" title="2015年12月10日 上午2:35:43">2015年12月10日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶(2)</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6221160372561249026"><div class="ds-post-self" data-post-id="6221160372561249026" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="12858942"><a rel="nofollow author" target="_blank" href="http://weibo.com/lunaprom" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=12858942&#39;;" title="暮山老妖"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/0" alt="暮山老妖"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/lunaprom" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=12858942&#39;;" rel="nofollow" target="_blank" data-user-id="12858942">暮山老妖</a></div><p>程序员们都是业界良心啊~感谢楼主写这么详细的教程系列……</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-11-26T02:39:33+08:00" title="2015年11月26日 上午2:39:33">2015年11月26日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6221016281118671617"><div class="ds-post-self" data-post-id="6221016281118671617" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="池乃内路里"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">池乃内路里</span></div><p> <img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/cat_zhendanding_org.gif" alt="[真淡定]" title="[真淡定]" class="ds-smiley"> 在哪里聊妹子啊？我推荐→ http://sebi.club</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-11-25T17:20:24+08:00" title="2015年11月25日 下午5:20:24">2015年11月25日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6215437484197675778"><div class="ds-post-self" data-post-id="6215437484197675778" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="6215331576104878850"><a rel="nofollow author" target="_blank" href="http://t.qq.com/succ7_shenmusu" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6215331576104878850&#39;;" title="森木苏"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50(3)" alt="森木苏"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/succ7_shenmusu" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=6215331576104878850&#39;;" rel="nofollow" target="_blank" data-user-id="6215331576104878850">森木苏</a></div><p>火前留名</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-11-10T16:31:50+08:00" title="2015年11月10日 下午4:31:50">2015年11月10日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="6214985007362999042"><div class="ds-post-self" data-post-id="6214985007362999042" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="14194201"><a rel="nofollow author" target="_blank" href="http://weibo.com/hgk324" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=14194201&#39;;" title="猴子二世"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1(3)" alt="猴子二世"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/hgk324" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=14194201&#39;;" rel="nofollow" target="_blank" data-user-id="14194201">猴子二世</a></div><p>android studio中没有extras文件夹。</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-11-09T11:15:59+08:00" title="2015年11月9日 上午11:15:59">2015年11月9日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1182773245300966847"><div class="ds-post-self" data-post-id="1182773245300966847" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="0_0"></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">0_0</span></div><p>楼主，ShimmerAndroid这个module是如何放到了extras这个目录下的呀？为什么我尝试也新建一个extras的目录，然后将第三方的module拖进去后，就报错了。</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-10-04T20:28:41+08:00" title="2015年10月4日 下午8:28:41">2015年10月4日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1182773245300966760"><div class="ds-post-self" data-post-id="1182773245300966760" data-thread-id="1182773245300965517" data-root-id="1182773245300966149" data-source="duoshuo"><div class="ds-avatar"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="= ="></div><div class="ds-comment-body"><div class="ds-comment-header"><span class="ds-user-name" data-qqt-account="">= =</span></div><ol id="ds-ctx"><li class="ds-ctx-entry" data-post-id="1182773245300966149"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=11098445&#39;;" title="music旮旯"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1(2)" alt="music旮旯"></a></div><div class="ds-ctx-body"><div class="ds-ctx-head"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120">music旮旯</a><a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-03-12T16:47:41+08:00" title="2015年3月12日 下午4:47:41">2015年3月12日</a><div class="ds-ctx-nth" title="2015年3月12日 下午4:47:41">1楼</div></div><div class="ds-ctx-content">楼主,我使用百度sdk的时候,需要引用so库, 我的写法是这样的 <br>
+sourceSets.main {<br>
+        manifest.srcFile 'AndroidManifest.xml'<br>
+        java.srcDirs = ['src']<br>
+        resources.srcDirs = ['src']<br>
+        res.srcDirs = ['res']<br>
+        jniLibs.srcDir ['libs/armeabi']<br>
+    }<br>
+但是在编译运行之后,却提示so Failed to load.  No implementation found for native Lcom/baidu/platform/comjni/map/commonmemcache/JNICommonMemCache;.Create:()I<br>
+百度出是因为so为成功引用的原因 怎么破,谢谢楼主　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li><li class="ds-ctx-entry" data-post-id="1182773245300966157"><div class="ds-avatar"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=11098445&#39;;" title="music旮旯"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1(2)" alt="music旮旯"></a></div><div class="ds-ctx-body"><div class="ds-ctx-head"><a rel="nofollow author" target="_blank" href="http://weibo.com/1576425120">music旮旯</a><a href="http://stormzhang.com/devtools/2014/12/18/android-studio-tutorial4/undefined" target="_blank" rel="nofollow" class="ds-time" datetime="2015-03-13T10:33:41+08:00" title="2015年3月13日 上午10:33:41">2015年3月13日</a><div class="ds-ctx-nth" title="2015年3月13日 上午10:33:41">2楼</div></div><div class="ds-ctx-content">问题已解决　　　　　　　<div class="ds-comment-actions"><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a></div></div></div></li></ol><p>問題解決也不說怎么解決</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-08-25T08:34:17+08:00" title="2015年8月25日 上午8:34:17">2015年8月25日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1182773245300966646"><div class="ds-post-self" data-post-id="1182773245300966646" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="12903837"><a rel="nofollow author" target="_blank" href="http://t.qq.com/chenweina1986" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=12903837&#39;;" title="陈伟娜"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt="陈伟娜"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/chenweina1986" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=12903837&#39;;" rel="nofollow" target="_blank" data-user-id="12903837">陈伟娜</a></div><p>请问怎么用Android studio来编译release版本的apk</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-07-23T18:34:55+08:00" title="2015年7月23日 下午6:34:55">2015年7月23日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1182773245300966608"><div class="ds-post-self" data-post-id="1182773245300966608" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="9932252"><a rel="nofollow author" target="_blank" href="http://weibo.com/1836655045" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=9932252&#39;;" title="小米粥Running"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/1(4)" alt="小米粥Running"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://weibo.com/1836655045" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=9932252&#39;;" rel="nofollow" target="_blank" data-user-id="9932252">小米粥Running</a></div><p>作为一个新手菜鸟，下载下来的开源项目，导入到android studio中之后，该怎么进行分析呢，从那些方面入手呢？从四大组件开始？查看AndroidManifest文件？</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-07-10T10:02:47+08:00" title="2015年7月10日 上午10:02:47">2015年7月10日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li><li class="ds-post" data-post-id="1182773245300966591"><div class="ds-post-self" data-post-id="1182773245300966591" data-thread-id="1182773245300965517" data-root-id="0" data-source="duoshuo"><div class="ds-avatar" data-user-id="12573688"><a rel="nofollow author" target="_blank" href="http://t.qq.com/HWB198932" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=12573688&#39;;" title="胡卫彬"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/50(4)" alt="胡卫彬"></a></div><div class="ds-comment-body"><div class="ds-comment-header"><a class="ds-user-name ds-highlight" data-qqt-account="" href="http://t.qq.com/HWB198932" onclick="this.href=&#39;http://stormzhang.duoshuo.com/user-url/?user_id=12573688&#39;;" rel="nofollow" target="_blank" data-user-id="12573688">胡卫彬</a></div><p>感谢楼主的无私奉献。</p><div class="ds-comment-footer ds-comment-actions"><span class="ds-time" datetime="2015-07-04T11:55:07+08:00" title="2015年7月4日 上午11:55:07">2015年7月4日</span><a class="ds-post-reply" href="javascript:void(0);"><span class="ds-icon ds-icon-reply"></span>回复</a><a class="ds-post-likes" href="javascript:void(0);"><span class="ds-icon ds-icon-like"></span>顶</a><a class="ds-post-repost" href="javascript:void(0);"><span class="ds-icon ds-icon-share"></span>转发</a><a class="ds-post-report" href="javascript:void(0);"><span class="ds-icon ds-icon-report"></span>举报</a></div></div></div></li></ul><div class="ds-paginator" style="display: block;"><div class="ds-border"></div><a data-page="1" href="javascript:void(0);" class="ds-current">1</a> <a data-page="2" href="javascript:void(0);">2</a> <a data-page="3" href="javascript:void(0);">3</a> <a data-page="4" href="javascript:void(0);">4</a></div><a name="respond"></a><div class="ds-login-buttons"><p>社交帐号登录:</p><div class="ds-social-links"><ul class="ds-service-list"><li><a href="http://stormzhang.duoshuo.com/login/weixin/" rel="nofollow" class="ds-service-link ds-weixin">微信</a></li><li><a href="http://stormzhang.duoshuo.com/login/weibo/" rel="nofollow" class="ds-service-link ds-weibo">微博</a></li><li><a href="http://stormzhang.duoshuo.com/login/qq/" rel="nofollow" class="ds-service-link ds-qq">QQ</a></li><li><a href="http://stormzhang.duoshuo.com/login/renren/" rel="nofollow" class="ds-service-link ds-renren">人人</a></li><li><a class="ds-more-services" href="javascript:void(0)">更多»</a></li></ul><ul class="ds-service-list ds-additional-services"><li><a href="http://stormzhang.duoshuo.com/login/douban/" rel="nofollow" class="ds-service-link ds-douban">豆瓣</a></li><li><a href="http://stormzhang.duoshuo.com/login/kaixin/" rel="nofollow" class="ds-service-link ds-kaixin">开心</a></li><li><a href="http://stormzhang.duoshuo.com/login/baidu/" rel="nofollow" class="ds-service-link ds-baidu">百度</a></li><li><a href="http://stormzhang.duoshuo.com/login/google/" rel="nofollow" class="ds-service-link ds-google">谷歌</a></li></ul></div></div><div class="ds-replybox"><a class="ds-avatar" href="javascript:void(0);" onclick="return false"><img src="./Android Studio系列教程四--Gradle基础 - stormzhang_files/noavatar_default.png" alt=""></a><form method="post"><input type="hidden" name="thread_id" value="1182773245300965517">
+<input type="hidden" name="parent_id" value="">
+<input type="hidden" name="nonce" value="57bd569ee9472"><div class="ds-textarea-wrapper ds-rounded-top"><textarea name="message" title="Ctrl+Enter快捷提交" placeholder="说点什么吧…"></textarea><pre class="ds-hidden-text"></pre></div><div class="ds-post-toolbar"><div class="ds-post-options ds-gradient-bg"><span class="ds-sync"></span></div><button class="ds-post-button" type="submit">发布</button><div class="ds-toolbar-buttons"><a class="ds-toolbar-button ds-add-emote" title="插入表情"></a></div></div></form></div><p class="ds-powered-by"><a href="http://duoshuo.com/" target="_blank" rel="nofollow">stormzhang正在使用多说</a></p></div></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"stormzhang"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+        </section>
+      </div>
+      
+
+      
+    </div>
+    <footer>
+  <p class="muted">Powed by stormzhang </p>
+  <!-- <a class="muted" href="/friends" >好基友<a/> -->
+  <br>
+  <br>
+</footer>
+  
+
+</body></html>
