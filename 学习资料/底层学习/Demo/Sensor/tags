@@ -1,0 +1,24 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ARR_SIZE	src/senser.c	14;"	d	file:
+CLASS_FULL_NAME	src/senser.c	10;"	d	file:
+DATA_CALLBACK	src/senser.c	11;"	d	file:
+DEL_JOBJ	src/senser.c	13;"	d	file:
+JNI_OnLoad	src/senser.c	/^JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)$/;"	f
+Java_com_howso_senser_SernserNative_hello	src/test.c	/^jstring Java_com_howso_senser_SernserNative_hello(JNIEnv* env,jobject obj){$/;"	f
+LOCAL_PATH	src/Android.mk	/^LOCAL_PATH := $(call my-dir)$/;"	m
+LOGD	src/senser.c	12;"	d	file:
+LOG_TAG	src/senser.c	9;"	d	file:
+data_callback_id	src/senser.c	/^jmethodID data_callback_id = 0;$/;"	v
+init_notifier	src/senser.c	/^static void init_notifier(JNIEnv *env, jclass clazz)$/;"	f	file:
+jnihello	src/senser.c	/^JNIEXPORT jstring JNICALL jnihello(JNIEnv* env,jclass jclazzi, jint type)$/;"	f
+jnisock	src/senser.c	/^JNIEXPORT jstring JNICALL jnisock(JNIEnv* env,jclass jclazz)$/;"	f
+jvm	src/senser.c	/^static JavaVM* jvm = NULL;$/;"	v	file:
+logger_class	src/senser.c	/^jclass logger_class = 0;$/;"	v
+logger_inst	src/senser.c	/^jobject logger_inst = 0;$/;"	v
+native_methods	src/senser.c	/^static JNINativeMethod native_methods[] = {$/;"	v	file:
+registerNativeMethods	src/senser.c	/^static int registerNativeMethods(JNIEnv* env, const char* className,$/;"	f	file:

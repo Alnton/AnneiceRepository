@@ -1,0 +1,1189 @@
+﻿body {
+    margin: 0px;
+}
+
+div {
+    background-repeat: no-repeat;
+}
+
+.raw_image {
+    width: 100%;
+    height: 100%;
+}
+
+.preload {
+    display: none;
+}
+#main_container {
+}
+
+.form_sketch {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.u0_line {
+    background-image: url('../第12集_查看地图_files/u0_line.png');
+}
+
+.u0_line {
+    position:absolute;
+    left:3px;
+    top:0px;
+    width:5px;
+    height:40px;
+}
+
+.u0 {
+    position:absolute;
+    left:43px;
+    top:173px;
+    width:10px;
+    height:40px;
+    
+}
+
+.u1 {
+    position:absolute;
+    left:46px;
+    top:20px;
+    width:40px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u2 {
+    position:absolute;
+    left:746px;
+    top:20px;
+    width:40px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u3 {
+    position:absolute;
+    left:396px;
+    top:20px;
+    width:40px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u4_line {
+    background-image: url('../第12集_查看地图_files/u4_line.png');
+}
+
+.u4_line {
+    position:absolute;
+    left:0px;
+    top:4px;
+    width:800px;
+    height:3px;
+}
+
+.u4 {
+    position:absolute;
+    left:10px;
+    top:40px;
+    width:800px;
+    height:10px;
+    
+}
+
+#u5 {
+    position:absolute;
+    left:90px;
+    top:133px;
+    width:351px;
+    height:281px;
+    overflow:hidden;
+}
+
+#pd2u5 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:351px;
+    height:281px;
+    
+}
+
+#u6 {
+    position:absolute;
+    left:-74px;
+    top:-62px;
+    width:501px;
+    height:401px;
+    overflow:hidden;
+}
+
+#pd0u6 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:501px;
+    height:401px;
+    
+}
+
+.u7_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:500px;
+    height:400px;
+}
+
+#u7_img {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:500px;
+    height:400px;
+}
+
+.u8 {
+    position:absolute;
+    left:2px;
+    top:192px;
+    width:496px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#u9 {
+    position:absolute;
+    left:280px;
+    top:2px;
+    width:71px;
+    height:61px;
+    overflow:hidden;
+}
+
+#pd0u9 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:71px;
+    height:61px;
+    
+}
+
+.u10_normal {
+    background-image: url('../第12集_查看地图_files/u10_normal.png');
+}
+
+.u10_container {
+    position:absolute;
+    left:23px;
+    top:40px;
+    width:20px;
+    height:20px;
+}
+
+#u10_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u11 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u12_normal {
+    background-image: url('../第12集_查看地图_files/u12_normal.png');
+}
+
+.u12_container {
+    position:absolute;
+    left:23px;
+    top:0px;
+    width:20px;
+    height:20px;
+}
+
+#u12_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u13 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u14_normal {
+    background-image: url('../第12集_查看地图_files/u14_normal.png');
+}
+
+.u14_container {
+    position:absolute;
+    left:0px;
+    top:20px;
+    width:20px;
+    height:20px;
+}
+
+#u14_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u15 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u16_normal {
+    background-image: url('../第12集_查看地图_files/u16_normal.png');
+}
+
+.u16_container {
+    position:absolute;
+    left:46px;
+    top:20px;
+    width:20px;
+    height:20px;
+}
+
+#u16_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u17 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u18_normal {
+    background-image: url('../第12集_查看地图_files/u18_normal.png');
+}
+
+.u18_container {
+    position:absolute;
+    left:25px;
+    top:22px;
+    width:15px;
+    height:15px;
+}
+
+#u18_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:21px;
+    height:21px;
+}
+
+.u19 {
+    position:absolute;
+    left:2px;
+    top:0px;
+    width:11px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#pd1u5 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:351px;
+    height:281px;
+    
+}
+
+#u20 {
+    position:absolute;
+    left:-74px;
+    top:-62px;
+    width:501px;
+    height:401px;
+    overflow:hidden;
+}
+
+#pd0u20 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:501px;
+    height:401px;
+    
+}
+
+.u21_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:500px;
+    height:400px;
+}
+
+#u21_img {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:500px;
+    height:400px;
+}
+
+.u22 {
+    position:absolute;
+    left:2px;
+    top:192px;
+    width:496px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#u23 {
+    position:absolute;
+    left:280px;
+    top:2px;
+    width:71px;
+    height:61px;
+    overflow:hidden;
+}
+
+#pd0u23 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:71px;
+    height:61px;
+    
+}
+
+.u24_normal {
+    background-image: url('../第12集_查看地图_files/u10_normal.png');
+}
+
+.u24_container {
+    position:absolute;
+    left:23px;
+    top:40px;
+    width:20px;
+    height:20px;
+}
+
+#u24_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u25 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u26_normal {
+    background-image: url('../第12集_查看地图_files/u12_normal.png');
+}
+
+.u26_container {
+    position:absolute;
+    left:23px;
+    top:0px;
+    width:20px;
+    height:20px;
+}
+
+#u26_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u27 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u28_normal {
+    background-image: url('../第12集_查看地图_files/u14_normal.png');
+}
+
+.u28_container {
+    position:absolute;
+    left:0px;
+    top:20px;
+    width:20px;
+    height:20px;
+}
+
+#u28_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u29 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u30_normal {
+    background-image: url('../第12集_查看地图_files/u16_normal.png');
+}
+
+.u30_container {
+    position:absolute;
+    left:46px;
+    top:20px;
+    width:20px;
+    height:20px;
+}
+
+#u30_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u31 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u32_normal {
+    background-image: url('../第12集_查看地图_files/u18_normal.png');
+}
+
+.u32_container {
+    position:absolute;
+    left:25px;
+    top:22px;
+    width:15px;
+    height:15px;
+}
+
+#u32_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:21px;
+    height:21px;
+}
+
+.u33 {
+    position:absolute;
+    left:2px;
+    top:0px;
+    width:11px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#pd0u5 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:351px;
+    height:281px;
+    
+}
+
+#u34 {
+    position:absolute;
+    left:-74px;
+    top:-62px;
+    width:501px;
+    height:401px;
+    overflow:hidden;
+}
+
+#pd0u34 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:501px;
+    height:401px;
+    
+}
+
+.u35_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:500px;
+    height:400px;
+}
+
+#u35_img {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:500px;
+    height:400px;
+}
+
+.u36 {
+    position:absolute;
+    left:2px;
+    top:192px;
+    width:496px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#u37 {
+    position:absolute;
+    left:280px;
+    top:2px;
+    width:71px;
+    height:61px;
+    overflow:hidden;
+}
+
+#pd0u37 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:71px;
+    height:61px;
+    
+}
+
+.u38_normal {
+    background-image: url('../第12集_查看地图_files/u10_normal.png');
+}
+
+.u38_container {
+    position:absolute;
+    left:23px;
+    top:40px;
+    width:20px;
+    height:20px;
+}
+
+#u38_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u39 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u40_normal {
+    background-image: url('../第12集_查看地图_files/u12_normal.png');
+}
+
+.u40_container {
+    position:absolute;
+    left:23px;
+    top:0px;
+    width:20px;
+    height:20px;
+}
+
+#u40_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u41 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u42_normal {
+    background-image: url('../第12集_查看地图_files/u14_normal.png');
+}
+
+.u42_container {
+    position:absolute;
+    left:0px;
+    top:20px;
+    width:20px;
+    height:20px;
+}
+
+#u42_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u43 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u44_normal {
+    background-image: url('../第12集_查看地图_files/u16_normal.png');
+}
+
+.u44_container {
+    position:absolute;
+    left:46px;
+    top:20px;
+    width:20px;
+    height:20px;
+}
+
+#u44_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u45 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u46_normal {
+    background-image: url('../第12集_查看地图_files/u18_normal.png');
+}
+
+.u46_container {
+    position:absolute;
+    left:25px;
+    top:22px;
+    width:15px;
+    height:15px;
+}
+
+#u46_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:21px;
+    height:21px;
+}
+
+.u47 {
+    position:absolute;
+    left:2px;
+    top:0px;
+    width:11px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u48_normal {
+    background-image: url('../第12集_查看地图_files/u48_normal.png');
+}
+
+.u48_container {
+    position:absolute;
+    left:40px;
+    top:153px;
+    width:15px;
+    height:15px;
+}
+
+#u48_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:21px;
+    height:21px;
+}
+
+.u49 {
+    position:absolute;
+    left:2px;
+    top:-1px;
+    width:11px;
+    height:17px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u50_normal {
+    background-image: url('../第12集_查看地图_files/u48_normal.png');
+}
+
+.u50_container {
+    position:absolute;
+    left:40px;
+    top:218px;
+    width:15px;
+    height:15px;
+}
+
+#u50_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:21px;
+    height:21px;
+}
+
+.u51 {
+    position:absolute;
+    left:2px;
+    top:-1px;
+    width:11px;
+    height:17px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u52_line {
+    background-image: url('../第12集_查看地图_files/u52_line.png');
+}
+
+.u52_line {
+    position:absolute;
+    left:0px;
+    top:3px;
+    width:10px;
+    height:5px;
+}
+
+.u52 {
+    position:absolute;
+    left:43px;
+    top:169px;
+    width:10px;
+    height:10px;
+    
+}
+
+.u53_line {
+    background-image: url('../第12集_查看地图_files/u53_line.png');
+}
+
+.u53_line {
+    position:absolute;
+    left:0px;
+    top:3px;
+    width:10px;
+    height:5px;
+}
+
+.u53 {
+    position:absolute;
+    left:43px;
+    top:188px;
+    width:10px;
+    height:10px;
+    
+}
+
+.u54_line {
+    background-image: url('../第12集_查看地图_files/u54_line.png');
+}
+
+.u54_line {
+    position:absolute;
+    left:0px;
+    top:3px;
+    width:10px;
+    height:5px;
+}
+
+.u54 {
+    position:absolute;
+    left:43px;
+    top:206px;
+    width:10px;
+    height:10px;
+    
+}
+
+#u55 {
+    position:absolute;
+    left:38px;
+    top:189px;
+    width:21px;
+    height:9px;
+    overflow:hidden;
+}
+
+#pd0u55 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:21px;
+    height:9px;
+    
+}
+
+.u56_normal {
+    background-image: url('../第12集_查看地图_files/u56_normal.png');
+}
+
+.u56_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:20px;
+    height:8px;
+}
+
+#u56_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:14px;
+}
+
+.u57 {
+    position:absolute;
+    left:2px;
+    top:-4px;
+    width:16px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u58 {
+    position:absolute;
+    left:90px;
+    top:103px;
+    width:190px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u59 {
+    position:absolute;
+    left:242px;
+    top:71px;
+    width:80px;
+    height:25px;
+    ;
+    ;
+    text-align: center;;
+    font-family:'Arial';
+    font-size: 13px;
+    color:#000000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
+.u60 {
+    position:absolute;
+    left:42px;
+    top:71px;
+    width:180px;
+    height:25px;
+    ;
+    ;
+    text-align: left;;
+    font-family:'Arial';
+    font-size: 13px;
+    color:#000000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
+#u61 {
+    position:absolute;
+    left:10px;
+    top:110px;
+    width:451px;
+    height:311px;
+    overflow:hidden;
+}
+
+#pd0u61 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:451px;
+    height:311px;
+    
+}
+
+.u62_normal {
+    background-image: url('../第12集_查看地图_files/u62_normal.png');
+}
+
+.u62_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:450px;
+    height:310px;
+}
+
+#u62_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:456px;
+    height:316px;
+}
+
+.u63 {
+    position:absolute;
+    left:2px;
+    top:147px;
+    width:446px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u64_normal {
+    background-image: url('../第12集_查看地图_files/u64_normal.png');
+}
+
+.u64_container {
+    position:absolute;
+    left:500px;
+    top:90px;
+    width:409px;
+    height:30px;
+}
+
+#u64_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:415px;
+    height:36px;
+}
+
+.u65 {
+    position:absolute;
+    left:2px;
+    top:7px;
+    width:405px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u66 {
+    position:absolute;
+    left:500px;
+    top:120px;
+    width:410px;
+    height:200px;
+    ;
+    background-color:#D7D7D7;;
+    text-align: left;;
+    font-family:'Arial';
+    font-size: 13px;
+    color:#000000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
