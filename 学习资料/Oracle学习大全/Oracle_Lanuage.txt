@@ -1,3 +1,0 @@
-1.改变NLS_LANG的值，让select to_char(salary*12,’L99,999.99’) from s_emp 输出结果的货币单位是￥和$
-	setenv NLS_LANG ' SIMPLIFIED CHINESE_CHINA.ZHS16GBK'
-	setenv NLS_LANG ' AMERICAN_AMERICA.US7ASCII'

@@ -1,9 +1,0 @@
-1. 将Excel表格中需要插入数据库的几列复制进入文本编辑器中
-2. 在文本编辑器中将表格中的标题去掉
-3. 编辑文本档 替换以下内容：
-^(.*)\t(.*)\t(.*)\t(.*)                                      ---- Excel表中如果需要3列生成  那么db文件就有^(.*)\t(.*)\t(.*)
-insert into message values(NULL, '\1','\2','\3','\4');       ---- 需要插入几列就有几个
-
-4. 最后执行
-sqlite3 /Users/wangqianzhou/Downloads/signal.db              ---- db文件的路径
-.read /Users/wangqianzhou/Desktop/log                        ---- 数据库脚本文件的路径
