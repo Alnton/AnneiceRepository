@@ -1,0 +1,183 @@
+package com.alnton.myframe.util.http2.config;
+
+import org.apache.http.Header;
+
+import com.alnton.myFrameResource.util.CustomCenterDialog;
+import com.alnton.myFrameResource.view.Button.ClickEffectButton;
+import com.alnton.myframe.R;
+import com.alnton.myframe.application.CacheSession;
+import com.alnton.myframe.config.ReturnCode;
+import com.alnton.myframe.util.ProgressDialogUtil;
+import com.alnton.myframe.util.ToastUtil;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
+
+/**
+ * 对回调接口的一些配置（如：在onStart方法中，显示加载框）
+ * @Author 詹海
+ * @Date 2016-10-13 下午5:50:30
+ * @Version V1.0
+ */
+public class CallbackConfig {
+	
+	
+	/**
+	 * 上下文
+	 */
+	private Context context;
+	
+	/**
+     * 是否弹出showProgressDialog 默认 true 弹出（如果是列表界面，使用谷歌自带的下拉刷新动画）
+     */
+    private boolean isShowProgressDialog = true;
+    
+    /**
+     * 当回调onFailure时是否弹出showToast 默认 true 弹出
+     */
+    private boolean isOnFailureShowToast = true;
+    
+    /**
+     * 显示访问服务器错误时的布局
+     */
+    private View retryView;
+    
+    /**
+     * 显示访问服务器暂无数据时的布局
+     */
+    private View noDataView;
+    
+	public CallbackConfig(Context context){
+		this.context = context;
+	}
+	
+	/**
+	 * @Description: 设置请求主题 
+	 * @param isShowProgressDialog 是否弹出showProgressDialog 默认 true 弹出
+	 * @param isOnFailureShowToast 当回调onFailure时是否弹出showToast 默认 true 弹出
+	 */
+	public void setTheme (boolean isShowProgressDialog,boolean isOnFailureShowToast){
+		this.isShowProgressDialog = isShowProgressDialog;
+		this.isOnFailureShowToast =  isOnFailureShowToast;
+	}
+	
+	/**
+	 * @Description: 设置请求主题（设置这个主题会自动的把isShowToast=false,isOnFailureShowToast=false）  
+	 * @param isShowProgressDialog 是否弹出showProgressDialog （如果是列表界面，使用谷歌自带的下拉刷新动画）
+	 * @param noDataView 显示访问服务器暂无数据时的布局
+	 * @param retryView 显示访问服务器错误时的布局
+	 */
+	public void setTheme(boolean isShowProgressDialog,View noDataView,View retryView){
+		this.isOnFailureShowToast =  false;
+		
+		this.noDataView = noDataView;
+		this.retryView = noDataView;
+	}
+	
+	/**
+	 * @Description: 请求开始
+	 */
+    public void onStart()
+    {
+    	if(this.isShowProgressDialog){
+    		//显示加载进度提示语
+            ProgressDialogUtil.instance.showProgressDialog();
+    	}
+    	if (null != retryView)
+        {
+            //隐藏重试按钮
+            retryView.setVisibility(View.GONE);
+        }
+        
+        if (null != noDataView)
+        {
+            //隐藏暂无数据
+            noDataView.setVisibility(View.GONE);
+        }
+    }
+    
+    /**
+	 * @Description: 请求关闭
+	 */
+    public void onFinish()
+    {
+    	if(this.isShowProgressDialog){
+    		//隐藏加载进度提示语
+            ProgressDialogUtil.instance.dismissProgressDialog();
+    	}
+    }
+    
+    /**
+	 * @Description: 请求失败
+	 */
+    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+    {
+    	if (isOnFailureShowToast && ReturnCode.RETURN_406_CODE != statusCode)
+        {
+            ToastUtil.instance.showToast(context, R.string.returnError);
+        }
+        
+        if (null != retryView)
+        {
+            /**
+             * 显示重试按钮
+             */
+            retryView.setVisibility(View.VISIBLE);
+        }
+        
+        if (ReturnCode.RETURN_406_CODE == statusCode)
+        {
+            /**
+             * 被用户挤下来了
+             * 退出登录功能操作
+             */
+            if (null == CacheSession.getInstance().exitDialog)
+            {
+                CacheSession.getInstance().exitDialog =
+                    new CustomCenterDialog(context, R.style.transparentFrameWindowStyle, R.layout.dialog_edge);
+                CacheSession.getInstance().exitDialog.show();
+                View view = CacheSession.getInstance().exitDialog.getWindow().getDecorView();
+                view.setTag(CacheSession.getInstance().exitDialog);
+                TextView dialog_content = (TextView)view.findViewById(R.id.dialog_content);
+                dialog_content.setText("您的账号在另一台设备登录，如非本人操作，建议及时修改登录密码");
+                
+                ClickEffectButton cancel = (ClickEffectButton)view.findViewById(R.id.dialog_cancel);
+                cancel.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        CacheSession.getInstance().exitDialog.dismiss();
+                        
+                    }
+                });
+                
+                ClickEffectButton confim = (ClickEffectButton)view.findViewById(R.id.dialog_confim);
+                confim.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        CacheSession.getInstance().exitDialog.dismiss();
+                        
+                    }
+                });
+                
+                CacheSession.getInstance().exitDialog.setOnDismissListener(new OnDismissListener()
+                {
+                    
+                    @Override
+                    public void onDismiss(DialogInterface dialog)
+                    {
+                        CacheSession.getInstance().exitDialog = null;
+                    }
+                });
+            }
+        }
+    }
+	
+}

@@ -1,0 +1,42 @@
+apply plugin: 'com.android.application'
+android {
+    signingConfigs {
+        AlntonKeyStore {
+            keyAlias 'Alnton'
+            keyPassword 'android081210,'
+            storeFile file('/Alnton_D/keystore/Alnton.keystore')
+            storePassword 'android081210,'
+        }
+    }
+    compileSdkVersion 23
+    buildToolsVersion "25.0.0"
+    defaultConfig {
+        applicationId "com.alnton.myframe"
+        minSdkVersion 9
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.AlntonKeyStore
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':MyFrameCore')
+    compile project(':AlipayLib')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    android {
+        useLibrary 'org.apache.http.legacy'
+    }
+}

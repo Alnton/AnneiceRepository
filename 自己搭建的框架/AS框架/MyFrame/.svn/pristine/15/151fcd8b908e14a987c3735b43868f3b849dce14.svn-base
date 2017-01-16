@@ -1,0 +1,41 @@
+package com.alnton.myframecore.okhttp.callback;
+
+/**
+ * @author 王乾州
+ * @explain 网络请求服务器返回的回调接口
+ * @time 2016/10/25 10:21.
+ */
+public interface Callback<T> {
+
+    /**
+     * 请求开始
+     */
+    void onStart();
+
+    /**
+     * 请求完成
+     */
+    void onFinish();
+
+    /**
+     * 请求异常失败回调
+     *
+     * @param e
+     * @param errorCode 状态码
+     * @param msg
+     */
+    void onError(Throwable e, int errorCode, String msg);
+
+    /**
+     * 请求成功回调 返回对象
+     *
+     * @param response
+     */
+    void onResponse(T response);
+
+    /**
+     * @param totalBytes       文件总大小
+     * @param remainingBytes   剩余未上传的文件大小
+     */
+    void onProgress(long totalBytes, long remainingBytes);
+}

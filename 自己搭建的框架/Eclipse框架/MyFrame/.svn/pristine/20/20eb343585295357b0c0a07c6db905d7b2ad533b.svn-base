@@ -1,0 +1,70 @@
+package com.alnton.myframe.util;
+
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.view.View;
+
+import com.alnton.myframe.R;
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.util.http.RequestCallback;
+
+/**
+ * <加载耗时操作时的进度对话框工具类>
+ * @author  王乾州
+ * @createon 2016-9-21
+ */
+public enum ProgressDialogUtil
+{
+    instance;
+    
+    ProgressDialogUtil()
+    {
+        
+    }
+    
+    /**
+     * 自定义dialog
+     */
+    private Dialog progressDialog;
+    
+    /**
+     * 加载dialog
+     * request: 网络请求传过来的 目的是为了取消对话框时候将网络请求关闭 如果不需要则传null
+     */
+    public void showProgressDialog(final RequestCallback request)
+    {
+        if (null == progressDialog)
+        {
+            View view = Session.getInstance().inflater.inflate(R.layout.load_dialog, null);
+            progressDialog = new Dialog(Session.getInstance().getApplicationContext(), R.style.FullScreenDialog);
+            progressDialog.setContentView(view);
+            progressDialog.show();
+            
+            if (null != request)
+            {
+                progressDialog.setOnDismissListener(new OnDismissListener()
+                {
+                    
+                    @Override
+                    public void onDismiss(DialogInterface dialog)
+                    {
+                        request.onCancel();
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * 隐藏加载的dialog
+     */
+    public void dismissProgressDialog()
+    {
+        if (null != progressDialog)
+        {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+}

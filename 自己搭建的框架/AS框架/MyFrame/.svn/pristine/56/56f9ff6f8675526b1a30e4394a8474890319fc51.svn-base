@@ -1,0 +1,58 @@
+package com.alnton.myframe.entity.pay;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.alnton.myframe.util.okhttp.callback.ResponseEntity;
+
+import java.util.ArrayList;
+
+/**
+ * 支付类型实体类
+ *
+ * @author 王乾州
+ * @createon 2016-8-19
+ */
+public class PayType extends ResponseEntity implements Parcelable {
+    /**
+     * 类别key
+     * wechat 标志着是微信支付
+     */
+    private ArrayList<PayTypeListInfo> listInfo;
+
+    public ArrayList<PayTypeListInfo> getListInfo() {
+        return listInfo;
+    }
+
+    public void setListInfo(ArrayList<PayTypeListInfo> listInfo) {
+        this.listInfo = listInfo;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(listInfo);
+    }
+
+    public PayType() {
+    }
+
+    protected PayType(Parcel in) {
+        this.listInfo = in.createTypedArrayList(PayTypeListInfo.CREATOR);
+    }
+
+    public static final Parcelable.Creator<PayType> CREATOR = new Parcelable.Creator<PayType>() {
+        public PayType createFromParcel(Parcel source) {
+            return new PayType(source);
+        }
+
+        public PayType[] newArray(int size) {
+            return new PayType[size];
+        }
+    };
+}

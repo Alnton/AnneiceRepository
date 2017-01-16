@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Toast的背景色 -->
+    <solid android:color="@color/white"/>
+    <!-- Toast的边框 -->    
+    <stroke android:width="2dip"
+        android:color="#999"/>
+    <!-- Toast中文字距离上下左右的长度 -->
+    <padding android:left="10dip" android:top="10dip"
+            android:right="10dip" android:bottom="10dip" />
+    <!-- 圆角 -->
+    <corners android:radius="5dp" />
+</shape>

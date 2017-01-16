@@ -1,0 +1,174 @@
+package com.alnton.myframe.util.http;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+
+import android.content.Context;
+
+import com.alnton.myFrameCore.util.DebugLogUtil;
+import com.alnton.myFrameCore.util.des.AES;
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.entity.user.User;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+/**
+ * <HTTP请求接口工具类>
+ * @author  王乾州
+ */
+public class HttpInterface
+{
+    /**
+     * 定义一个异步网络客户端 默认超时15秒 当超过，默认重连次数为1次 默认最大连接数为50个
+     */
+    private static AsyncHttpClient mClient = new AsyncHttpClient();
+    static
+    {
+        mClient.setMaxConnections(50);
+        mClient.setMaxRetriesAndTimeout(1, 15000);
+    }
+    
+    /**
+     * post 请求 
+     * @param context: 上下文
+     * @param url：    请求地址
+     * @param params   请求的参数 当没有参数时传null
+     * @param handler  请求的回调对象
+     */
+    public static void onPost(Context context, String url, JsonRequestParams params, AsyncHttpResponseHandler handler)
+    {
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "\n");
+        DebugLogUtil.e(DebugLogUtil.TAG, "tokenId===" + User.instance.getLoginKey());
+        mClient.addHeader("tokenId", User.instance.getLoginKey());
+        if (null != params)
+        {
+            DebugLogUtil.e(DebugLogUtil.TAG, "params：" + params.toString());
+            mClient.post(url, params, handler);
+        }
+        else
+        {
+            mClient.post(url, handler);
+        }
+    }
+    
+    /**
+     * post 请求 携带发送json格式的报文
+     * @param context: 上下文
+     * @param url：    请求地址
+     * @param params   请求的参数 不能为空
+     * @param handler  请求的回调对象
+     */
+    public static void onPostWithJson(Context context, String url, JsonRequestParams params,
+        AsyncHttpResponseHandler handler)
+    {
+        params.setUseJsonStreamer(true);
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "\n" + "params：" + params.toString());
+        
+        DebugLogUtil.e(DebugLogUtil.TAG, "tokenId===" + User.instance.getLoginKey());
+        mClient.addHeader("tokenId", User.instance.getLoginKey());
+        
+        if (Session.getInstance().isEncode)
+        {
+            onPostWithJson(context, url, params.toString(), handler);
+        }
+        else
+        {
+            mClient.post(url, params, handler);
+        }
+    }
+    
+    /**
+     * post 请求 携带发送json格式的报文，用于格式比较复杂情况
+     * @param context: 上下文
+     * @param url：    请求地址
+     * @param jsonStr  当json报文格式比较复杂时候用，gson.toJson(实体类); 
+     * @param handler  请求的回调对象
+     */
+    public static void onPostWithJson(Context context, String url, String jsonStr, AsyncHttpResponseHandler handler)
+    {
+        try
+        {
+            DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "\n" + "params:" + jsonStr);
+            
+            String requestContent = "";
+            
+            if (Session.getInstance().isEncode)
+            {
+                try
+                {
+                    requestContent = AES.Encrypt(jsonStr);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                requestContent = jsonStr;
+            }
+            
+            ByteArrayEntity byteArrayEntity =
+                new ByteArrayEntity(new String(requestContent.getBytes(), "utf-8").getBytes());
+            byteArrayEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+            
+            mClient.addHeader("tokenId", User.instance.getLoginKey());
+            mClient.post(context, url, byteArrayEntity, "application/json", handler);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * get 请求 
+     * @param url：请求地址
+     */
+    public static String onGet(String url)
+    {
+        String is = null;
+        try
+        {
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpGet request = new HttpGet(url);
+            HttpResponse response = client.execute(request);
+            is = EntityUtils.toString(response.getEntity(), "utf-8");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return is;
+    }
+    
+    /**
+     * get 请求 
+     * @param context: 上下文
+     * @param url：    请求地址
+     * @param params   请求的参数 当没有参数时传null
+     * @param handler  请求的回调对象
+     */
+    public static void onGet(Context context, String url, RequestParams params, AsyncHttpResponseHandler handler)
+    {
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "\n");
+        
+        mClient.addHeader("tokenId", User.instance.getLoginKey());
+        if (null != params)
+        {
+            DebugLogUtil.e(DebugLogUtil.TAG, "params：" + params.toString());
+            mClient.get(url, params, handler);
+        }
+        else
+        {
+            mClient.get(url, handler);
+        }
+    }
+}

@@ -1,0 +1,527 @@
+package com.alnton.myframe.util.http;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
+
+import com.alnton.myFrameCore.config.ListViewConfig;
+import com.alnton.myFrameCore.util.DebugLogUtil;
+import com.alnton.myFrameCore.util.des.AES;
+import com.alnton.myFrameResource.util.CustomCenterDialog;
+import com.alnton.myFrameResource.view.Button.ClickEffectButton;
+import com.alnton.myframe.R;
+import com.alnton.myframe.application.CacheSession;
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.config.ReturnCode;
+import com.alnton.myframe.entity.http.ResponseEntity;
+import com.alnton.myframe.util.ProgressUtil;
+import com.alnton.myframe.util.ToastUtil;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+/**
+ * Http网络请求回调类
+ * @Author 王乾州
+ */
+public class RequestCallback<T> extends AsyncHttpResponseHandler
+{
+    /**
+     * 反射Type
+     */
+    private Type type;
+    
+    /**
+     * 程序上下文
+     */
+    private Context mContext;
+    
+    /**
+     * 退出dialog
+     */
+    private Dialog exitDialog;
+    
+    /**
+     * 是否弹出showProgressDialog
+     * 默认 true 弹出
+     */
+    private boolean isShowProgressDialog = true;
+    
+    /**
+     * 是否弹出showToast
+     * 默认 true 弹出
+     */
+    private boolean isShowToast = true;
+    
+    /**
+     * 当回调onFailure时是否弹出showToast
+     * 默认 true 弹出
+     */
+    private boolean isOnFailureShowToast = true;
+    
+    /**
+     * 下拉刷新或加载更多的ListView 的 Action
+     */
+    private int action;
+    
+    /**
+     * 显示访问服务器错误时的布局
+     */
+    private View retryView;
+    
+    /**
+     * 标识此页面是否需要登录，才可以进入
+     */
+    private boolean isNeedLogin = true;
+    
+    /**
+     * 显示访问服务器暂无数据时的布局
+     */
+    private View noDataView;
+    
+    /**
+     * 显示加载的布局
+     */
+    private View loadView;
+    
+    /**
+     * 第一种构造函数（默认展示showProgressDialog或者showToast） 
+     * @param context                应用程序上下文
+     * @param type                   反射Type new TypeToken<ResponseEntity<T>>().getType()  T:可以传具体实体类，如果只想获取字符串报文传String
+     */
+    public RequestCallback(Context context, Type type)
+    {
+        this.mContext = context;
+        this.type = type;
+    }
+    
+    /**
+     * 第二种构造函数（配置是否展示showProgressDialog或者showToast） 
+     * @param context                应用程序上下文
+     * @param isShowProgressDialog   是否显示加载进度框
+     * @param isShowToast            是否显示Toast
+     * @param type                   反射Type new TypeToken<ResponseEntity<T>>().getType()  T:可以传具体实体类，如果只想获取字符串报文传String
+     */
+    public RequestCallback(Context context, boolean isShowProgressDialog, boolean isShowToast, Type type)
+    {
+        this.mContext = context;
+        this.isShowProgressDialog = isShowProgressDialog;
+        this.isShowToast = isShowToast;
+        this.type = type;
+    }
+    
+    /**
+     * 第三种构造函数（页面中是正常的ListView展示相关的进度加载、异常view、暂无数据view） 
+     * @param context                应用程序上下文
+     * @param loadView               显示加载的布局
+     * @param retryView              显示访问服务器错误时的布局
+     * @param noDataView             显示访问服务器暂无数据时的布局
+     * @param type                   反射Type new TypeToken<ResponseEntity<T>>().getType()  T:可以传具体实体类，如果只想获取字符串报文传String
+     */
+    public RequestCallback(Context context, View loadView, View retryView, View noDataView, Type type)
+    {
+        this.mContext = context;
+        this.loadView = loadView;
+        this.retryView = retryView;
+        this.noDataView = noDataView;
+        this.type = type;
+    }
+    
+    /**
+     * 第四种构造函数（页面ListView含有下拉刷新或者加载更多 展示相关的进度加载、异常view、暂无数据view） 
+     * @param context                应用程序上下文
+     * @param action                 ListView状态码
+     * @param loadView               显示加载的布局
+     * @param retryView              显示访问服务器错误时的布局
+     * @param noDataView             显示访问服务器暂无数据时的布局
+     * @param type                   反射Type new TypeToken<ResponseEntity<T>>().getType()  T:可以传具体实体类，如果只想获取字符串报文传String
+     */
+    public RequestCallback(Context context, int action, View loadView, View retryView, View noDataView, Type type)
+    {
+        this.mContext = context;
+        this.action = action;
+        this.loadView = loadView;
+        this.retryView = retryView;
+        this.noDataView = noDataView;
+        this.type = type;
+    }
+    
+    /**
+     * 当访问网络出异常回调onFailure函数 是否希望弹出默认的错误信息
+     * @param isOnFailureShowToast：true:弹出  反之，不弹出
+     */
+    public void setOnFailureShowToast(boolean isOnFailureShowToast)
+    {
+        this.isOnFailureShowToast = isOnFailureShowToast;
+    }
+    
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        
+        if (isShowProgressDialog)
+        {
+            /**
+             * 显示加载进度提示语
+             */
+            ProgressUtil.instance.showProgressDialog(mContext);
+        }
+        
+        if (null != loadView)
+        {
+            if (action == ListViewConfig.getInstance().LISTVIEW_ACTION_REFRESH
+                || action == ListViewConfig.getInstance().LISTVIEW_ACTION_SCROLL)
+            {
+                /**
+                 * 隐藏加载进度提示语
+                 */
+                loadView.setVisibility(View.GONE);
+            }
+            else
+            {
+                /**
+                 * 显示加载进度提示语
+                 */
+                loadView.setVisibility(View.VISIBLE);
+            }
+        }
+        
+        if (null != retryView)
+        {
+            /**
+             * 隐藏重试按钮
+             */
+            retryView.setVisibility(View.GONE);
+        }
+        
+        if (null != noDataView)
+        {
+            /**
+             * 隐藏暂无数据
+             */
+            noDataView.setVisibility(View.GONE);
+        }
+    }
+    
+    @Override
+    public void onFinish()
+    {
+        super.onFinish();
+        
+        /**
+         * 隐藏加载进度提示语
+         */
+        if (null != loadView)
+        {
+            loadView.setVisibility(View.GONE);
+        }
+        else
+        {
+            ProgressUtil.instance.dismissProgressDialog();
+        }
+    }
+    
+    @Override
+    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+    {
+        int errMsg = 0;
+        switch (statusCode)
+        {
+            case -1:
+                errMsg = R.string.netWorkError;
+                break;
+            
+            case 0:
+                errMsg = R.string.netWorkError;
+                break;
+            
+            default:
+                errMsg = R.string.returnError;
+                break;
+        }
+        
+        if (isOnFailureShowToast && ReturnCode.RETURN_406_CODE != statusCode)
+        {
+            ToastUtil.instance.showToast(mContext, errMsg);
+        }
+        
+        if (null != retryView)
+        {
+            /**
+             * 显示重试按钮
+             */
+            retryView.setVisibility(View.VISIBLE);
+        }
+        
+        if (ReturnCode.RETURN_406_CODE == statusCode)
+        {
+            /**
+             * 被用户挤下来了
+             * 退出登录功能操作
+             */
+            if (null == CacheSession.getInstance().exitDialog)
+            {
+                CacheSession.getInstance().exitDialog =
+                    new CustomCenterDialog(mContext, R.style.transparentFrameWindowStyle, R.layout.dialog_edge);
+                CacheSession.getInstance().exitDialog.show();
+                View view = CacheSession.getInstance().exitDialog.getWindow().getDecorView();
+                view.setTag(CacheSession.getInstance().exitDialog);
+                TextView dialog_content = (TextView)view.findViewById(R.id.dialog_content);
+                dialog_content.setText("您的账号在另一台设备登录，如非本人操作，建议及时修改登录密码");
+                
+                ClickEffectButton cancel = (ClickEffectButton)view.findViewById(R.id.dialog_cancel);
+                cancel.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        CacheSession.getInstance().exitDialog.dismiss();
+                        
+                    }
+                });
+                
+                ClickEffectButton confim = (ClickEffectButton)view.findViewById(R.id.dialog_confim);
+                confim.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        CacheSession.getInstance().exitDialog.dismiss();
+                        
+                    }
+                });
+                
+                CacheSession.getInstance().exitDialog.setOnDismissListener(new OnDismissListener()
+                {
+                    
+                    @Override
+                    public void onDismiss(DialogInterface dialog)
+                    {
+                        CacheSession.getInstance().exitDialog = null;
+                    }
+                });
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @Description: 标识此页面是否需要登录，才可以进入 
+     * @param isNeedLogin （默认true,此页面需要登录才可以进入）
+     */
+    public void setNeedLogin(boolean isNeedLogin)
+    {
+        this.isNeedLogin = isNeedLogin;
+    }
+    
+    @Override
+    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody)
+    {
+        if (null != responseBody)
+        {
+            String content = new String(responseBody);
+            if (!TextUtils.isEmpty(content))
+            {
+                String requestContent = "";
+                if (Session.getInstance().isEncode)
+                {
+                    try
+                    {
+                        JSONObject jsonObject = new JSONObject(content);
+                        requestContent = AES.Decrypt(jsonObject.getString("msg"));
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    requestContent = content;
+                }
+                onSuccess(requestContent, headers, responseBody);
+            }
+            else
+            {
+                /* 获取失败 */
+                if (null != retryView && (ListViewConfig.getInstance().LISTVIEW_ACTION_INIT == action || 0 == action))
+                {
+                    retryView.setVisibility(View.VISIBLE);
+                }
+                else if (isShowToast)
+                {
+                    ToastUtil.instance.showToast(mContext, R.string.returnError);
+                }
+            }
+        }
+    }
+    
+    public void onSuccess(String content, Header[] headers, byte[] responseBody)
+    {
+        DebugLogUtil.d(DebugLogUtil.TAG, content);
+        
+        try
+        {
+            if (null == type)
+            {
+                type = new TypeToken<ResponseEntity<T>>()
+                {
+                }.getType();
+            }
+            ResponseEntity<T> responseEntity = Session.getInstance().gson.fromJson(content, type);
+            
+            if (null != responseEntity)
+            {
+                if (ReturnCode.RETURN_0_CODE.equals(responseEntity.getCode()))
+                {
+                    /* 成功 */
+                    ArrayList<T> listInfo = responseEntity.getListInfo();
+                    T info = responseEntity.getInfo();
+                    
+                    if (null != listInfo && listInfo.size() > 0)
+                    {
+                        onSuccess(listInfo);
+                    }
+                    
+                    if (null != info)
+                    {
+                        onSuccess(info);
+                    }
+                    
+                    if ((null == listInfo || listInfo.size() == 0) && null == info)
+                    {
+                        onSuccess();
+                        /* 暂无数据 */
+                        if (null != noDataView
+                            && (ListViewConfig.getInstance().LISTVIEW_ACTION_INIT == action || 0 == action))
+                        {
+                            noDataView.setVisibility(View.VISIBLE);
+                        }
+                        else if (isShowToast)
+                        {
+                            //                            showToast(!TextUtils.isEmpty(responseEntity.getDesc()) ? responseEntity.getDesc()
+                            //                                : context.getResources().getString(R.string.noData));
+                        }
+                    }
+                }
+                else if (ReturnCode.RETURN_010002_CODE.equals(responseEntity.getCode()))
+                {
+                    onSuccess();
+                    /* 信息列表为空 */
+                    if (null != noDataView
+                        && (ListViewConfig.getInstance().LISTVIEW_ACTION_INIT == action || 0 == action))
+                    {
+                        noDataView.setVisibility(View.VISIBLE);
+                    }
+                    else if (isShowToast)
+                    {
+                        ToastUtil.instance.showToast(mContext,
+                            !TextUtils.isEmpty(responseEntity.getDesc()) ? responseEntity.getDesc()
+                                : mContext.getResources().getString(R.string.noData));
+                    }
+                }
+                else
+                {
+                    /* 获取失败 */
+                    if (null != retryView
+                        && (ListViewConfig.getInstance().LISTVIEW_ACTION_INIT == action || 0 == action))
+                    {
+                        retryView.setVisibility(View.VISIBLE);
+                    }
+                    else if (isShowToast)
+                    {
+                        ToastUtil.instance.showToast(mContext,
+                            !TextUtils.isEmpty(responseEntity.getDesc()) ? responseEntity.getDesc()
+                                : mContext.getResources().getString(R.string.returnError));
+                    }
+                }
+            }
+            else
+            {
+                /* 获取失败 */
+                if (null != retryView && (ListViewConfig.getInstance().LISTVIEW_ACTION_INIT == action || 0 == action))
+                {
+                    retryView.setVisibility(View.VISIBLE);
+                }
+                else if (isShowToast)
+                {
+                    ToastUtil.instance.showToast(mContext, R.string.returnError);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            
+            /* 获取失败 */
+            if (null != retryView && (ListViewConfig.getInstance().LISTVIEW_ACTION_INIT == action || 0 == action))
+            {
+                retryView.setVisibility(View.VISIBLE);
+            }
+            else if (isShowToast)
+            {
+                //                showToast(R.string.returnError);
+            }
+            
+            /* 针对下拉刷新加载更多的ListView 出异常特殊处理 */
+            if (0 != action)
+            {
+                onSuccess(new ArrayList<T>());
+            }
+        }
+    }
+    
+    /**
+     * 获取返回的code值
+     * @param content：接口返回的报文
+     */
+    public String getCode(String content)
+    {
+        JSONObject jsonObject;
+        try
+        {
+            jsonObject = new JSONObject(content);
+            return jsonObject.getString("code");
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    
+    /**
+     * 返回实体集合数据 
+     * @param  listInfo        
+     */
+    public void onSuccess(ArrayList<T> listInfo)
+    {
+    }
+    
+    /**
+     * 返回单个实体数据   
+     * @param   info     
+     */
+    public void onSuccess(T info)
+    {
+    }
+    
+    /**
+     * 返回的数据为null  
+     */
+    public void onSuccess()
+    {
+    }
+}

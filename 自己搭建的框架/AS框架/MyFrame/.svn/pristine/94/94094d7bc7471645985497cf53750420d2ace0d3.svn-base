@@ -1,0 +1,19 @@
+package com.alnton.unitTest;
+
+import org.junit.Test;
+
+/**
+ * OKHttp3  使用案例
+ * 作者：${王乾州} on 2016/10/27 16:00
+ */
+public class UseCase {
+
+    /**
+     * 测试直接获取字符串
+     */
+    @Test
+    public void getString() {
+        System.out.println("");
+    }
+
+}

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <!-- 标题 -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/px88"
+        android:background="#d1d1d1" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/choiceCity"
+            android:textColor="@color/wheel_title"
+            android:textSize="@dimen/size34" />
+
+        <!-- 取消 -->
+
+        <TextView
+            android:id="@+id/cancelTextView"
+            android:layout_width="50dip"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="@color/wheel_title"
+            android:textSize="@dimen/size28" />
+
+        <!-- 确定 -->
+
+        <TextView
+            android:id="@+id/confirmTextView"
+            android:layout_width="50dip"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="@color/wheel_title"
+            android:textSize="@dimen/size28" />
+    </RelativeLayout>
+
+    <!-- 设置省，城市区域 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px436"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <!-- 省 -->
+
+        <com.alnton.myframecore.view.Wheel.WheelView
+            android:id="@+id/provinceWheelview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" 
+            />
+
+        <!-- 城市 -->
+
+        <com.alnton.myframecore.view.Wheel.WheelView
+            android:id="@+id/cityWheelview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" 
+            />
+        
+        <!-- 区县 -->
+        <com.alnton.myframecore.view.Wheel.WheelView
+            android:id="@+id/townWheelview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" 
+            />
+    </LinearLayout>
+
+</LinearLayout>

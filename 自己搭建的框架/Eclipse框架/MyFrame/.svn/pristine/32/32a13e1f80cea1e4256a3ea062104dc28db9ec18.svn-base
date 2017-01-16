@@ -1,0 +1,86 @@
+package com.alnton.myframe.util.http2.config;
+
+import org.json.JSONObject;
+
+import com.alnton.myFrameCore.util.des.AES;
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.entity.user.User;
+import com.loopj.android.http.AsyncHttpClient;
+
+/**
+ * 请求配置
+ * @Author 詹海
+ * @Date 2016-10-13 下午2:34:01
+ * @Version V1.0
+ */
+public enum RequestConfig {
+	
+	instance;
+	
+	/**
+     * 定义一个异步网络客户端 默认超时15秒 当超过，默认重连次数为1次 默认最大连接数为50个
+     */
+    private  AsyncHttpClient mClient = new AsyncHttpClient();
+    
+	
+	RequestConfig(){
+		mClient.setMaxConnections(50);
+        mClient.setMaxRetriesAndTimeout(1, 15000);
+	};
+	
+	
+	public AsyncHttpClient getmClient() {
+		addHeader();
+		return mClient;
+	}
+
+	/**
+	 * @Description: 添加请求头参数 
+	 * @return
+	 */
+	private void addHeader(){
+		mClient.addHeader("tokenId", User.instance.getLoginKey());
+	}
+	
+	/**
+	 * @Description: 进行编码 
+	 * @param arg0
+	 * @return
+	 */
+	public String encode(String arg0){
+		if (Session.getInstance().isEncode)
+        {
+            try
+            {
+                return AES.Encrypt(arg0);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+		return arg0;
+	}
+	
+	/**
+	 * @Description: 进行解码 
+	 * @param arg0
+	 * @return
+	 */
+	public String decrypt(String arg0){
+		if (Session.getInstance().isEncode)
+        {
+			try
+            {
+                JSONObject jsonObject = new JSONObject(arg0);
+                return AES.Decrypt(jsonObject.getString("msg"));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+		return arg0;
+	}
+	
+}

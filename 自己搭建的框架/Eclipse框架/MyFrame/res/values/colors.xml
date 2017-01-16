@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 软件背景色 -->
+    <color name="bg">#f2f2f2</color>
+
+    <!-- 底部栏背景色 -->
+    <color name="menu_bottom_bg">#fbfbfb</color>
+    <color name="yellow_bg">#f9b552</color>
+    <color name="title_bg">#53c2f0</color>
+    
+    <!-- 红色提示 -->
+    <color name="red_hint">#ea3838</color>
+
+    <!-- 几种字体的颜色 -->
+    <color name="typeface_one">#54c2f0</color>
+    <color name="typeface_two">#999</color>
+    <color name="typeface_three">#fff</color>
+    <color name="typeface_four">#ea3838</color>
+    <color name="typeface_five">#333</color>
+    <color name="typeface_six">#00a3ea</color>
+    <color name="typeface_seven">#666666</color>
+    <color name="typeface_eight">#cccccc</color>
+    <color name="typeface_nine">#f19149</color>
+    <color name="typeface_ten">#008aea</color>
+    <color name="typeface_eleven">#f1c5ab</color>
+    <color name="typeface_twelve">#ffeadb</color>
+    <color name="typeface_thirteen">#e5680b</color>
+    
+    <!-- 横线颜色 -->
+    <color name="divider">#ddd</color>
+
+</resources>

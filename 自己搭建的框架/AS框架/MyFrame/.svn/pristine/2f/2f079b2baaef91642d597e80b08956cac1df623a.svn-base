@@ -1,0 +1,297 @@
+package com.alnton.myframe.ui.login;
+
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+import com.alnton.myframe.R;
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.config.Config;
+import com.alnton.myframe.entity.user.UserInfo;
+import com.alnton.myframe.ui.BaseTitleActivity;
+import com.alnton.myframe.util.ProgressDialogUtil;
+import com.alnton.myframe.util.ToastUtil;
+import com.alnton.myframe.util.okhttp.OKHttpUtil;
+import com.alnton.myframe.util.okhttp.callback.ResultCallback;
+import com.alnton.myframe.util.okhttp.request.RequestParams;
+import com.alnton.myframecore.util.MyFrameCoreTools;
+import com.alnton.myframecore.util.TelephoneUtil;
+import com.alnton.myframecore.view.Button.ClickEffectButton;
+import com.tencent.connect.common.Constants;
+import com.tencent.mm.sdk.modelmsg.SendAuth;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.UiError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cn.jpush.android.api.JPushInterface;
+
+/**
+ * <登陆界面>
+ *
+ * @author 王乾州
+ */
+public class LoginActivity extends BaseTitleActivity implements OnClickListener {
+    /**
+     * QQ,微信
+     */
+    private ClickEffectButton qqButton, wxButton;
+
+    /**
+     * QQ登录会回调两次
+     * 这个标志位就是只用第一次的回调
+     */
+    private int qqCallback;
+
+    /**
+     * tencent 登录监听
+     */
+    private IUiListener tencentLoginListener;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        /**
+         * 初始化View
+         */
+        initView(R.string.login);
+
+        /**
+         * 设置事件监听
+         */
+        setListener();
+    }
+
+    @Override
+    public void initView(int titleId) {
+        super.initView(titleId);
+
+        qqButton = (ClickEffectButton) findViewById(R.id.qqButton);
+        wxButton = (ClickEffectButton) findViewById(R.id.wxButton);
+    }
+
+    private void setListener() {
+        qqButton.setOnClickListener(this);
+        wxButton.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.login_rl:
+                break;
+
+            case R.id.login:
+                /**
+                 * 登录
+                 */
+                break;
+
+            case R.id.go_register:
+                /**
+                 * 注册
+                 */
+                break;
+
+            case R.id.forget_password:
+                /**
+                 * 忘记密码
+                 */
+                break;
+
+            case R.id.qqButton:
+                /**
+                 * QQ登录
+                 */
+                try {
+                    mContext.getPackageManager().getApplicationInfo("com.tencent.mobileqq",
+                            PackageManager.GET_UNINSTALLED_PACKAGES);
+                    qqLogin();
+                } catch (Exception e) {
+                    ToastUtil.instance.showToast(mContext, R.string.qqNoInstall);
+                }
+                break;
+
+            case R.id.wxButton:
+                /**
+                 * 微信登录
+                 */
+                if (Session.getInstance().wxAPI.isWXAppInstalled()) {
+                    // send oauth request
+                    SendAuth.Req req = new SendAuth.Req();
+                    // 应用授权作用域，如获取用户个人信息则填写snsapi_userinfo
+                    req.scope = "snsapi_userinfo";
+                    // 用于保持请求和回调的状态，授权请求后原样带回给第三方。该参数可用于防止csrf攻击（跨站请求伪造攻击），建议第三方带上该参数，可设置为简单的随机数加session进行校验
+                    req.state = MyFrameCoreTools.getInstance().getUUID();
+                    Session.getInstance().wxAPI.sendReq(req);
+                } else {
+                    ToastUtil.instance.showToast(mContext, R.string.wxNoInstall);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /**
+     * <QQ登录>
+     */
+    private void qqLogin() {
+        if (!Session.getInstance().mTencent.isSessionValid()) {
+            tencentLoginListener = new IUiListener() {
+                @Override
+                public void onComplete(Object arg0) {
+                    //登陆成功的回调，在此处可以获取用户信息  
+                    ProgressDialogUtil.instance.showProgressDialog(null);
+
+                    initOpenidAndToken((JSONObject) arg0);
+                    updateUserInfo();
+                }
+
+                @Override
+                public void onError(UiError uiError) {
+                    ToastUtil.instance.showToast(mContext, "errorCode:" + uiError.errorCode + ", msg:"
+                            + uiError.errorMessage + ", detail:" + uiError.errorDetail);
+                }
+
+                @Override
+                public void onCancel() {
+                    ToastUtil.instance.showToast(mContext, R.string.errcode_cancel);
+                }
+            };
+
+            Session.getInstance().mTencent.login(LoginActivity.this, "all", tencentLoginListener);
+        } else {
+            Session.getInstance().mTencent.logout(this);
+        }
+    }
+
+    /**
+     * 初始化OPENID以及TOKEN身份验证。
+     */
+    private void initOpenidAndToken(JSONObject jsonObject) {
+        try {
+            //这里的Constants类，是 com.tencent.connect.common.Constants类，下面的几个参数也是固定的
+            String token = jsonObject.getString(Constants.PARAM_ACCESS_TOKEN);
+            String expires = jsonObject.getString(Constants.PARAM_EXPIRES_IN);
+            //OPENID,作为唯一身份标识
+            String openId = jsonObject.getString(Constants.PARAM_OPEN_ID);
+
+            if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires) && !TextUtils.isEmpty(openId)) {
+                //设置身份的token
+                Session.getInstance().mTencent.setAccessToken(token, expires);
+                Session.getInstance().mTencent.setOpenId(openId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 在回调里面可以获取用户信息数据了
+     */
+    private void updateUserInfo() {
+        if (null != Session.getInstance().mTencent && Session.getInstance().mTencent.isSessionValid()) {
+            com.tencent.connect.UserInfo mInfo =
+                    new com.tencent.connect.UserInfo(LoginActivity.this, Session.getInstance().mTencent.getQQToken());
+            mInfo.getUserInfo(new IUiListener() {
+
+                @Override
+                public void onComplete(final Object response) {
+                    /**
+                     * QQ登录之后的成功回调
+                     * 但是会回调两次！！！
+                     */
+                    try {
+                        qqCallback++;
+
+                        if (1 == qqCallback) {
+                            JSONObject jsonObject = new JSONObject(response.toString());
+
+                            String petName = "", headPic = "";
+                            if (!jsonObject.isNull("nickname")) {
+                                petName = jsonObject.getString("nickname");
+                            }
+
+                            if (!jsonObject.isNull("figureurl_qq_2")) {
+                                headPic = jsonObject.getString("figureurl_qq_2");
+                            }
+
+                            /**
+                             * 调用第三方登录接口
+                             */
+                            loginThird(petName, headPic);
+                        }
+                    } catch (JSONException e) {
+                        qqCallback = 0;
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    qqCallback = 0;
+
+                    ProgressDialogUtil.instance.dismissProgressDialog();
+                }
+
+                @Override
+                public void onError(UiError e) {
+                    qqCallback = 0;
+
+                    ProgressDialogUtil.instance.dismissProgressDialog();
+                }
+            });
+        }
+    }
+
+    /**
+     * 获取到身份信息 之后调用第三方登录接口
+     */
+    private void loginThird(String petName, String headPic) {
+        RequestParams params = new RequestParams();
+        params.put("applyKey", Session.getInstance().mTencent.getOpenId());
+        params.put("petName", petName);
+        params.put("headPic", headPic);
+        params.put("loginType", "4");
+        params.put("regType", "6");
+        params.put("deviceNo", TelephoneUtil.getInstance().getIMEI(mContext));
+        params.put("loginIp", TelephoneUtil.getInstance().getIPAddress(mContext));
+        params.put("regProvince", "");
+        params.put("regCity", "");
+
+        OKHttpUtil.instance.onPostParams(Config.URLConfig.LOGIN_THIRD_URL, params, new ResultCallback<UserInfo>() {
+            @Override
+            public void onResponse(UserInfo response) {
+                /**
+                 * 注册极光推送别名
+                 */
+                JPushInterface.setAlias(mContext, TelephoneUtil.getInstance().getIMEI(mContext), null);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                qqCallback = 0;
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 官方文档没没没没没没没没没没没这句代码, 但是很很很很很很重要, 不然不会回调!
+        Session.getInstance().mTencent.onActivityResultData(requestCode, resultCode, data, tencentLoginListener);
+
+        if (requestCode == Constants.REQUEST_LOGIN) {
+            Session.getInstance().mTencent.handleResultData(data, tencentLoginListener);
+        }
+    }
+}

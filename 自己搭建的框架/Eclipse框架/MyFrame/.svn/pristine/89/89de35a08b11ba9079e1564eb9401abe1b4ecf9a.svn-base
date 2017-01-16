@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg" >
+
+    <!-- 底部标签区域 -->
+
+    <RelativeLayout
+        android:id="@+id/bottommainPage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/menu_bottom_bg"
+        android:gravity="center_vertical" >
+
+        <GridView
+            android:id="@+id/tabGridView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="4"
+            android:fadingEdge="none"
+            android:fadeScrollbars="true"
+            android:verticalSpacing="0dip" />
+    </RelativeLayout>
+
+    <!-- 分割线 -->
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:layout_above="@id/bottommainPage"
+        android:background="@color/divider" />
+
+    <!-- 底部上面容器,自定义ViewPager -->
+
+    <com.alnton.myFrameResource.view.ViewPagerCompat
+        android:id="@+id/myViewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/dividerView"
+        android:duplicateParentState="true"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+</RelativeLayout>

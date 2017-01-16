@@ -1,0 +1,239 @@
+package com.alnton.myframe.ui.picture;
+
+import java.util.ArrayList;
+
+import android.app.ActivityGroup;
+import android.app.LocalActivityManager;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+import com.alnton.myFrameResource.adapter.viewpager.MyViewPagerAdapter;
+import com.alnton.myFrameResource.view.Button.ClickEffectButton;
+import com.alnton.myFrameResource.view.Marquee.MarqueeText;
+import com.alnton.myframe.R;
+import com.alnton.myframe.util.Data;
+
+/**
+ * <图片管理主界面>
+ * @author  王乾州
+ */
+public class PictureGroupActivity extends ActivityGroup implements OnClickListener
+{
+    /**
+    * 返回按钮
+    */
+    private ClickEffectButton backButton;
+    
+    /**
+    * 标题
+    */
+    public MarqueeText titleTextView;
+    
+    /**
+    * 左右滑动切换
+    */
+    private static ViewPager myViewPager;
+    
+    /**
+    * 滑动页面适配器
+    */
+    private MyViewPagerAdapter myViewPagerAdapter;
+    
+    /**
+    * view集合
+    */
+    private ArrayList<View> myListViews;
+    
+    /**
+    * 本地Activity管理类
+    */
+    private LocalActivityManager localActivityManager;
+    
+    /**
+     * 条目索引
+     */
+    private int index = 0;
+    
+    /**
+     * 图片数量
+     */
+    private int size;
+    
+    /**
+     * 图片实体类
+     */
+    private ArrayList<PictureInfo> picList;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.picture_group);
+        
+        localActivityManager = getLocalActivityManager();
+        localActivityManager.dispatchCreate(savedInstanceState);
+        
+        /**
+         * 接收上个界面传过来的值
+         */
+        getBundle();
+        
+        /**
+         * 初始化View
+         */
+        initView();
+        
+        /**
+         * 加载tab标签View
+         */
+        loadView();
+        
+        /**
+         * 给各个控件设置事件监听
+         */
+        setListener();
+    }
+    
+    private void getBundle()
+    {
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle)
+        {
+            index = bundle.getInt("index");
+            Data data = (Data)bundle.getSerializable("picList");
+            if (null != data)
+            {
+                picList = (ArrayList<PictureInfo>)data.getObject();
+                size = picList.size();
+            }
+        }
+    }
+    
+    private void initView()
+    {
+        backButton = (ClickEffectButton)findViewById(R.id.backButton);
+        
+        titleTextView = (MarqueeText)findViewById(R.id.titleTextView);
+        titleTextView.setText(index + "/" + size);
+        
+        myViewPager = (ViewPager)findViewById(R.id.viewpager);
+    }
+    
+    private void setListener()
+    {
+        backButton.setOnClickListener(this);
+        
+        myViewPager.setOnPageChangeListener(new OnPageChangeListener()
+        {
+            
+            @Override
+            public void onPageSelected(int arg0)
+            {
+                /* activity从1到2滑动，2被加载后掉用此方法 */
+                index = arg0 + 1;
+                titleTextView.setText(index + "/" + size);
+            }
+            
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2)
+            {
+                /* 从1到2滑动，在1滑动前调用 */
+            }
+            
+            @Override
+            public void onPageScrollStateChanged(int arg0)
+            {
+                // 状态有三个0空闲，1是正在滑行中，2目标加载完毕
+                /**
+                 * Indicates that the pager is in an idle, settled state. The
+                 * current page is fully in view and no animation is in
+                 * progress.
+                 */
+                // public static final int SCROLL_STATE_IDLE = 0;
+                /**
+                 * Indicates that the pager is currently being dragged by the
+                 * user.
+                 */
+                // public static final int SCROLL_STATE_DRAGGING = 1;
+                /**
+                 * Indicates that the pager is in the process of settling to a
+                 * final position.
+                 */
+                // public static final int SCROLL_STATE_SETTLING = 2;
+                
+            }
+        });
+    }
+    
+    private void loadView()
+    {
+        myListViews = new ArrayList<View>(size);
+        
+        for (int i = 0; i < size; i++)
+        {
+            Intent oneIntent = new Intent();
+            /* 将单独一个图片界面加入进去 */
+            oneIntent.setClass(this, PictureActivity.class);
+            oneIntent.putExtra("address", picList.get(i).getPicUrl());
+            oneIntent.putExtra("bitmap", picList.get(i).getBitmap());
+            oneIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            View oneView = localActivityManager.startActivity("subPageView" + i, oneIntent).getDecorView();
+            myListViews.add(oneView);
+        }
+        fillAdapter();
+        
+        myViewPager.setCurrentItem(index - 1);
+    }
+    
+    private void fillAdapter()
+    {
+        myViewPagerAdapter = new MyViewPagerAdapter(myListViews);
+        myViewPager.setAdapter(myViewPagerAdapter);
+    }
+    
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        localActivityManager.dispatchDestroy(true);
+    }
+    
+    public void onResume()
+    {
+        super.onResume();
+        localActivityManager.dispatchResume();
+    }
+    
+    protected void onPause()
+    {
+        super.onPause();
+        localActivityManager.dispatchPause(true);
+    }
+    
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        localActivityManager.dispatchStop();
+    }
+    
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.backButton:
+                /**
+                 * 返回按钮
+                 */
+                finish();
+                break;
+            
+            default:
+                break;
+        }
+    }
+}

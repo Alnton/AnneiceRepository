@@ -1,0 +1,86 @@
+package com.alnton.myframe.ui.pay.alipay;
+
+import java.net.URLEncoder;
+
+/**
+ * <支付宝支付工具类>
+ * @author  王乾州
+ */
+public class AlipayUtil
+{
+    private static AlipayUtil alipayUtil;
+    
+    public static AlipayUtil getInstance()
+    {
+        if (null == alipayUtil)
+        {
+            alipayUtil = new AlipayUtil();
+        }
+        return alipayUtil;
+    }
+    
+    /**
+     * 基本参数
+     *    service 接口名称        String  接口名称。固定值。 不可空 mobile.securitypay.pay
+     *    partner 合作者身 份ID   String(1 6) 签约的支付宝账号对应的支 付宝唯一用户号。 以 2088 开头的 16 位纯数字 组成。 不可空 2088101568358171
+     *    _input_c harset  参数编码 字符集 String  商户网站使用的编码格式,固 定为 utf-8。 不可空  utf-8
+     *    sign_type 签名方式 String 签名类型,目前仅支持 RSA。不可空 RSA
+     *    sign 签名 String 请参见“9 签名机制”。不可空   lBBK%2F0w5LOajrMrji7 DUgEqNjIhQbidR13Gov A5r3TgIbNqv231yC1Nk sLdw%2Ba3JnfHXoXue t6XNNHtn7VE%2BeCo RO1O%2BR1KugLrQE ZMtG5jmJIe2pbjm%2F3 kb%2FuGkpG%2BwYQ YI51%2BhA3YBbvZHV QBYveBqK%2Bh8mUy b7GM1HxWs9k4%3D
+     *    notify_url 服务器异步通知页面路径 String(2 00) 支付宝服务器主动通知商户网站里指定的页面 http路径。 需要 URL encode。可空 http://notify.msp.hk/notif y.htm
+     *    app_id 客户端号 String 标识客户端。可空 external
+     *    appenv 客户端来源 String 标识客户端来源。参数值内容 约定如下:appenv=”system=客户端平 台名^version=业务系统版 本”,例如:appenv=”system=iphone^ve rsion=3.0.1.2”appenv=”system=ipad^versi on=4.0.1.1” 可空 appenv=”system=androi d^version=3.0.1.2”
+     * 业务参数
+     *    out_trade_no 商户网站 唯一订单号 String(6 4) 支付宝合作商户网站唯一订单号。不可空 0819145412-6177 
+     *    subject 商品名称 String(2 56) 商品的标题/交易标题/订单标 题/订单关键字等。 该参数最长为 128 个汉字。不可空 《暗黑破坏神 3:凯恩之 书》
+     *    payment _type 支付类型 String(4 ) 支付类型。默认值为:1(商 品购买)。 不可空 1
+     *    seller_id 卖家支付 宝账号 String(1 6) 卖家支付宝账号(邮箱或手机 号码格式)或其对应的支付宝 唯一用户号(以 2088 开头的 纯 16 位数字)。 不可空 alipay-test09@alipay.co m
+     *    total_fee 总金额 Number 该笔订单的资金总额,单位为 RMB-Yuan。取值范围为 [0.01,100000000.00],精确 到小数点后两位。 不可空 0.01
+     *    body 商品详情 String(1 000) 对一笔交易的具体描述信息。 如果是多种商品,请将商品描 述字符串累加传给 body。 不可空 暴雪唯一官方授权中文 版!玩家必藏!附赠暗黑精 致手绘地图!绝不仅仅是 一本暗黑的故事或画册, 而是一个栩栩如生的游 戏再现。是游戏玩家珍藏 的首选。
+     *    it_b_pay 未付款交易的超时时间 String 设置未付款交易的超时时间, 一旦超时,该笔交易就会自动 被关闭。取值范围:1m~15d。m-分钟,h-小时,d-天,1c- 当天(无论交易何时创建,都 在 0 点关闭)。该参数数值不接受小数点,如 1.5h,可转换为 90m。可空 30m
+     *    show_url 商品展示地址 String(4 00) 商品展示的超链接。预留参数。 可空  http://m.alipay.com
+     *    extern_token 授权令牌 String(3 2) 开放平台返回的包含账户信 息的 token(授权令牌,商户 在一定时间内对支付宝某些 服务的访问权限)。 可空 1b258b84ed2faf3e88b4 d979ed9fd4db   
+     */
+    public String getOrderInfo(String out_trade_no, String subject, String body, String total_fee)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("partner=\"");
+        sb.append(Keys.DEFAULT_PARTNER);
+        sb.append("\"&out_trade_no=\"");
+        sb.append(out_trade_no);
+        sb.append("\"&subject=\"");
+        sb.append(subject);
+        sb.append("\"&body=\"");
+        sb.append(body);
+        sb.append("\"&total_fee=\"");
+        sb.append(total_fee);
+        sb.append("\"&notify_url=\"");
+        
+        // 网址需要做URL编码
+        sb.append(URLEncoder.encode(Keys.ALIPAY_NOTIFY_URL));
+        sb.append("\"&service=\"mobile.securitypay.pay");
+        sb.append("\"&_input_charset=\"UTF-8");
+        sb.append("\"&payment_type=\"1");
+        sb.append("\"&seller_id=\"");
+        sb.append(Keys.DEFAULT_SELLER);
+        sb.append("\"&it_b_pay=\"30m");
+        sb.append("\"");
+        
+        String orderString = new String(sb);
+        String sign = Rsa.sign(orderString, Keys.PRIVATE);
+        try
+        {
+            sign = URLEncoder.encode(sign);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        orderString += "&sign=\"" + sign + "\"&" + getSignType();
+        return orderString;
+    }
+    
+    private String getSignType()
+    {
+        return "sign_type=\"RSA\"";
+    }
+}

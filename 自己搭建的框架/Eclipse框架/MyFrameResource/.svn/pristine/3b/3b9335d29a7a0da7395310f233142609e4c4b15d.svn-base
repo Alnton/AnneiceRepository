@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+
+    <!-- 黑色 -->
+    <color name="black">#000000</color>
+
+    <!-- 灰色颜色 -->
+    <color name="gray">#989898</color>
+
+    <!-- 粉红色 -->
+    <color name="pink">#68b0fc</color>
+
+    <!-- 深红色 -->
+    <color name="shen_red">#fe5d5d</color>
+   <color name="transparent_background">#00000000</color>
+    <!-- 红色 -->
+    <color name="red">#ea3838</color>
+
+    <!-- 条目点击后的颜色 -->
+    <color name="item_selector_color">#ededed</color>
+
+    <!-- 深灰色 -->
+    <color name="shen_gray">#696969</color>
+
+    <!-- 列表之间的横线颜色 -->
+    <color name="divider">#cccccc</color>
+
+    <!-- 浅灰色 -->
+    <color name="qian_gray">#ffffff</color>
+
+    <!-- 没有数据的背景颜色 -->
+    <color name="noDataColor">#EAEAEA</color>
+    <!-- 对话框颜色 -->
+    <color name="dialog_top_title">#00b998</color>
+    <color name="dialog_bg">#282F37</color>
+    <!-- 绿色线框的颜色 -->
+    <color name="blue_content_color">#0080F6</color>
+    <color name="navpage">#FFE1E8EB</color>
+    <color name="shenhui">#ADADAD</color>
+    <color name="light_green">#002561</color>
+    <!-- 按钮颜色 -->
+    <color name="typeface_eight">#cccccc</color>
+    <color name="typeface_six">#00a3ea</color>
+
+    <!-- wheel 滚轮颜色设置 -->
+    <color name="ITEMS_TEXT_COLOR">#bababa</color>
+    <color name="wheel_divider">#b1b1b1</color>
+    <color name="wheel_title">#2f8bf7</color>
+    <color name="wheel_text_color">#141414</color>
+
+    <!-- 二维码扫描颜色 -->
+    <color name="scan_corner">#53c2f0</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+
+</resources>

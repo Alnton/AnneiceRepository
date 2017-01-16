@@ -1,0 +1,7 @@
+package com.alnton.myframecore.view.ListView.crossDeleteListView.pullToRefresh;
+
+
+public interface OnMenuItemClickListener
+{
+    void onMenuItemClick(int position, SwipeMenu menu, int index);
+}

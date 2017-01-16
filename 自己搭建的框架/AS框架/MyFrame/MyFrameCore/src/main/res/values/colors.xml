@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+
+    <!-- 黑色 -->
+    <color name="black">#000000</color>
+
+    <!-- 灰色颜色 -->
+    <color name="gray">#989898</color>
+
+    <!-- 红色 -->
+    <color name="red">#ea3838</color>
+
+    <!-- 条目点击后的颜色 -->
+    <color name="item_selector_color">#ededed</color>
+
+    <!-- 列表之间的横线颜色 -->
+    <color name="divider">#dddddd</color>
+
+    <!-- 没有数据的背景颜色 -->
+    <color name="noDataColor">#EAEAEA</color>
+    <!-- 对话框颜色 -->
+    <color name="dialog_top_title">#00b998</color>
+    <color name="dialog_bg">#282F37</color>
+    <!-- 绿色线框的颜色 -->
+    <color name="blue_content_color">#0080F6</color>
+    <color name="light_green">#002561</color>
+
+    <!-- 微信支付颜色 -->
+    <color name="navpage">#FFE1E8EB</color>
+
+    <!-- 按钮颜色 -->
+    <color name="typeface_eight">#cccccc</color>
+    <color name="typeface_six">#00a3ea</color>
+
+    <!-- wheel 滚轮颜色设置 -->
+    <color name="ITEMS_TEXT_COLOR">#bababa</color>
+    <color name="wheel_divider">#b1b1b1</color>
+    <color name="wheel_title">#2f8bf7</color>
+    <color name="wheel_text_color">#141414</color>
+
+    <!-- 二维码扫描颜色 -->
+    <color name="scan_corner">#53c2f0</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
+
+    <!-- RecyclerView开始 -->
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="side_bar_text">#4A4A4A</color>
+    <color name="shadow_bg">#66000000</color>
+    <color name="edit_bg">#EFEFF4</color>
+    <color name="darker_gray">#9b9b9b</color>
+    <!-- RecyclerView结束 -->
+
+    <!-- Google下拉刷新的颜色变化开始 -->
+    <color name="googleRefreshLayout_one">#2F9BFF</color>
+    <color name="googleRefreshLayout_two">#40B3F0</color>
+    <color name="googleRefreshLayout_three">#99ddff</color>
+    <!-- Google下拉刷新的颜色变化结束 -->
+
+</resources>

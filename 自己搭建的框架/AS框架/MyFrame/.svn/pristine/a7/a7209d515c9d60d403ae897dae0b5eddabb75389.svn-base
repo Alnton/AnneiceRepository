@@ -1,0 +1,18 @@
+package com.alnton.myframecore.okhttp.request;
+
+import android.support.annotation.IntDef;
+
+/**
+ * @author 王乾州
+ * @explain 请求缓存方式
+ * @time ] 10:10.
+ */
+@IntDef({CacheType.ONLY_NETWORK, CacheType.ONLY_CACHED, CacheType.CACHED_ELSE_NETWORK, CacheType.NETWORK_ELSE_CACHED})
+public @interface CacheType {
+    int ONLY_NETWORK = 0;
+    int ONLY_CACHED = 1;
+    int CACHED_ELSE_NETWORK = 2;
+    int NETWORK_ELSE_CACHED = 3;
+
+
+}

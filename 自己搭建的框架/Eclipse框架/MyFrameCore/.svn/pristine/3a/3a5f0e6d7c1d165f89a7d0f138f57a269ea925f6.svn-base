@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">myFrameCore</string>
+    
+    <!-- 从相册或者拍照获取头像的展示文本 -->
+    <string name="choiceType">请选择类型</string>
+    <string name="memory_notfull">您的sdcard不存在并且内存不足不能为您拍照.</string>
+    
+</resources>

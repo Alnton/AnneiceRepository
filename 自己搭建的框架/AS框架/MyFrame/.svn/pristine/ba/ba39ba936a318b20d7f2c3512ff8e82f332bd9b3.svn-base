@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 照片选择方式 -->
+    <string-array name="choiceImageStyle">
+        <item>拍照</item>
+        <item>去相册</item>
+    </string-array>
+
+    <!-- 输入价格的验证 -->
+    <string-array name="price_etalon">
+        <!-- 小数点前面最大长度 (不可为0或负数) -->
+        <item>5</item>
+        <!-- 小数点后面最大长度 (不可为0或负数) -->
+        <item>3</item>
+    </string-array>
+</resources>

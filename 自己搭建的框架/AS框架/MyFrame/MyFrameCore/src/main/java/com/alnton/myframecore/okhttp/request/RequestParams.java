@@ -1,0 +1,119 @@
+package com.alnton.myframecore.okhttp.request;
+
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * @author 王乾州
+ * @explain 网络请求中的请求入参
+ * 备注：params.put(key, value) value仅限于String,int,long 三种类型
+ * @time 2016/10/25 16:43.
+ */
+public class RequestParams {
+    /**
+     * 编码格式
+     */
+    protected static String ENCODING = "UTF-8";
+
+    /**
+     * url中的参数
+     */
+    public ConcurrentHashMap<String, Object> urlParams;
+
+    /**
+     * file中的参数
+     */
+    public ConcurrentHashMap<String, File> fileParams;
+
+    /**
+     * 构造函数
+     */
+    public RequestParams() {
+        init();
+    }
+
+    /**
+     * 存放入参
+     *
+     * @param key
+     * @param value
+     */
+    public void put(String key, Object value) {
+        if (null != value)
+        {
+            if (value instanceof File) {
+                fileParams.put(key, (File) value);
+            } else {
+                urlParams.put(key, value);
+            }
+        }
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void init() {
+        urlParams = new ConcurrentHashMap<String, Object>();
+        fileParams = new ConcurrentHashMap<String, File>();
+    }
+
+    /**
+     * get请求中拼接Url中的参数
+     *
+     * @return
+     */
+    public String getUrlParamString() {
+        return encodeParameters(urlParams, ENCODING);
+    }
+
+    /**
+     * Converts <code>params</code> into an application/x-www-form-urlencoded encoded string.
+     *
+     * @param params
+     * @param paramsEncoding
+     * @return
+     */
+    private String encodeParameters(Map<String, Object> params, String paramsEncoding) {
+        StringBuilder encodedParams = new StringBuilder();
+        try {
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                encodedParams.append(URLEncoder.encode(entry.getKey(), paramsEncoding));
+                encodedParams.append('=');
+                encodedParams.append(URLEncoder.encode(entry.getValue().toString(), paramsEncoding));
+                encodedParams.append('&');
+            }
+            return encodedParams.toString();
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException("Encoding not supported: " + paramsEncoding, uee);
+        }
+    }
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        StringBuilder result = new StringBuilder();
+        result.append("{");
+
+        for (ConcurrentHashMap.Entry<String, Object> entry : urlParams.entrySet()) {
+            result.append(",");
+            result.append("\"" + entry.getKey() + "\"");
+            RequestEntity requestEntity = new RequestEntity(String.valueOf(entry.getValue()));
+            String value = gson.toJson(requestEntity);
+            result.append(value.substring(value.indexOf(":"), value.lastIndexOf("}")));
+        }
+
+        for (ConcurrentHashMap.Entry<String, File> entry : fileParams.entrySet()) {
+            result.append(",");
+            result.append("\"" + entry.getKey() + "\"");
+            result.append(":" + entry.getValue().getAbsolutePath());
+        }
+        result.append("}");
+
+        return result.toString().replaceFirst(",", "");
+    }
+}

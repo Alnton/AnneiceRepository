@@ -1,0 +1,116 @@
+package com.alnton.myframe.ui.welcome;
+
+import java.util.ArrayList;
+
+import android.os.Bundle;
+import cn.jpush.android.api.JPushInterface;
+
+import com.alnton.myFrameCore.application.CacheSession;
+import com.alnton.myFrameCore.util.ImageUtil;
+import com.alnton.myFrameResource.util.MyFrameResourceTools;
+import com.alnton.myframe.R;
+import com.alnton.myframe.config.Config.URLConfig;
+import com.alnton.myframe.entity.http.ResponseEntity;
+import com.alnton.myframe.ui.BaseActivity;
+import com.alnton.myframe.ui.picture.PictureInfo;
+import com.alnton.myframe.util.http.HttpInterface;
+import com.alnton.myframe.util.http.RequestCallback;
+import com.google.gson.reflect.TypeToken;
+
+/**
+ * <欢迎界面>
+ * @author  王乾州
+ */
+public class WelcomeActivity extends BaseActivity
+{
+    /**
+     * 广告页图片地址
+     */
+    private String adPic;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        this.setContentView(R.layout.activity_welcome);
+        
+        /**
+         * 加载banner 活动直通车 图片
+         */
+        loadPic();
+    }
+    
+    /**
+     * 加载banner 活动直通车 图片
+     */
+    private void loadPic()
+    {
+        RequestCallback<PictureInfo> req =
+            new RequestCallback<PictureInfo>(mContext, false, false,
+                new TypeToken<ResponseEntity<PictureInfo>>()
+                {
+                }.getType())
+            {
+                
+                @Override
+                public void onSuccess(ArrayList<PictureInfo> listInfo)
+                {
+                    super.onSuccess(listInfo);
+                    
+                    for (int i = 0; i < listInfo.size(); i++)
+                    {
+                        if ("1".equals(listInfo.get(i).getPicFlag()))
+                        {
+                            adPic = listInfo.get(i).getPicUrl();
+                        }
+                    }
+                }
+                
+                @Override
+                public void onFinish()
+                {
+                    super.onFinish();
+                    
+                    /**
+                     * 停留1秒，进入广告界面
+                     */
+                    new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            try
+                            {
+                                Thread.sleep(1000);
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                            CacheSession.getInstance().bitmap = ImageUtil.getInstance().getBitmapByImageLoader(adPic,-1);
+                            MyFrameResourceTools.getInstance().startActivity(mContext, ADActivity.class, null);
+                            finish();
+                        }
+                    }).start();
+                }
+            };
+        req.setOnFailureShowToast(false);
+        HttpInterface.onPost(mContext, URLConfig.HOMEPAGE_PIC_URL, null, req);
+    }
+    
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        
+        JPushInterface.onPause(mContext);
+    }
+    
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        
+        JPushInterface.onResume(mContext);
+    }
+}

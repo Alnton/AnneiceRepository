@@ -1,0 +1,357 @@
+package com.alnton.myframecore.okhttp.callback;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
+
+import com.alnton.myframecore.R;
+import com.alnton.myframecore.application.CacheSession;
+import com.alnton.myframecore.config.ListViewConfig;
+import com.alnton.myframecore.okhttp.OKHttpUtil;
+import com.alnton.myframecore.util.des.AES;
+import com.alnton.myframecore.view.Button.ClickEffectButton;
+import com.alnton.myframecore.view.util.CustomDialog;
+import com.alnton.myframecore.view.util.ProgressDialogUtil;
+import com.alnton.myframecore.view.util.ToastUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
+import okhttp3.Call;
+
+/**
+ * @author 王乾州
+ * @explain 网络请求服务器返回的抽象回调类
+ * @time 2016/10/25 10:30.
+ */
+public abstract class ResultCallback<T> implements Callback<T> {
+
+    /**
+     * 上下文
+     */
+    private Context mContext;
+
+    /**
+     * 反射Type
+     */
+    private Type type;
+
+    /**
+     * 请求的Call
+     */
+    private Call call;
+
+    /**
+     * 是否弹出showProgressDialog
+     * 默认 true 弹出
+     */
+    private boolean isShowProgressDialog;
+
+    /**
+     * 是否弹出showToast
+     * 默认 true 弹出
+     */
+    private boolean isShowToast;
+
+    /**
+     * 当回调onError时是否弹出showToast
+     * 默认 true 弹出
+     */
+    private boolean isOnErrorShowToast;
+
+    /**
+     * 下拉刷新或加载更多的ListView 的 Action
+     */
+    private int action;
+
+    /**
+     * 显示访问服务器错误时的布局
+     */
+    private View errorView;
+
+    /**
+     * 显示访问服务器暂无数据时的布局
+     */
+    private View noDataView;
+
+    /**
+     * 显示加载的布局
+     */
+    private View loadView;
+
+    /**
+     * 构造函数（默认展示showProgressDialog和showToast）
+     */
+    public void RequestCallback() {
+        init(true, true, true);
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void init(boolean isShowProgressDialog, boolean isShowToast, boolean isOnErrorShowToast) {
+        type = getSuperclassTypeParameter();
+        this.isShowProgressDialog = isShowProgressDialog;
+        this.isShowToast = isShowToast;
+        this.isOnErrorShowToast = isOnErrorShowToast;
+    }
+
+    /**
+     * 设置界面的主题
+     *
+     * @param isShowProgressDialog 是否显示加载进度框
+     * @param isShowToast          是否显示Toast
+     * @param isOnErrorShowToast   是否希望弹出默认的错误信息
+     * @param action               ListView状态码
+     * @param loadView             显示加载的布局
+     * @param errorView            显示访问服务器错误时的布局
+     * @param noDataView           显示访问服务器暂无数据时的布局
+     */
+    public void setTheme(boolean isShowProgressDialog, boolean isShowToast, boolean isOnErrorShowToast, int action, View loadView, View errorView, View noDataView) {
+        this.isShowProgressDialog = isShowProgressDialog;
+        this.isShowToast = isShowToast;
+        this.isOnErrorShowToast = isOnErrorShowToast;
+        this.action = action;
+        this.loadView = loadView;
+        this.errorView = errorView;
+        this.noDataView = noDataView;
+    }
+
+    /**
+     * 设置请求的Call 用于取消当前的网络请求 call.cancel();
+     */
+    public void setCall(Context context, Call call) {
+        this.mContext = context;
+        this.call = call;
+    }
+
+    /**
+     * 当访问网络出异常回调onError函数 是否希望弹出默认的错误信息
+     *
+     * @param isOnErrorShowToast：true:弹出 反之，不弹出
+     */
+    public void setOnErrorShowToast(boolean isOnErrorShowToast) {
+        this.isOnErrorShowToast = isOnErrorShowToast;
+    }
+
+    /**
+     * 当访问网络 是否希望弹出加载对话框
+     *
+     * @param showProgressDialog：true:弹出 反之，不弹出
+     */
+    public void setShowProgressDialog(boolean showProgressDialog) {
+        isShowProgressDialog = showProgressDialog;
+    }
+
+    /**
+     * 当访问网络 是否希望弹出Toast提示语
+     *
+     * @param showToast：true:弹出 反之，不弹出
+     */
+    public void setShowToast(boolean showToast) {
+        isShowToast = showToast;
+    }
+
+    /**
+     * 动态获取反射的Type
+     *
+     * @return
+     */
+    private Type getSuperclassTypeParameter() {
+        Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        if (type instanceof Class) {
+            return type;
+        } else {
+            return new TypeToken<T>() {
+            }.getType();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        if (isShowProgressDialog) {
+            /**
+             * 显示加载进度提示语
+             */
+            ProgressDialogUtil.instance.showProgressDialog(mContext, call);
+        }
+
+        if (null != loadView) {
+            if (action == ListViewConfig.instance.LISTVIEW_ACTION_REFRESH
+                    || action == ListViewConfig.instance.LISTVIEW_ACTION_MORE) {
+                /**
+                 * 隐藏加载进度提示语
+                 */
+                loadView.setVisibility(View.GONE);
+            } else {
+                /**
+                 * 显示加载进度提示语
+                 */
+                loadView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (null != errorView) {
+            /**
+             * 隐藏重试按钮
+             */
+            errorView.setVisibility(View.GONE);
+        }
+
+        if (null != noDataView) {
+            /**
+             * 隐藏暂无数据
+             */
+            noDataView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onFinish() {
+        /**
+         * 隐藏加载进度提示语
+         */
+        ProgressDialogUtil.instance.dismissProgressDialog();
+
+        if (null != loadView) {
+            loadView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onError(Throwable e, int errorCode, String msg) {
+        /**
+         * 执行onFinish函数
+         */
+        onFinish();
+
+        if (isOnErrorShowToast && ListViewConfig.instance.RETURN_406_CODE != errorCode) {
+            ToastUtil.instance.showToast(mContext, R.string.returnError);
+        }
+
+        if (null != errorView) {
+            /**
+             * 显示重试按钮
+             */
+            errorView.setVisibility(View.VISIBLE);
+        }
+
+        if (ListViewConfig.instance.RETURN_406_CODE == errorCode) {
+            /**
+             * 被用户挤下来了
+             * 退出登录功能操作
+             */
+            if (null == CacheSession.getInstance().exitDialog) {
+                CacheSession.getInstance().exitDialog =
+                        new CustomDialog(mContext, false, R.layout.dialog_edge);
+                CacheSession.getInstance().exitDialog.show();
+                View view = CacheSession.getInstance().exitDialog.getWindow().getDecorView();
+                view.setTag(CacheSession.getInstance().exitDialog);
+                TextView dialog_content = (TextView) view.findViewById(R.id.dialog_content);
+                dialog_content.setText("您的账号在另一台设备登录，如非本人操作，建议及时修改登录密码");
+
+                ClickEffectButton cancel = (ClickEffectButton) view.findViewById(R.id.dialog_cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CacheSession.getInstance().exitDialog.dismiss();
+                    }
+                });
+
+                ClickEffectButton confim = (ClickEffectButton) view.findViewById(R.id.dialog_confim);
+                confim.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CacheSession.getInstance().exitDialog.dismiss();
+                    }
+                });
+
+                CacheSession.getInstance().exitDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        CacheSession.getInstance().exitDialog = null;
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * 解析服务器返回的Response
+     */
+    public void parseResponse(okhttp3.Response response) {
+        /**
+         * 执行onFinish函数
+         */
+        onFinish();
+
+        try {
+            String content = response.body().string();
+            if (!TextUtils.isEmpty(content)) {
+                if (response.isSuccessful()) {
+                    String requestContent = "";
+                    if (OKHttpUtil.instance.isEncode()) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(content);
+                            requestContent = AES.Decrypt(jsonObject.getString("msg"));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        requestContent = content;
+                    }
+                    if (type == String.class) {
+                        if (!TextUtils.isEmpty(content)) {
+                            onResponse((T) requestContent);
+                        } else {
+                            parseResponseFailure();
+                        }
+                    } else {
+                        T object = new Gson().fromJson(requestContent, type);
+                        if (null != object) {
+                            onResponse(object);
+                        } else {
+                            parseResponseFailure();
+                        }
+                    }
+
+                } else {
+                    parseResponseFailure();
+                }
+            } else {
+                parseResponseFailure();
+            }
+        } catch (Exception e) {
+            parseResponseFailure();
+        }
+    }
+
+    /**
+     * 解析服务器返回的Response失败的操作
+     */
+    public void parseResponseFailure() {
+        /* 获取失败 */
+        if (null != errorView && (ListViewConfig.instance.LISTVIEW_ACTION_INIT == action || 0 == action)) {
+            errorView.setVisibility(View.VISIBLE);
+        } else if (isShowToast) {
+            ToastUtil.instance.showToast(mContext, R.string.returnError);
+        }
+    }
+
+    /**
+     * 写个空实现 目的是为了在业务层回调ResultCall时不会自动出现这个方法
+     *
+     * @param totalBytes     文件总大小
+     * @param remainingBytes 剩余未上传的文件大小
+     */
+    @Override
+    public void onProgress(long totalBytes, long remainingBytes) {
+    }
+}

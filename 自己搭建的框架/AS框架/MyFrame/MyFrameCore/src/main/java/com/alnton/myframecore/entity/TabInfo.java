@@ -1,0 +1,109 @@
+package com.alnton.myframecore.entity;
+
+import android.support.v4.app.Fragment;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+/**
+ * <FragmentPagerAdapter中的每个Fragment实体类>
+ *
+ * @author 王乾州
+ */
+public class TabInfo implements Serializable {
+    /**
+     * 注释内容
+     */
+    private static final long serialVersionUID = -2654487299234585308L;
+
+    /**
+     * 标签名称
+     */
+    private String name;
+
+    /**
+     * 标签图标id
+     */
+    private int icon;
+
+    /**
+     * 标签索引
+     */
+    private int index;
+
+    /**
+     * Fragment 对象
+     */
+    public Fragment fragment;
+
+    /**
+     * 数据集合
+     */
+    private ArrayList<Object> dataList;
+
+    /**
+     * 是否更新Fragment
+     * true:  是
+     * false: 否
+     */
+    private boolean isUpdateFragment = false;
+
+    public String getName() {
+
+        return name;
+    }
+
+    public void setName(String name) {
+
+        this.name = name;
+    }
+
+    public int getIcon() {
+
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+
+        this.icon = icon;
+    }
+
+    public ArrayList<Object> getDataList() {
+
+        return dataList;
+    }
+
+    public void setDataList(ArrayList<Object> dataList) {
+
+        this.dataList = dataList;
+    }
+
+    public boolean isUpdateFragment() {
+
+        return isUpdateFragment;
+    }
+
+    public void setUpdateFragment(boolean isUpdateFragment) {
+        this.isUpdateFragment = isUpdateFragment;
+    }
+
+    public Fragment getFragment() {
+
+        return fragment;
+    }
+
+    public void setFragment(Fragment fragment) {
+
+        this.fragment = fragment;
+    }
+
+    public int getIndex() {
+
+        return index;
+    }
+
+    public void setIndex(int index) {
+
+        this.index = index;
+    }
+}

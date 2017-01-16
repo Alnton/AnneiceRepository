@@ -1,0 +1,94 @@
+package com.alnton.myFrameResource.util.priceEtalon;
+
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.widget.EditText;
+
+/**
+ * <价格输入框事件监听>
+ * @author  詹海
+ * @createon 2016-9-26
+ */
+public class TextWatcherPrice implements TextWatcher
+{
+    /**
+     * 小数点前面最大长度
+     */
+    private int decimalFrontMaxLength;
+    
+    /**
+     * 小数点后面最大长度
+     */
+    private int decimalBackMaxLength;
+    
+    /**
+     * 输入价格的编辑框
+     */
+    private EditText priceEt;
+    
+    public TextWatcherPrice(EditText priceEt, int decimalFrontMaxLength, int decimalBackMaxLength)
+    {
+        this.priceEt = priceEt;
+        this.decimalFrontMaxLength = decimalFrontMaxLength;
+        this.decimalBackMaxLength = decimalBackMaxLength;
+        
+        //设置最大输入长度  
+        int maxLength = decimalFrontMaxLength + decimalBackMaxLength + 1;
+        priceEt.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+    }
+    
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count)
+    {
+        //删除小数点后的处理（删除小数点后面的数字）
+        if (s.toString().length() > decimalFrontMaxLength + 1 && !s.toString().contains("."))
+        {
+            s = s.toString().subSequence(0, decimalFrontMaxLength);
+            this.priceEt.setText(s);
+            //设置光标在最后
+            this.priceEt.setSelection(this.priceEt.getText().length());
+        }//小数点前面的最大长度
+        else if (s.toString().length() == (decimalFrontMaxLength + 1) && !s.toString().contains("."))
+        {
+            s = s.toString().subSequence(0, s.toString().length() - 1);
+            this.priceEt.setText(s);
+            //设置光标在最后
+            this.priceEt.setSelection(this.priceEt.getText().length());
+        }//以小数点开头，小数点前面自动添加0 ( . = 0. )
+        else if (s.toString().trim().length() == 1 && s.toString().trim().startsWith("."))
+        {
+            s = "0" + s;
+            this.priceEt.setText(s);
+            this.priceEt.setSelection(this.priceEt.getText().length());
+        }//小数点后面的最大长度
+        else if (s.toString().contains("."))
+        {//是否包含小数点
+         //小数点的后面有几位数
+            if (s.length() - 1 - s.toString().indexOf(".") > decimalBackMaxLength)
+            {
+                //截取赋值
+                s = s.toString().subSequence(0, s.toString().indexOf(".") + (decimalBackMaxLength + 1));
+                this.priceEt.setText(s);
+                this.priceEt.setSelection(this.priceEt.getText().length());
+            }
+        }//第一个字符为0,并且长度大于1，就变为0
+        else if (s.toString().startsWith("0") && s.toString().length() > 1)
+        {
+            this.priceEt.setText(s.subSequence(0, 1));
+            this.priceEt.setSelection(this.priceEt.getText().length());
+        }
+        
+    }
+    
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after)
+    {
+    }
+    
+    @Override
+    public void afterTextChanged(Editable s)
+    {
+        
+    }
+}

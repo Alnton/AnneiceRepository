@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!--
+         swipe:swipeFrontView="@+id/front"  
+         表示:列表滑动之前的布局（front 要和条目布局中列表布局id一致）
+         
+         swipe:swipeBackView="@+id/back"
+         表示:列表滑动之后的布局 比如 删除 编辑等 按钮布局（back 要和条目布局中滑动后的布局id一致）
+         
+         swipe:swipeCloseAllItemsWhenMoveList="true"
+         表示:当滑出删除等按钮后 如果上下滑动列表关闭后面的删除按钮布局
+         
+         
+         swipe:swipeMode="both"
+         表示:往左往右都可以滑出
+         "left"表示往左滑出
+		 "right"表示往右滑出  
+		 -->
+
+    <!-- 横向滑动出现删除等按钮的列表区域 -->
+
+    <com.alnton.myFrameResource.view.ListView.crossDeleteListView.SwipeListView
+        xmlns:swipe="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/customSwipeListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/divider"
+        android:dividerHeight="1dip"
+        android:fadeScrollbars="true"
+        android:fadingEdge="none"
+        android:listSelector="#00000000"
+        android:scrollbars="none"
+        android:scrollingCache="false"
+        swipe:swipeFrontView="@+id/front"
+        swipe:swipeBackView="@+id/back"
+        swipe:swipeCloseAllItemsWhenMoveList="true"
+        swipe:swipeMode="left" 
+        swipe:swipeOpenOnLongPress="false"
+        />
+
+</RelativeLayout>

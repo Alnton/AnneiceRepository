@@ -1,0 +1,43 @@
+package com.alnton.myFrameCore.util;
+
+import android.os.CountDownTimer;
+import android.widget.TextView;
+
+/**
+ * 倒计时工具类
+ * @author 王乾州
+ */
+public class TimeCount extends CountDownTimer
+{
+    private TextView checkingTextView;
+    
+    public TimeCount(long millisInFuture, long countDownInterval)
+    {
+        //参数依次为总时长,和计时的时间间隔
+        super(millisInFuture, countDownInterval);
+    }
+    
+    /**
+     * <设置控件容器>
+     */
+    public void setContain(TextView checkingTextView)
+    {
+        this.checkingTextView = checkingTextView;
+    }
+    
+    @Override
+    public void onFinish()
+    {
+        //计时完毕时触发
+        checkingTextView.setText("获取验证码");
+        checkingTextView.setClickable(true);
+    }
+    
+    @Override
+    public void onTick(long millisUntilFinished)
+    {
+        //计时过程显示
+        checkingTextView.setClickable(false);
+        checkingTextView.setText(millisUntilFinished / 1000 + "秒");
+    }
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyFrame</string>
+    <string name="priceUnit">¥</string>
+    <string name="line">-</string>
+    <string name="add">+</string>
+    
+    <!-- MyFrameCore库中使用的文本 必须放进项目中 不然反射找不到 -->
+    <string name="choiceType">请选择类型</string>
+    <string name="memory_notfull">您的sdcard不存在并且内存不足不能为您拍照.</string>
+
+    <!-- 收银台 -->
+    <string name="checkstand">收银台</string>
+    <string name="payConfirm">确认支付</string>
+    <string name="alipay_Pay">支付宝支付</string>
+    <string name="wx_Pay">微信支付</string>
+    <string name="yinlian_Pay">银行卡支付</string>
+    <string name="yinlianwarn_Pay">银联支付</string>
+    <string name="alipayWarn">推荐有支付宝账号的用户使用</string>
+    <string name="wxWarn">推荐安装微信5.0以上版本使用</string>
+    <string name="yinlianWarn">支持储蓄卡信用卡，无需开通网银</string>
+    <string name="choicePay">请选择一种支付方式进行支付!</string>
+    <string name="paySuccess">支付成功</string>
+    <string name="paySuccessWarn">恭喜您，订单支付成功!</string>
+    
+    <!-- 指引页 -->
+    <string name="immediately_begin">立即体验</string>
+
+    <!-- 登录 -->
+    <string name="remerber_pwd">&#160;&#160;记住账号密码</string>
+    <string name="login">登录</string>
+    <string name="username_null">用户名不能为空!</string>
+    <string name="pwd_null">密码不能为空!</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_failure">登录失败</string>
+    <string name="account_hint">请输入手机号</string>
+    <string name="graph_code">请输入图片验证码</string>
+    <string name="password_hint">请输入密码</string>
+    <string name="go_register">立即注册</string>
+    <string name="forget_password">忘记密码</string>
+    <string name="other_login">第三方登录</string>
+
+    <!-- 主界面 -->
+    <string name="homePage">首页</string>
+    <string name="trolley">进货单</string>
+    <string name="grid">分类</string>
+    <string name="myInfo">个人中心</string>
+    <string name="exitWarn">再按一次退出程序</string>
+
+    <!-- 首页 -->
+    <string name="message">消息</string>
+    <string name="scan">扫一扫</string>
+    <string name="search_hint">搜索商家或者产品</string>
+
+</resources>

@@ -1,0 +1,89 @@
+package com.alnton.myframe.entity.http;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+/**
+ * <接口返回的统一报文>
+ *
+ * @author 王乾州
+ * @createon 2016-8-8
+ */
+public class ResponseEntity<T> implements Serializable {
+    private static final long serialVersionUID = -3679543314486829436L;
+
+    /**
+     * 返回条目数
+     */
+    private String count;
+
+    /**
+     * 返回状态码
+     */
+    private String code;
+
+    /**
+     * 返回的描述信息
+     */
+    private String desc;
+
+    /**
+     * 业务实体类集合泛型
+     */
+    private ArrayList<T> listInfo;
+
+    /**
+     * 业务实体类单一泛型
+     */
+    private T info;
+
+    public String getCount() {
+
+        return count;
+    }
+
+    public void setCount(String count) {
+
+        this.count = count;
+    }
+
+    public String getCode() {
+
+        return code;
+    }
+
+    public void setCode(String code) {
+
+        this.code = code;
+    }
+
+    public String getDesc() {
+
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+
+        this.desc = desc;
+    }
+
+    public ArrayList<T> getListInfo() {
+
+        return listInfo;
+    }
+
+    public void setListInfo(ArrayList<T> listInfo) {
+
+        this.listInfo = listInfo;
+    }
+
+    public T getInfo() {
+
+        return info;
+    }
+
+    public void setInfo(T info) {
+
+        this.info = info;
+    }
+}

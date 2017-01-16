@@ -1,0 +1,144 @@
+package com.alnton.myframe.util.http2;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
+import org.apache.http.Header;
+
+import android.text.TextUtils;
+import android.view.View;
+
+import com.alnton.myFrameCore.util.DebugLogUtil;
+import com.alnton.myframe.util.http2.config.CallbackConfig;
+import com.alnton.myframe.util.http2.config.RequestConfig;
+import com.google.gson.Gson;
+import com.google.gson.internal.$Gson$Types;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+/**
+ * Http网络请求回调类
+ * @param <T>
+ * @Author 王乾州
+ */
+public class CallbackText<T> extends AsyncHttpResponseHandler
+{
+	/**
+	 * 请求的回调
+	 */
+	private Callback<T> callback;
+	
+	/**
+	 * 泛型的类型
+	 */
+	private Type mType;
+	
+	/**
+     * Gson 工具
+     */
+	private Gson gson;
+	
+	/**
+	 * 回调接口的统一配置
+	 */
+	private CallbackConfig callbackConfig;
+	
+	public  CallbackText(CallbackConfig callbackConfig,Callback<T> callback){
+		this.callback = callback;
+		this.mType = getSuperclassTypeParameter(getClass());
+		this.callbackConfig = callbackConfig;
+		
+		if(null!=this.mType){
+			this.gson = new Gson();
+		}
+	}
+	
+	
+	/**
+	 * @Description: 设置请求主题 
+	 * @param isShowProgressDialog 是否弹出showProgressDialog 默认 true 弹出
+	 * @param isOnFailureShowToast 当回调onFailure时是否弹出showToast 默认 true 弹出
+	 */
+	public void setTheme (boolean isShowProgressDialog,boolean isOnFailureShowToast){
+		callbackConfig.setTheme(isShowProgressDialog, isOnFailureShowToast);
+	}
+	
+	/**
+	 * @Description: 设置请求主题（设置这个主题会自动的把isShowToast=false,isOnFailureShowToast=false）  
+	 * @param isShowProgressDialog 是否弹出showProgressDialog （如果是列表界面，使用谷歌自带的下拉刷新动画）
+	 * @param noDataView 显示访问服务器暂无数据时的布局
+	 * @param retryView 显示访问服务器错误时的布局
+	 */
+	public void setTheme(boolean isShowProgressDialog,View noDataView,View retryView){
+		callbackConfig.setTheme(isShowProgressDialog, noDataView, retryView);
+	}
+	
+	/**
+	 * @Description: 得到泛型的类型 
+	 * @param subclass
+	 * @return
+	 */
+	static Type getSuperclassTypeParameter(Class<?> subclass) {
+        Type superclass = subclass.getGenericSuperclass();
+        if (superclass instanceof Class) {
+            throw new RuntimeException("Missing type parameter.");
+        }
+        ParameterizedType parameterized = (ParameterizedType) superclass;
+        return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
+    }
+	
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        callbackConfig.onStart();
+    }
+    
+    @Override
+    public void onFinish()
+    {
+        super.onFinish();
+        callbackConfig.onFinish();
+        callback.onFinish();
+    }
+    
+    @Override
+    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error)
+    {
+    	callbackConfig.onFailure(statusCode, headers, responseBody, error);
+    	callback.onFailure(statusCode, error);
+    }
+    
+    @Override
+    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody)
+    {
+    	//得到的值是否为null，如果是null，直接调用 返回失败的方法
+    	if(null != responseBody){
+    		//字节转string
+    		String content = new String(responseBody);
+    		//得到的值是否为null，如果是null，直接调用 返回失败的方法
+    		if (!TextUtils.isEmpty(content)){
+    			//是否进行解码
+    			content = RequestConfig.instance.decrypt(content);
+    			DebugLogUtil.d(DebugLogUtil.TAG, "statusCode："+statusCode+"\ncontent："+content);
+    			onSuccess(statusCode,content, headers);
+    		}else{
+    			onFailure(statusCode, headers, responseBody, new NullPointerException());
+    		}
+    		
+    	}else{
+    		onFailure(statusCode, headers, responseBody, new NullPointerException());
+    	}
+    }
+    
+    @SuppressWarnings("unchecked")
+	public void onSuccess(int statusCode,String content,Header[] headers)
+    {
+    	//类型不为null，并且类型不是String 就调用gson 方法转实体
+        if(null!=mType&&!mType.toString().contains("String")){
+        	callback.onSuccess((T) gson.fromJson(content, mType));
+        }else{
+        	callback.onSuccess((T) content);
+        }
+        
+    }
+}

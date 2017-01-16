@@ -1,0 +1,213 @@
+package com.alnton.myframe.util.okhttp;
+
+import android.os.Handler;
+import android.os.Looper;
+import android.text.TextUtils;
+
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.entity.user.User;
+import com.alnton.myframe.util.okhttp.callback.ResultCallback;
+import com.alnton.myframe.util.okhttp.request.RequestParams;
+import com.alnton.myframecore.util.DebugLogUtil;
+import com.alnton.myframecore.util.FileUtil;
+import com.alnton.myframecore.util.des.AES;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+/**
+ * @author 王乾州
+ * @explain OKHttp网络请求工具类
+ * @time 2016/10/24 17:19.
+ */
+public enum OKHttpUtil {
+
+    /**
+     * 单例
+     */
+    instance;
+
+    /**
+     * 配置超时时长、读取时长、写入时长
+     */
+    private static final int connectTimeout = 15;
+    private static final int readTimeout = 20;
+    private static final int writeTimeout = 20;
+
+    /**
+     * 缓存路径、缓存大小
+     */
+    private String cacheFilePath = "data/data/" + Session.getInstance().getPackageName() + "/OKHttpCache/";
+    private int cacheSize = 20 * 1024 * 1024; // 20 MB
+
+    /**
+     * OkHttp 客户端
+     */
+    private OkHttpClient mOkHttpClient;
+
+    /**
+     * Handler 主线程更新操作
+     */
+    private Handler mainHandler;
+
+    OKHttpUtil() {
+        mOkHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(connectTimeout, TimeUnit.SECONDS)
+                .writeTimeout(writeTimeout, TimeUnit.SECONDS)
+                .readTimeout(readTimeout, TimeUnit.SECONDS)
+                .cache(new Cache(FileUtil.getInstance().createDirectory(cacheFilePath), cacheSize))
+                .build();
+        mainHandler = new Handler(Looper.getMainLooper());
+    }
+
+    /**
+     * post 请求
+     *
+     * @param url：     请求地址
+     * @param params   请求的参数 当没有参数时传null
+     * @param callback 请求的回调对象
+     */
+    public void onPostParams(String url, RequestParams params, ResultCallback callback) {
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "   tokenId:" + User.instance.getLoginKey() + "   params："
+                + (null != params ? params.toString() : ""));
+
+        if (Session.getInstance().isEncode) {
+            String requestContent = "";
+            if (null != params) {
+                requestContent = params.toString();
+            }
+            onPostJson(url, requestContent, callback);
+        } else {
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            if (null != params) {
+                for (ConcurrentHashMap.Entry<String, Object> entry : params.urlParams.entrySet()) {
+                    builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
+                }
+            }
+            RequestBody requestBody = builder.build();
+            Request.Builder requestBuilder = new Request.Builder();
+            requestBuilder.url(url).post(requestBody);
+            requestBuilder.addHeader("tokenId", User.instance.getLoginKey());
+            Request request = requestBuilder.build();
+            deliveryResult(request, callback);
+        }
+    }
+
+    /**
+     * post 请求提交Json数据
+     *
+     * @param url：     请求地址
+     * @param jsonStr  请求的参数 用RequestParams.toString() 也可以
+     * @param callback 请求的回调对象
+     */
+    public void onPostJson(String url, String jsonStr, ResultCallback callback) {
+        String requestContent = "";
+        if (Session.getInstance().isEncode) {
+            try {
+                requestContent = AES.Encrypt(jsonStr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            requestContent = jsonStr;
+        }
+
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "   tokenId:" + User.instance.getLoginKey() + "   params："
+                + requestContent);
+
+        MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(jsonType, requestContent);
+        Request.Builder builder = new Request.Builder();
+        builder.addHeader("tokenId", User.instance.getLoginKey());
+        builder.url(url).post(requestBody);
+        Request request = builder.build();
+        deliveryResult(request, callback);
+    }
+
+    /**
+     * get 请求
+     *
+     * @param url：     请求地址
+     * @param params   请求的参数 当没有参数时传null
+     * @param callback 请求的回调对象
+     */
+    public void onGet(String url, RequestParams params, ResultCallback callback) {
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "   tokenId:" + User.instance.getLoginKey() + "   params："
+                + (null != params ? params.toString() : ""));
+
+        Request.Builder builder = new Request.Builder()
+                .url(null != params ? (url += "?" + params.getUrlParamString()) : url);
+        builder.addHeader("tokenId", User.instance.getLoginKey());
+        Request request = builder.build();
+        deliveryResult(request, callback);
+    }
+
+    /**
+     * get 请求 直接返回字符串
+     *
+     * @param url：请求地址
+     */
+    public String onGetString(String url) {
+        String is = null;
+        try {
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpGet request = new HttpGet(url);
+            HttpResponse response = client.execute(request);
+            is = EntityUtils.toString(response.getEntity(), "utf-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return is;
+    }
+
+    /**
+     * 处理异步请求
+     */
+    private void deliveryResult(Request request, final ResultCallback callback) {
+        callback.onStart();
+        Call call = mOkHttpClient.newCall(request);
+        callback.setCall(call);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, final IOException e) {
+                if (e != null && TextUtils.equals(e.getMessage(), "Canceled")) {
+                    //如果是取消导致的异常，直接调用onFinish函数
+                    callback.onFinish();
+                } else {
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onError(e, -1, e.getMessage());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, final okhttp3.Response response) {
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.parseResponse(response);
+                    }
+                });
+            }
+        });
+    }
+}

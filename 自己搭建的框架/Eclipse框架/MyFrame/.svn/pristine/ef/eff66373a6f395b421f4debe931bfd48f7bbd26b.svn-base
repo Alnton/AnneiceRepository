@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg" >
+
+    <!-- 登录页面 -->
+
+    <include
+        android:id="@+id/include_title" 
+        layout="@layout/title"/>
+    
+    <LinearLayout
+        android:layout_below="@id/include_title" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px20"
+        android:id="@+id/login_ll"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <com.alnton.myframe.view.ClearEditText
+	        android:drawablePadding="@dimen/px20"
+	        android:drawableRight="@drawable/input_delete"
+	        android:id="@+id/account"
+	        android:background="@color/white"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/px88"
+	        android:drawableLeft="@drawable/phone"
+	        android:layout_marginLeft="@dimen/px30"
+	        android:layout_marginRight="@dimen/px20"
+	        android:hint="@string/account_hint"
+	        android:inputType="number"
+	        android:maxLength="11"
+	        android:textColorHint="@color/typeface_eight"
+	        android:textColor="@color/typeface_five"
+	        android:textSize="@dimen/size28" />
+	    
+        <View 
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px1"
+            android:background="@color/divider"
+            android:layout_marginLeft="@dimen/px20"
+	        android:layout_marginRight="@dimen/px20"/>
+        
+	    <com.alnton.myframe.view.ClearEditText
+	        android:drawableRight="@drawable/input_delete"
+	        android:id="@+id/password"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/px88"
+	        android:background="@color/white"
+	        android:drawableLeft="@drawable/password"
+	        android:drawablePadding="@dimen/px20"
+	        android:hint="@string/password_hint"
+	        android:inputType="textPassword"
+	        android:layout_marginLeft="@dimen/px30"
+	        android:layout_marginRight="@dimen/px20"
+	        android:textColorHint="@color/typeface_eight"
+	        android:textColor="@color/typeface_five"
+	        android:textSize="@dimen/size28"
+	        android:maxLength="15" />
+        
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/login_rl" 
+        android:layout_below="@id/login_ll" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px30"
+        android:layout_marginLeft="@dimen/px20">
+        <CheckBox
+	        android:id="@+id/remerber_pwd" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:button="@drawable/cb_login"
+	        android:gravity="center"
+	        android:layout_centerVertical="true"
+		    />
+        <TextView
+            android:layout_toRightOf="@+id/remerber_pwd" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/remerber_pwd"
+	        android:textColor="@color/typeface_five"
+		    android:textSize="@dimen/px24"/>
+    </RelativeLayout>
+    
+    <com.alnton.myFrameResource.view.Button.ClickEffectButton
+        android:layout_below="@id/login_rl"
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px88"
+        android:layout_marginLeft="@dimen/px20"
+        android:layout_marginRight="@dimen/px20"
+        android:layout_marginTop="@dimen/px60"
+        android:background="@drawable/button_01"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size36" />
+    
+    <Button
+        android:layout_below="@id/login"
+        android:id="@+id/go_register"
+        android:padding="@dimen/px30"
+        android:layout_margin="@dimen/px20" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go_register"
+        android:textColor="@color/typeface_five"
+        android:background="@null"/>
+
+    <Button
+        android:layout_below="@id/login"
+        android:id="@+id/forget_password" 
+        android:layout_width="wrap_content"
+        android:padding="@dimen/px30"
+        android:layout_height="wrap_content"
+        android:text="@string/forget_password"
+        android:textColor="@color/typeface_five"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/px20"
+        android:background="@null"/>
+    
+    <!-- 底部第三方登录 -->
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px250"
+        android:layout_alignParentBottom="true">
+	    
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px1"
+            android:layout_marginTop="20dp"
+            android:background="@color/divider"/>
+        
+        <TextView
+            android:id="@+id/login_hint" 
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/other_login"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/typeface_two"
+            android:background="@color/bg"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
+            />
+        
+	    <com.alnton.myFrameResource.view.Button.ClickEffectButton
+	        android:id="@+id/qqButton"
+	        android:layout_below="@id/login_hint"
+	        android:layout_toLeftOf="@id/login_hint"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/shen_gray"
+	        android:background="@drawable/qq"
+	        android:layout_centerVertical="true"/>
+	
+	    <com.alnton.myFrameResource.view.Button.ClickEffectButton
+	        android:id="@+id/wxButton"
+	        android:layout_below="@id/login_hint"
+	        android:layout_toRightOf="@id/login_hint"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/shen_gray"
+	        android:background="@drawable/wechat"/>
+	    
+    </RelativeLayout>
+    
+</RelativeLayout>

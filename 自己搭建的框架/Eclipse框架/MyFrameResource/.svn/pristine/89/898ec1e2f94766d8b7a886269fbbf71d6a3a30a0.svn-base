@@ -1,0 +1,325 @@
+package com.alnton.myFrameResource.util;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.alnton.myFrameResource.R;
+
+/**
+ * <用于存放所有公共的方法>
+ * 
+ * @author 王乾州
+ */
+public class MyFrameResourceTools
+{
+    private static MyFrameResourceTools tools;
+    
+    public static MyFrameResourceTools getInstance()
+    {
+        if (null == tools)
+        {
+            tools = new MyFrameResourceTools();
+        }
+        return tools;
+    }
+    
+    /**
+     * 显示对话框
+     * 
+     * @param context
+     *            :应用程序上下文
+     * @author 王乾州
+     */
+    public View showDialog(Context context)
+    {
+        final Dialog exitDialog = new CustomDialog(context, R.style.FullScreenDialog);
+        exitDialog.show();
+        View view = exitDialog.getWindow().getDecorView();
+        view.setTag(exitDialog);
+        return view;
+    }
+    
+    /**
+     * 显示底部对话框
+     * 
+     * @param context
+     *            :应用程序上下文
+     * @author 王乾州
+     */
+    public View showDialogFromBottom(Context context, int layoutId)
+    {
+        final Dialog bottomDialog = new CustomBottomDialog(context, R.style.transparentFrameWindowStyle, layoutId);
+        bottomDialog.show();
+        View view = bottomDialog.getWindow().getDecorView();
+        view.setTag(bottomDialog);
+        return view;
+    }
+    
+    /**
+     * 显示中部对话框
+     * 
+     * @param context
+     *            :应用程序上下文
+     * @author 王乾州
+     */
+    public View showDialogCenter(Context context, int layoutId)
+    {
+        final Dialog exitDialog = new CustomCenterDialog(context, R.style.transparentFrameWindowStyle, layoutId);
+        exitDialog.show();
+        View view = exitDialog.getWindow().getDecorView();
+        view.setTag(exitDialog);
+        return view;
+        
+    }
+    
+    /**
+     * 显示选择年月对话框
+     * 
+     * @param context
+     *            :应用程序上下文
+     * @author 王乾州
+     */
+    public View showYearMonthDialog(Context context)
+    {
+        final Dialog exitDialog = new YearMonthDialog(context, R.style.FullScreenDialog);
+        exitDialog.show();
+        View view = exitDialog.getWindow().getDecorView();
+        view.setTag(exitDialog);
+        return view;
+    }
+    
+    /**
+     * 没有网络时对话框的显示
+     * 
+     * @param context
+     *            :应用程序上下文
+     * @author 王乾州
+     */
+    public View noNetDialogShow(final Context context)
+    {
+        View view = MyFrameResourceTools.getInstance().showDialog(context);
+        final Dialog settingNetDialog = (CustomDialog)view.getTag();
+        
+        TextView dialogTitleTextView = (TextView)view.findViewById(R.id.dialogTitleTextView);
+        dialogTitleTextView.setText(R.string.setting_network);
+        
+        TextView dialogContentTextView = (TextView)view.findViewById(R.id.dialogContentTextView);
+        dialogContentTextView.setText(R.string.network_wrong);
+        
+        Button settingNetImageView = (Button)view.findViewById(R.id.confirmBtn);
+        settingNetImageView.setText(R.string.setting_network);
+        
+        settingNetImageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                /* 当网络不可用时，跳转到网络设置页面 */
+                settingNetDialog.dismiss();
+                ((Activity)context).startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            }
+        });
+        view.setTag(settingNetDialog);
+        return view;
+    }
+    
+    /**
+     * <Activity的跳转及传值>
+     */
+    public void startActivity(Context fromClass, Class<?> toClass, Bundle bundle)
+    {
+        Intent intent = new Intent();
+        intent.setClass(fromClass, toClass);
+        if (null != bundle)
+        {
+            intent.putExtras(bundle);
+        }
+        fromClass.startActivity(intent);
+        bundle = null;
+    }
+    
+    /**
+     * <Activity的跳转及传值>
+     */
+    public void startActivityForResult(Context fromClass, Class<?> toClass, Bundle bundle, int requestCode)
+    {
+        Intent intent = new Intent();
+        intent.setClass(fromClass, toClass);
+        if (null != bundle)
+        {
+            intent.putExtras(bundle);
+        }
+        ((Activity)fromClass).startActivityForResult(intent, requestCode);
+        bundle = null;
+    }
+    
+    /**
+     * <软件更新 得到HttpResponse>
+     */
+    public HttpResponse updateSoft(String url)
+    {
+        try
+        {
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpUriRequest request = new HttpGet(url);
+            return client.execute(request);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * <软件更新 得到HttpResponse>
+     */
+    public String onGet(String url)
+    {
+        String is = null;
+        try
+        {
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpGet request = new HttpGet(url);
+            HttpResponse response = client.execute(request);
+            is = EntityUtils.toString(response.getEntity(), "utf-8");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return is;
+    }
+    
+    /**
+     * <发送post请求，携带参数>
+     */
+    public String postWithParams(HashMap<String, String> param, String url)
+    {
+        String is = null;
+        try
+        {
+            List<NameValuePair> paramers = new LinkedList<NameValuePair>();
+            for (Map.Entry<String, String> entry : param.entrySet())
+            {
+                String value = entry.getValue();
+                paramers.add(new BasicNameValuePair(entry.getKey(), value));
+            }
+            
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(paramers, "utf-8");
+            
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(url);
+            post.setEntity(entity);
+            HttpResponse response = client.execute(post);
+            is = EntityUtils.toString(response.getEntity(), "utf-8");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        return is;
+    }
+    
+    public MyTextWatcher newMyTextWatcher(View[] views, Button button, Context context)
+    {
+        return new MyTextWatcher(views, button, context);
+    }
+    
+    /**
+     * 
+     * @ClassName: MyTextWatcher
+     * @Description: TODO(EditText 監聽)
+     * @author liujiahao
+     * @date 2016-8-10 下午2:34:02
+     * 
+     */
+    class MyTextWatcher implements TextWatcher
+    {
+        View[] views;
+        
+        Button button;
+        
+        Context context;
+        
+        /**
+         * 
+         * @param views
+         *            EditText數組
+         * @param button
+         *            確認按鈕
+         * @param context
+         *            上下文
+         */
+        public MyTextWatcher(View[] views, Button button, Context context)
+        {
+            // TODO Auto-generated constructor stub
+            this.views = views;
+            this.button = button;
+            this.context = context;
+        }
+        
+        @SuppressLint("NewApi")
+        public void afterTextChanged(Editable s)
+        {
+            // 判断按钮是否灰置
+            if (null != views && null != button)
+            {
+                for (int i = 0; i < views.length; i++)
+                {
+                    String viewLength = ((EditText)views[i]).getText().toString();
+                    if (viewLength.isEmpty())
+                    {
+                        button.setBackground(context.getResources().getDrawable(R.drawable.button_no_click_shape));
+                    }
+                    else
+                    {
+                        button.setBackground(context.getResources().getDrawable(R.drawable.button_shape));
+                    }
+                }
+            }
+            
+        }
+        
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        {
+            
+        }
+        
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+            
+        }
+        
+    }
+    
+}

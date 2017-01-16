@@ -1,0 +1,161 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical" >
+
+    <include layout="@layout/title" />
+
+    <RelativeLayout
+        android:id="@+id/yinlianLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px124"
+        android:layout_marginTop="@dimen/px20"
+        android:background="@drawable/item_selector" >
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginRight="@dimen/px20"
+            android:src="@mipmap/yinlian" />
+
+        <ImageView
+            android:id="@+id/yinlianImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginRight="@dimen/px20"
+            android:src="@mipmap/check" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/yinlianImageView"
+            android:layout_toRightOf="@id/imageView3"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yinlian_Pay"
+                android:textColor="@color/typeface_five"
+                android:textSize="@dimen/size28" />
+
+            <TextView
+                android:id="@+id/tv_content_yl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px10"
+                android:text="@string/yinlianWarn"
+                android:textColor="@color/typeface_two"
+                android:textSize="@dimen/size22" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wxLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px124"
+        android:background="@drawable/item_selector"
+        android:visibility="gone" >
+
+        <include layout="@layout/view_line" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginRight="@dimen/px20"
+            android:src="@mipmap/weixin" />
+
+        <TextView
+            android:id="@+id/tv_title_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imageView2"
+            android:text="@string/wx_Pay"
+            android:textColor="@color/typeface_five"
+            android:textSize="@dimen/size28" />
+
+        <ImageView
+            android:id="@+id/wxImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/px20"
+            android:src="@mipmap/uncheck" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/alipayLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px124"
+        android:background="@drawable/item_selector"
+        android:visibility="gone" >
+
+        <include layout="@layout/view_line" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginRight="@dimen/px20"
+            android:src="@mipmap/zhifubao" />
+
+        <TextView
+            android:id="@+id/tv_title_zfb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imageView1"
+            android:text="@string/alipay_Pay"
+            android:textColor="@color/typeface_five"
+            android:textSize="@dimen/size28" />
+
+        <ImageView
+            android:id="@+id/alipayImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/px20"
+            android:src="@mipmap/uncheck" />
+    </RelativeLayout>
+
+    <!-- 确认支付按钮 -->
+
+    <LinearLayout
+        android:id="@+id/submitLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="@dimen/px60"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/white_32"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_circle_bg"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:text="@string/payConfirm" />
+    </LinearLayout>
+
+</LinearLayout>

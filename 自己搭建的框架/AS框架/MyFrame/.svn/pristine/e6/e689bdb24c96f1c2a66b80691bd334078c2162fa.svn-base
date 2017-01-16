@@ -1,0 +1,24 @@
+package com.alnton.myframe.util.okhttp.callback;
+
+/**
+ * <接口返回的统一报文>
+ * @author  王乾州
+ * @createon 2016-8-8
+ */
+public class ResponseEntity
+{
+    /**
+     * 返回条目数
+     */
+    private String count;
+    
+    /**
+     * 返回状态码
+     */
+    private String code;
+    
+    /**
+     * 返回的描述信息
+     */
+    private String desc;
+}

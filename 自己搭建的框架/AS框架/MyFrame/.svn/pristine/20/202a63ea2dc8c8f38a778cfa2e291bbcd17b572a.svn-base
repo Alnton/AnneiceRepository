@@ -1,0 +1,187 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <include layout="@layout/title" />
+
+    <RelativeLayout
+        android:id="@+id/alipayLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_selector_white"
+        android:padding="@dimen/px30"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/zhifubao" />
+
+        <TextView
+            android:id="@+id/tv_title_zfb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView1"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/imageView1"
+            android:text="@string/alipay_Pay"
+            android:textColor="@color/typeface_five"
+            android:textSize="@dimen/size28" />
+
+        <TextView
+            android:id="@+id/tv_content_zfb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title_zfb"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dip"
+            android:layout_toRightOf="@+id/imageView1"
+            android:text="@string/alipayWarn"
+            android:textColor="@color/typeface_two"
+            android:textSize="@dimen/size22" />
+
+        <ImageView
+            android:id="@+id/alipayImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/uncheck" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px1"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/wxLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_selector_white"
+        android:padding="@dimen/px30"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/weixin" />
+
+        <TextView
+            android:id="@+id/tv_title_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView2"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/imageView2"
+            android:text="@string/wx_Pay"
+            android:textColor="@color/typeface_five"
+            android:textSize="@dimen/size28" />
+
+        <TextView
+            android:id="@+id/tv_content_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title_wx"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dip"
+            android:layout_toRightOf="@+id/imageView2"
+            android:text="@string/wxWarn"
+            android:textColor="@color/typeface_two"
+            android:textSize="@dimen/size22" />
+
+        <ImageView
+            android:id="@+id/wxImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/uncheck" />
+    </RelativeLayout>
+
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px1"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/yinlianLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_selector_white"
+        android:padding="@dimen/px30" >
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/yinlian" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView3"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/imageView3"
+            android:text="@string/yinlian_Pay"
+            android:textColor="@color/typeface_five"
+            android:textSize="@dimen/size28" />
+
+        <TextView
+            android:id="@+id/tv_content_yl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dip"
+            android:layout_toRightOf="@+id/imageView3"
+            android:text="@string/yinlianWarn"
+            android:textColor="@color/typeface_two"
+            android:textSize="@dimen/size22" />
+
+        <ImageView
+            android:id="@+id/yinlianImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/check" />
+    </RelativeLayout>
+
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px1"
+        android:background="@color/divider" />
+
+    <!-- 确认支付按钮 -->
+
+    <LinearLayout
+        android:id="@+id/submitLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:layout_marginTop="50dip"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/white_32"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_circle_bg"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dip"
+            android:paddingTop="10dip"
+            android:text="@string/payConfirm" />
+    </LinearLayout>
+
+</LinearLayout>

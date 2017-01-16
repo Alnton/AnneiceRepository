@@ -1,0 +1,70 @@
+package com.alnton.myframe.adapter.homePage;
+
+import com.alnton.myframe.entity.City;
+import com.alnton.myframecore.view.Wheel.WheelAdapter;
+
+import java.util.ArrayList;
+
+/**
+ * 选择省市区县滚轮适配器
+ *
+ * @author 王乾州
+ * @createon 2016-8-12
+ */
+public class CityWheelAdapter implements WheelAdapter {
+    /**
+     * 适配器的 元素集合(数据源) 默认长度为 -1
+     */
+    public static final int DEFAULT_LENGTH = -1;
+
+    /**
+     * 适配器的数据源
+     */
+    private ArrayList<City> cityList;
+
+    /**
+     * WheelView 的宽度
+     */
+    private int length;
+
+    /**
+     * 构造方法
+     *
+     * @param cityList 适配器数据源 集合 T 类型的数组
+     * @param length   适配器数据源 集合 T 数组长度
+     */
+    public CityWheelAdapter(ArrayList<City> cityList, int length) {
+        this.cityList = cityList;
+        this.length = length;
+    }
+
+    /**
+     * 构造方法
+     *
+     * @param cityList 适配器数据源集合 T 类型数组
+     */
+    public CityWheelAdapter(ArrayList<City> cityList) {
+        this(cityList, DEFAULT_LENGTH);
+    }
+
+    @Override
+    public String getItem(int index) {
+        //如果这个索引值合法, 就返回 item 数组对应的元素的字符串形式
+        if (index >= 0 && index < cityList.size()) {
+            return cityList.get(index).getCityName();
+        }
+        return null;
+    }
+
+    @Override
+    public int getItemsCount() {
+        //返回 item 数组的长度
+        return cityList.size();
+    }
+
+    @Override
+    public int getMaximumLength() {
+        //返回 item 元素的宽度
+        return length;
+    }
+}

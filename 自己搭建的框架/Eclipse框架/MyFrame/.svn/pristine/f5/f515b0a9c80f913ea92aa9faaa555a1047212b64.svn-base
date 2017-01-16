@@ -1,0 +1,509 @@
+package com.alnton.myframe.util;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import android.content.Context;
+import android.text.TextUtils;
+
+import com.alnton.myFrameCore.util.ValidationUtil;
+
+/**
+ * 字符的验证类
+ * @FileName com.alnton.myframe.util.ValidationUser.java  
+ * @Author 詹海
+ * @Date 2016-8-10 下午5:57:10
+ * @UpdateVersion V1.0
+ */
+public class ValidationUser
+{
+    /**
+     * 手机验证码的长度
+     */
+    public int mobilePhoneCodeLength = 6;
+    
+    public String mobilePhoneErrorHint = "请输入正确的手机号";
+    
+    public String passwordErrorHint = "登录密码请输入6到15位数字、字母或字符";
+    
+    public String affirmPasswordErrorHint = "两次输入的密码不一致，请重新输入";
+    
+    public String codeErrorHint = "短信验证码不正确";
+    
+    public String graphcodeErrorHint = "图形验证码输入不正确";
+    
+    public String petNameErrorHint = "只能输入汉字、字母、数字";
+    
+    public String petNameErrorHintNotNull = "请输入昵称";
+    
+    public String consigneeErrorHintNotNull = "收货人不能为空";
+    
+    /**
+     * 是否通过了验证
+     */
+    public boolean isPassedValidation = true;
+    
+    /**
+     * 是否第一次显示提示框，（如果为false，则不显示）
+     */
+    private boolean isFirstShowToast = true;
+    
+    /**
+     * 上下文的类型
+     */
+    private int contextType;
+    
+    private Context context;
+    
+    /**
+     * <p>Title: </p>   
+     * <p>Description: </p>   
+     * @param arg0 上下文
+     * @param arg1 上下文的类型（FusionCode.BASEACTIVITY，FusionCode.BASEFRAGMENTACTIVITY）
+     */
+    public ValidationUser(Context arg0, int arg1)
+    {
+        this.context = arg0;
+        this.contextType = arg1;
+    }
+    
+    /**
+     * @Description 初始变量值   
+     * @param         
+     * @return void       
+     * @throws
+     */
+    public void initValue()
+    {
+        this.isPassedValidation = true;
+        this.isFirstShowToast = true;
+    }
+    
+    /**
+     * @Description 检查手机号码是否正确   
+     * @param @param arg0
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isMobilePhone(String arg0)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        if (arg0.trim().length() == 11)
+        {
+            return this.isPassedValidation = true;
+        }
+        else if (TextUtils.isEmpty(arg0))
+        {
+            ToastUtil.instance.showToast(context, "请输入手机号");
+            return this.isPassedValidation = false;
+        }
+        else
+        {
+            ToastUtil.instance.showToast(context, this.mobilePhoneErrorHint);
+            return this.isPassedValidation = false;
+        }
+    }
+    
+    /**
+     * @Description 检查手机号码是否正确   
+     * @param @param arg0
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isMobilePhone(String content, String hint)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        if (content.trim().length() == 11)
+        {
+            return this.isPassedValidation = true;
+        }
+        else
+        {
+            ToastUtil.instance.showToast(context, hint);
+            return this.isPassedValidation = false;
+        }
+    }
+    
+    String pas = "`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、";
+    
+    /**
+     * @Description 检查密码是否正确   
+     * @param @param arg0
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isPassword(String arg0)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        //数字+字母+字符 或 字母+字符 或 数字+字母 或 数字+字符
+        Pattern regular = Pattern.compile("^((?!\\d+$)(?![a-zA-Z]+$)[a-zA-Z\\d@#$%^&_+].{5,16})+$");
+        if (TextUtils.isEmpty(arg0))
+        {
+            ToastUtil.instance.showToast(context, "请输入密码");
+            return this.isPassedValidation = false;
+        }
+        else if (regular.matcher(arg0).matches())
+        {
+            return this.isPassedValidation = true;
+        }
+        else
+        {
+            ToastUtil.instance.showToast(context, this.passwordErrorHint);
+            return this.isPassedValidation = false;
+        }
+    }
+    
+    /**
+     * 检查密码是否正确   
+     * @Description: TODO 
+     * @param content 内容
+     * @param hint 提示
+     * @return
+     */
+    public boolean isPassword(String content, String hint)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        //数字+字母+字符 或 字母+字符 或 数字+字母 或 数字+字符
+        Pattern regular = Pattern.compile("^((?!\\d+$)(?![a-zA-Z]+$)[a-zA-Z\\d@#$%^&_+].{5,16})+$");
+        if (regular.matcher(content).matches())
+        {
+            return this.isPassedValidation = true;
+        }
+        else
+        {
+            ToastUtil.instance.showToast(context, hint);
+            return this.isPassedValidation = false;
+        }
+    }
+    
+    /**
+     * @Description 检查两次密码是否相同
+     * @param @param arg0
+     * @param @param arg1
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isAffirmPassword(String arg0, String arg1)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        if (TextUtils.isEmpty(arg1))
+        {
+            ToastUtil.instance.showToast(context, "请再次输入密码");
+            return this.isPassedValidation = false;
+        }
+        else if (TextUtils.isEmpty(arg0) || !arg0.equals(arg1))
+        {
+            ToastUtil.instance.showToast(context, this.affirmPasswordErrorHint);
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    /**
+     * @Description 检查验证码是否有输入  
+     * @param @param arg0
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isCode(String arg0)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        String arg1 = arg0.trim();
+        if (TextUtils.isEmpty(arg1))
+        {
+            ToastUtil.instance.showToast(context, "请输入短信验证码");
+            return this.isPassedValidation = false;
+        }
+        else if (arg1.length() != this.mobilePhoneCodeLength)
+        {
+            ToastUtil.instance.showToast(context, this.codeErrorHint);
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    /**
+     * @Description 检查是否有输入  
+     * @param @param arg0 	输入的字符
+     * @param @param content	弹出的文字
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isLength(String arg0, String content)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        String arg1 = arg0 == null ? "" : arg0.trim();
+        if (TextUtils.isEmpty(arg1))
+        {
+            ToastUtil.instance.showToast(context, content);
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    public boolean isCompanyName(String arg0, String content)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        String arg1 = arg0 == null ? "" : arg0.trim();
+        if (TextUtils.isEmpty(arg1) || arg1.equals("请选择开户行名称"))
+        {
+            ToastUtil.instance.showToast(context, content);
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    /**
+    * @Title: isLength 
+    * @Description: TODO(这里用一句话描述这个方法的作用) 
+    * @param @param arg0
+    * @param @param content	弹出的文字
+    * @param @param min		
+    * @param @param max
+    * @param @return    设定文件 
+    * @return boolean    返回类型 
+    * @throws
+     */
+    public boolean isLength(String arg0, String content, int min, int max)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        String arg1 = arg0.trim();
+        if (arg1.length() < min || arg1.length() > max)
+        {
+            ToastUtil.instance.showToast(context, content + "请输入" + min + "至" + max + "字");
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    /**
+     * @Description 检查图形验证码是否有输入  
+     * @param @param arg0
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isGraphCode(String arg0)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        if (!arg0.equals(GraphCode.getInstance().code))
+        {
+            ToastUtil.instance.showToast(context, this.graphcodeErrorHint);
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    /**
+     * @Description 用户昵称是否正确  
+     * @param @param arg0
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isPetName(String arg0)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        if (TextUtils.isEmpty(arg0))
+        {
+            ToastUtil.instance.showToast(context, this.petNameErrorHintNotNull);
+            return this.isPassedValidation = false;
+        }
+        boolean b = ValidationUtil.instance.isNumCharChinese(arg0);
+        if (!b)
+        {
+            ToastUtil.instance.showToast(context, this.petNameErrorHint);
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    /**
+     * @Description 用户姓名是否正确  (真实姓名请输入8字以内汉字)
+     * @param  arg0 检查的文字
+     * @param  arg1 提示文字
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isName(String arg0, String arg1)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        if (arg0 == null || TextUtils.isEmpty(arg0))
+        {
+            return this.isPassedValidation = false;
+        }
+        arg0 = Pattern.compile("[\u4e00-\u9fa5]").matcher(arg0).replaceAll("");
+        if (TextUtils.isEmpty(arg0))
+        {
+            return this.isPassedValidation = true;
+        }
+        ToastUtil.instance.showToast(context, arg1);
+        return this.isPassedValidation = false;
+    }
+    
+    /**
+     * @Description 检查文字的长度是否达到要求 
+     * @param @param arg0 	字符的长度
+     * @param @param arg1 	输入的字符
+     * @param @param arg2	弹出的文字
+     * @param @return        
+     * @return boolean       
+     * @throws
+     */
+    public boolean isLengthCorrect(int arg0, String arg1, String arg2)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        if (null == arg1 || arg1.trim().length() != arg0)
+        {
+            ToastUtil.instance.showToast(context, arg2);
+            return this.isPassedValidation = false;
+        }
+        return this.isPassedValidation = true;
+    }
+    
+    /**
+    * 判断是否是银行卡号
+    * @param cardId
+    * @return
+    */
+    public boolean isCheckBankCard(String cardId)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        
+        if (cardId.length() > 0)
+        {
+            
+            return this.isPassedValidation = true;
+        }
+        else
+        {
+            ToastUtil.instance.showToast(context, "银行卡号请输入20位以内数字");
+            return this.isPassedValidation = false;
+        }
+    }
+    
+    /** 
+     * 功能：身份证的有效验证 
+     *  
+     * @param IDStr 
+     *            身份证号 
+     * @return 
+     */
+    public boolean isIDCardValidate(String IDStr)
+    {
+        if (!isPassedValidation)
+        {
+            return false;
+        }
+        if (IDStr.length() == 15 || IDStr.length() == 18)
+        {
+            IDStr = Pattern.compile("[0-9]*").matcher(IDStr).replaceAll("");
+            IDStr = Pattern.compile("[a-zA-Z]").matcher(IDStr).replaceAll("");
+            if (TextUtils.isEmpty(IDStr))
+            {
+                return this.isPassedValidation = true;
+            }
+            else
+            {
+                ToastUtil.instance.showToast(context, "请输入正确的身份证号信息");
+            }
+        }
+        ToastUtil.instance.showToast(context, "请输入正确的身份证号信息");
+        return this.isPassedValidation = false;
+    }
+    
+    /** 
+     * 功能：判断字符串是否为数字 
+     *  
+     * @param str 
+     * @return 
+     */
+    public static boolean isNumeric(String str)
+    {
+        
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if (isNum.matches())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    /**
+     * 移除图片的前缀
+     */
+    public static String removePrefix(String imageurl)
+    {
+        if (!TextUtils.isEmpty(imageurl))
+        {
+            int httpIndex = imageurl.indexOf("http://");
+            if (httpIndex != -1)
+            {
+                int imgIndex = imageurl.indexOf("img");
+                imageurl = imageurl.substring(imgIndex + 3, imageurl.length());
+            }
+        }
+        return imageurl;
+    }
+}

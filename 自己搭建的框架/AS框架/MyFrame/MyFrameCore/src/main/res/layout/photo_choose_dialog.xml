@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="@dimen/px10" >
+
+    <!-- 拍照 #333 #54c2f0-->
+	
+    <Button
+        android:id="@+id/cameraButton"
+        android:textSize="@dimen/size28"
+        android:textColor="#333"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px88"
+        android:gravity="center"
+        android:background="@drawable/photo_item_selector"
+        android:text="拍照" />
+
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px1"
+        android:background="@color/divider"/>
+    
+    <!-- 去相册 -->
+
+    <Button
+        android:id="@+id/albumButton"
+        android:textSize="@dimen/size28"
+        android:textColor="#333"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px88"
+        android:gravity="center"
+        android:background="@drawable/photo_item_selector_tow"
+        android:text="从相册选择" />
+
+    <!-- 取消 -->
+
+    <Button
+        android:id="@+id/cancelButton"
+        style="@style/gray_16"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px88"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/px20"
+        android:background="@drawable/photo_item_selector_san"
+        android:textSize="@dimen/size28"
+        android:textColor="#54c2f0"
+        android:text="取消" />
+
+</LinearLayout>

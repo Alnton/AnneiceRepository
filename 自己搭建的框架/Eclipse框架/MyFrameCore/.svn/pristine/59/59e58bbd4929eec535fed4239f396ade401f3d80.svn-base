@@ -1,0 +1,932 @@
+package com.alnton.myFrameCore.util;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.alnton.myFrameCore.application.CacheSession;
+
+/**
+ * <图片工具类>
+ * @author  王乾州
+ */
+public class ImageUtil
+{
+    private static ImageUtil imageUtil;
+    
+    private ExecutorService executorService;
+    
+    public static ImageUtil getInstance()
+    {
+        if (null == imageUtil)
+        {
+            imageUtil = new ImageUtil();
+        }
+        return imageUtil;
+    }
+    
+    private ImageUtil()
+    {
+        //固定20个线程来执行任务  
+        executorService = Executors.newFixedThreadPool(20);
+        
+        mainHandler = new Handler(Looper.getMainLooper());
+    }
+    
+    /**
+     * 主线程
+     */
+    public Handler mainHandler;
+    
+    /**
+     * 选择的头像Bitmap
+     */
+    public Bitmap headBitmap;
+    
+    /**
+     * 拍照的File
+     */
+    public File cameraFile;
+    
+    /**
+     * 图片在SD卡或者内存中的根路径
+     */
+    private String ROOT_PATH = "";
+    
+    /**
+     * 相册的RequestCode
+     */
+    public static final int INTENT_REQUEST_CODE_ALBUM = 0;
+    
+    /**
+     *  照相的RequestCode
+     */
+    public static final int INTENT_REQUEST_CODE_CAMERA = 1;
+    
+    /**
+     * 裁剪照片的RequestCode
+     */
+    public static final int INTENT_REQUEST_CODE_CROP = 2;
+    
+    /**
+     * 滤镜图片的RequestCode
+     */
+    public static final int INTENT_REQUEST_CODE_FLITER = 3;
+    
+    /**
+     * 转换图片成圆形
+     * @param bitmap
+     *            传入Bitmap对象
+     * @return
+     */
+    public Bitmap toRoundBitmap(Bitmap bitmap)
+    {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        float roundPx;
+        float left, top, right, bottom, dst_left, dst_top, dst_right, dst_bottom;
+        if (width <= height)
+        {
+            roundPx = width / 2;
+            top = 0;
+            bottom = width;
+            left = 0;
+            right = width;
+            height = width;
+            dst_left = 0;
+            dst_top = 0;
+            dst_right = width;
+            dst_bottom = width;
+        }
+        else
+        {
+            roundPx = height / 2;
+            float clip = (width - height) / 2;
+            left = clip;
+            right = width - clip;
+            top = 0;
+            bottom = height;
+            width = height;
+            dst_left = 0;
+            dst_top = 0;
+            dst_right = height;
+            dst_bottom = height;
+        }
+        Bitmap output = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect src = new Rect((int)left, (int)top, (int)right, (int)bottom);
+        final Rect dst = new Rect((int)dst_left, (int)dst_top, (int)dst_right, (int)dst_bottom);
+        final RectF rectF = new RectF(dst);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, src, dst, paint);
+        return output;
+    }
+    
+    /**
+     * 从网上获取图片
+     * @param url:图片的地址
+     * @param targetWidth:图片的目标宽度，数值越小，缩放比例越大
+     * @author 王乾州
+     */
+    public Bitmap getResizedImage(String url)
+    {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        Bitmap bm = null;
+        URL urlConn = null;
+        InputStream is = null;
+        InputStream inputStream = null;
+        try
+        {
+            urlConn = new URL(url);
+            is = urlConn.openStream();
+            BitmapFactory.decodeStream(is, null, options);
+            
+            int oldWidth = options.outWidth;
+            int oldHeight = options.outHeight;
+            if (oldWidth > 0 && oldHeight > 0)
+            {
+                float sx = oldWidth * 1.0f / 600;
+                float sy = oldHeight * 1.0f / 200;
+                float sxy = 1.0f;
+                if (sx >= sy)
+                {
+                    sxy = sx;
+                }
+                else
+                {
+                    sxy = sy;
+                }
+                options.inJustDecodeBounds = false;
+                options.inSampleSize = (int)Math.ceil(sxy);
+                urlConn = new URL(url);
+                inputStream = urlConn.openStream();
+                bm = BitmapFactory.decodeStream(inputStream, null, options);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if (is != null)
+                {
+                    is.close();
+                }
+                if (inputStream != null)
+                {
+                    inputStream.close();
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return bm;
+        
+    }
+    
+    /**
+     * <获取远程就是网络图片的方法>
+     * @param headImageView
+     * @param address
+     * @param isToRoundBitmap 是否变为圆形
+     * @param defaultPicName 在加载网络图片的一个默认图片名字
+     */
+    public void getRemotePicture(Context context, View convertView, ImageView headImageView, String address,
+        Boolean isToRoundBitmap, String defaultPicName)
+    {
+        if (null != address)
+        {
+            address = address.trim().replaceAll(" ", "");
+        }
+        else
+        {
+            address = "";
+        }
+        String tag = address + String.valueOf(System.currentTimeMillis());
+        
+        headImageView.setTag(tag);
+        
+        if (null != address && !"".equals(address))
+        {
+            /* 从缓存中读取静态图片 */
+            headBitmap = (Bitmap)CacheSession.getInstance().imagesCache.get(address);
+            if (null == headBitmap)
+            {
+                /* 当缓存中没有要使用的图片时，先显示默认的图片 */
+                headImageView.setBackgroundResource(context.getResources().getIdentifier(defaultPicName,
+                    "drawable",
+                    context.getPackageName()));
+                /**
+                 * 启动线程池加载图片
+                 */
+                loadNetPicFromThradPool(convertView, isToRoundBitmap, tag, address);
+            }
+        }
+        else
+        {
+            /* 当没有地址时，先显示默认的图片 */
+            headImageView.setBackgroundResource(context.getResources().getIdentifier(defaultPicName,
+                "drawable",
+                context.getPackageName()));
+        }
+        
+        if (null != headBitmap)
+        {
+            if (isToRoundBitmap)
+            {
+                headImageView.setImageBitmap(toRoundBitmap(headBitmap));
+            }
+            else
+            {
+                headImageView.setImageBitmap(headBitmap);
+            }
+            headBitmap = null;
+        }
+        else
+        {
+            headImageView.setImageBitmap(null);
+        }
+    }
+    
+    /**
+     * <线程池执行网络下载图片>
+     * @author  王乾州
+     */
+    private void loadNetPicFromThradPool(final View resultView, final boolean roundFlag, final String tag,
+        final String address)
+    {
+        executorService.submit(new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
+                    Bitmap image = null;
+                    /* 从网上下载图片 */
+                    image = getResizedImage(address);
+                    /* 把下载好的图片保存到缓存中 */
+                    CacheSession.getInstance().imagesCache.put(address, image);
+                    
+                    if (null != image)
+                    {
+                        mainHandler.post(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                ImageView iv = (ImageView)resultView.findViewWithTag(tag);
+                                if (null != iv)
+                                {
+                                    if (roundFlag)
+                                    {
+                                        iv.setImageBitmap(toRoundBitmap(CacheSession.getInstance().imagesCache.get(address)));
+                                    }
+                                    else
+                                    {
+                                        iv.setImageBitmap(CacheSession.getInstance().imagesCache.get(address));
+                                    }
+                                    iv.setTag("");
+                                }
+                            }
+                        });
+                        image = null;
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    
+    /**
+     * <从相册或者拍照获取图片>
+     */
+    public void choiceImage(final Activity mContext, final String imagePath)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(mContext.getResources().getIdentifier("choiceType", "string", mContext.getPackageName()))
+            .setIcon(android.R.drawable.ic_dialog_info)
+            .setItems(mContext.getResources().getIdentifier("choiceImageStyle", "array", mContext.getPackageName()),
+                new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        switch (which)
+                        {
+                            case 0:
+                                /**
+                                 * 拍照
+                                 */
+                                takePicture(mContext, imagePath);
+                                break;
+                            
+                            case 1:
+                                /**
+                                 * 去相册
+                                 */
+                                selectPhoto(mContext);
+                                break;
+                            
+                            case 2:
+                                /**
+                                 * 
+                                 */
+                                break;
+                            
+                            default:
+                                break;
+                        }
+                    }
+                })
+            .create()
+            .show();
+    }
+    
+    /**
+     * 通过手机照相获取图片
+     * @param activity
+     * @return 照相后图片的路径
+     */
+    public void takePicture(Activity activity, String imagePath)
+    {
+        try
+        {
+            /** 拍照第一步：首先判断SDCard是否存在 */
+            ROOT_PATH = TelephoneUtil.getInstance().getSDPath();
+            
+            if (null == ROOT_PATH)
+            {
+                /** 拍照第二步：如果sdcard不存在，就判断内存卡的容量（如果容量大于50MB就拍照） */
+                long phoneMemory = TelephoneUtil.getInstance().getROMAvailableSize();
+                if (phoneMemory > 52428800) // 50MB
+                {
+                    ROOT_PATH = Environment.getDataDirectory() + File.separator;
+                }
+                else
+                {
+                    Toast.makeText(activity,
+                        activity.getResources().getIdentifier("memory_notfull", "string", activity.getPackageName()),
+                        0).show();
+                    return;
+                }
+            }
+            
+            // 创建图片Image文件夹目录
+            File dir = FileUtil.getInstance().createDirectory(imagePath);
+            cameraFile =
+                FileUtil.getInstance().createNewFile(dir.getAbsolutePath() + File.separator + UUID.randomUUID()
+                    + ".png");
+            /* 调用系统自带的照相意图 */
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            /* 将拍照的图片保存到sd卡中或者内存中 */
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
+            activity.startActivityForResult(intent, INTENT_REQUEST_CODE_CAMERA);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * 通过手机相册获取图片
+     * @param activity
+     */
+    public void selectPhoto(Activity activity)
+    {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        activity.startActivityForResult(intent, INTENT_REQUEST_CODE_ALBUM);
+    }
+    
+    /**
+     * 获取图片的指定大小
+     * @param context 
+     * @param resId 
+     * @return
+     */
+    public int[] getDestImageWAndH(Context context, int resId)
+    {
+        int[] temp = new int[2];
+        Resources res = context.getResources();
+        Bitmap bg1 = BitmapFactory.decodeResource(res, resId);
+        temp[0] = (bg1.getWidth());
+        temp[1] = (bg1.getHeight());
+        return temp;
+    }
+    
+    /**
+     * <Bitmap 转化为 byte[]>
+     * @param bm
+     * @return
+     */
+    public byte[] Bitmap2Bytes(Bitmap bm)
+    {
+        try
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            return baos.toByteArray();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * <byte[] 转化为 Bitmap>
+     * @param bm
+     * @return
+     */
+    public Bitmap Bytes2Bimap(byte[] b)
+    {
+        if (null != b && b.length != 0)
+        {
+            try
+            {
+                return BitmapFactory.decodeByteArray(b, 0, b.length);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            return null;
+        }
+        return null;
+    }
+    
+    /***
+     * Constructs an intent for image cropping.
+     */
+    public Intent getCropImageIntent(Uri photoUri)
+    {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(photoUri, "image/**");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 77);
+        intent.putExtra("outputY", 77);
+        intent.putExtra("return-data", true);
+        return intent;
+    }
+    
+    //    @Override
+    //    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    //    {
+    //        if (resultCode == RESULT_OK)
+    //        {
+    //            switch (requestCode)
+    //            {
+    //                case ImageUtil.INTENT_REQUEST_CODE_CAMERA:
+    //                    /**
+    //                     * 拍照回调
+    //                     */
+    //                    try
+    //                    {
+    //                        Bitmap headBitmap = ImageUtil.getInstance().readSDorResBitmap(mContext,
+    //                            ImageUtil.getInstance().cameraFile.getAbsolutePath(),
+    //                            0);
+    //                        if (null != headBitmap && null != InDoorFragment.selfmainActivity)
+    //                        {
+    //                            //調用InDoorFragment裡邊的設置圖片方法
+    //                            InDoorFragment.selfmainActivity.setHeadBitmap(headBitmap);
+    //                            InDoorFragment.selfmainActivity.setImageView(headBitmap);
+    //                        }
+    //                        else
+    //                        {
+    //                            showToast(mContext, R.string.getHeadFailure);
+    //                        }
+    //                    }
+    //                    catch (Exception e)
+    //                    {
+    //                        e.printStackTrace();
+    //                    }
+    //                    break;
+    //                
+    //                case ImageUtil.INTENT_REQUEST_CODE_ALBUM:
+    //                    /**
+    //                     * 从相册选取图片作为头像
+    //                     */
+    //                    finishActivity(2);
+    //                    if (null != data)
+    //                    {
+    //                        try
+    //                        {
+    //                            String path = "";
+    //                            Uri uri = data.getData();
+    //                            
+    //                            String[] proj = {MediaStore.Images.Media.DATA};
+    //                            
+    //                            //好像是android多媒体数据库的封装接口，具体的看Android文档
+    //                            Cursor cursor = managedQuery(uri, proj, null, null, null);
+    //                            if (null != cursor)
+    //                            {
+    //                                //按我个人理解 这个是获得用户选择的图片的索引值
+    //                                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+    //                                //将光标移至开头 ，这个很重要，不小心很容易引起越界
+    //                                cursor.moveToFirst();
+    //                                //最后根据索引值获取图片路径
+    //                                path = cursor.getString(column_index);
+    //                            }
+    //                            else
+    //                            {
+    //                                path = uri.getPath();
+    //                            }
+    //                            
+    //                            Bitmap headBitmap = ImageUtil.getInstance().readSDorResBitmap(mContext, path, 0);
+    //                            
+    //                            if (null != headBitmap && null != InDoorFragment.selfmainActivity)
+    //                            {
+    //                                InDoorFragment.selfmainActivity.setHeadBitmap(headBitmap);
+    //                                InDoorFragment.selfmainActivity.setImageView(headBitmap);
+    //                            }
+    //                            else
+    //                            {
+    //                                showToast(mContext, R.string.getHeadFailure);
+    //                            }
+    //                        }
+    //                        catch (Exception e)
+    //                        {
+    //                            e.printStackTrace();
+    //                        }
+    //                    }
+    //                    break;
+    //                
+    //                default:
+    //                    break;
+    //            }
+    //        }
+    //        super.onActivityResult(requestCode, resultCode, data);
+    //    }
+    
+    /**
+     * 拍照或者从相册选取图片作为头像 有部分手机会旋转，此方法就是为了矫正图片的
+     * @param path 
+     *     图片的路径
+     * @param bitmap
+     *     图片的Bitmap类型
+     * @return 
+     *     返回矫正后的图片 Bitmap
+     */
+    public Bitmap correctPicture(String path, Bitmap bitmap)
+    {
+        try
+        {
+            // 首先得到图片的旋转角度
+            int degree = getBitmapDegree(path);
+            // 其次根据图片的旋转角度，旋转对应角度
+            return rotateBitmapByDegree(bitmap, degree);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * 读取图片的旋转的角度
+     * @param path
+     *            图片绝对路径
+     * @return 图片的旋转角度
+     */
+    private int getBitmapDegree(String path)
+    {
+        int degree = 0;
+        try
+        {
+            // 从指定路径下读取图片，并获取其EXIF信息
+            ExifInterface exifInterface = new ExifInterface(path);
+            // 获取图片的旋转信息
+            int orientation =
+                exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation)
+            {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+                default:
+                    degree = 0;
+                    break;
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            degree = 0;
+        }
+        return degree;
+    }
+    
+    /**
+     * 将图片按照某个角度进行旋转
+     *
+     * @param bm
+     *            需要旋转的图片
+     * @param degree
+     *            旋转角度
+     * @return 旋转后的图片
+     */
+    private Bitmap rotateBitmapByDegree(Bitmap bm, int degree)
+    {
+        Bitmap returnBm = null;
+        
+        // 根据旋转角度，生成旋转矩阵
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        try
+        {
+            // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
+            returnBm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
+        }
+        catch (OutOfMemoryError e)
+        {
+        }
+        if (null == returnBm)
+        {
+            returnBm = bm;
+        }
+        if (bm != returnBm)
+        {
+            bm.recycle();
+        }
+        return returnBm;
+    }
+    
+    /**
+     * 获取图片的长度和宽度
+     * 
+     * @param bitmap
+     *            图片bitmap对象
+     * @return
+     */
+    public Bundle getBitmapWidthAndHeight(Bitmap bitmap)
+    {
+        Bundle bundle = null;
+        if (bitmap != null)
+        {
+            bundle = new Bundle();
+            bundle.putInt("width", bitmap.getWidth());
+            bundle.putInt("height", bitmap.getHeight());
+            return bundle;
+        }
+        return null;
+    }
+    
+    /**
+     * <最省内存的方式读取sd卡或者res中的资源图片，绝对不会OOM>
+     * @param FileSDpath sd文件的路径，如果是res获取资源文件就传入 null
+     * @param resId res路径 如果是获取sd卡图片就传入0
+     * @param context 程序上下文
+     * @return Bitmap
+     */
+    public Bitmap readSDorResBitmap(Context context, String FileSDpath, int resId)
+    {
+        Bitmap bitmap = null;
+        try
+        {
+            if (null == FileSDpath && 0 == resId)
+            {
+                return bitmap;
+            }
+            
+            if (null != FileSDpath)
+            {
+                byte[] bitmapByte = decodeBitmap(FileSDpath);
+                bitmap = BitmapFactory.decodeByteArray(bitmapByte, 0, bitmapByte.length);
+            }
+            else
+            {
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inPreferredConfig = Bitmap.Config.RGB_565;
+                opt.inPurgeable = true;
+                opt.inInputShareable = true;
+                opt.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
+                opt.inSampleSize = computeSampleSize(opt, -1, 1024 * 800);
+                opt.inJustDecodeBounds = false;// 这里一定要将其设置回false，因为之前我们将其设置成了true
+                //获取资源图片
+                InputStream is = context.getResources().openRawResource(resId);
+                bitmap = BitmapFactory.decodeStream(is, null, opt);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            bitmap = null;
+        }
+        return bitmap;
+    }
+    
+    public byte[] decodeBitmap(String path)
+    {
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inJustDecodeBounds = true;// 设置成了true,不占用内存，只获取bitmap宽高
+        BitmapFactory.decodeFile(path, opts);
+        opts.inSampleSize = computeSampleSize(opts, -1, 1024 * 800);
+        opts.inJustDecodeBounds = false;// 这里一定要将其设置回false，因为之前我们将其设置成了true
+        opts.inPurgeable = true;
+        opts.inInputShareable = true;
+        opts.inDither = false;
+        opts.inPurgeable = true;
+        opts.inTempStorage = new byte[16 * 1024];
+        FileInputStream is = null;
+        Bitmap bmp = null;
+        ByteArrayOutputStream baos = null;
+        try
+        {
+            is = new FileInputStream(path);
+            bmp = BitmapFactory.decodeFileDescriptor(is.getFD(), null, opts);
+            double scale = getScaling(opts.outWidth * opts.outHeight, 1024 * 600);
+            Bitmap bmp2 =
+                Bitmap.createScaledBitmap(bmp, (int)(opts.outWidth * scale), (int)(opts.outHeight * scale), true);
+            bmp.recycle();
+            baos = new ByteArrayOutputStream();
+            bmp2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bmp2.recycle();
+            return baos.toByteArray();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                is.close();
+                baos.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            System.gc();
+        }
+        return baos.toByteArray();
+    }
+    
+    private double getScaling(int src, int des)
+    {
+        /**
+         * 48 目标尺寸÷原尺寸 sqrt开方，得出宽高百分比 49
+         */
+        double scale = Math.sqrt((double)des / (double)src);
+        return scale;
+    }
+    
+    private int computeSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels)
+    {
+        int initialSize = computeInitialSampleSize(options, minSideLength, maxNumOfPixels);
+        
+        int roundedSize;
+        if (initialSize <= 8)
+        {
+            roundedSize = 1;
+            while (roundedSize < initialSize)
+            {
+                roundedSize <<= 1;
+            }
+        }
+        else
+        {
+            roundedSize = (initialSize + 7) / 8 * 8;
+        }
+        
+        return roundedSize;
+    }
+    
+    private int computeInitialSampleSize(BitmapFactory.Options options, int minSideLength, int maxNumOfPixels)
+    {
+        double w = options.outWidth;
+        double h = options.outHeight;
+        
+        int lowerBound = (maxNumOfPixels == -1) ? 1 : (int)Math.ceil(Math.sqrt(w * h / maxNumOfPixels));
+        int upperBound =
+            (minSideLength == -1) ? 128 : (int)Math.min(Math.floor(w / minSideLength), Math.floor(h / minSideLength));
+        
+        if (upperBound < lowerBound)
+        {
+            return lowerBound;
+        }
+        
+        if ((maxNumOfPixels == -1) && (minSideLength == -1))
+        {
+            return 1;
+        }
+        else if (minSideLength == -1)
+        {
+            return lowerBound;
+        }
+        else
+        {
+            return upperBound;
+        }
+    }
+    
+    /**
+     * <截屏并保存图片>
+     */
+    public File screenShotsImage(Activity context, String path)
+        throws Exception
+    {
+        //1.获取屏幕Bitmap 
+        View decorview = context.getWindow().getDecorView();
+        decorview.setDrawingCacheEnabled(true);
+        decorview.buildDrawingCache();
+        Bitmap Bmp = decorview.getDrawingCache();
+        
+        //2.去掉标题栏 构建Bitmap 
+        Rect frame = new Rect();
+        context.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+        Bmp =
+            Bitmap.createBitmap(Bmp,
+                0,
+                statusBarHeight,
+                DensityUtil.getInstance().getDisplayWidth(context),
+                DensityUtil.getInstance().getDisplayHeight(context) - statusBarHeight);
+        
+        //3.保存Bitmap  
+        File rootFile = FileUtil.getInstance().createDirectory(path);
+        File pathFile =
+            FileUtil.getInstance().createNewFile(rootFile.getAbsolutePath() + File.separator
+                + MyFrameCoreTools.getInstance().getUUID() + ".png");
+        FileOutputStream fos = new FileOutputStream(pathFile);
+        Bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        fos.flush();
+        fos.close();
+        
+        //4.销毁缓存信息
+        decorview.destroyDrawingCache();
+        if (null != Bmp && !Bmp.isRecycled())
+        {
+            Bmp.recycle();
+            Bmp = null;
+        }
+        return pathFile;
+    }
+}

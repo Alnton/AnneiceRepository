@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg" >
+
+    <ImageView
+        android:id="@+id/adImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ad_page" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/px40"
+        android:layout_marginTop="@dimen/px40"
+        android:background="@mipmap/btn_jump_100"
+        android:gravity="bottom|center_horizontal"
+        android:paddingBottom="5dp"
+        android:textColor="@color/typeface_four"
+        android:textSize="@dimen/size32" />
+
+</RelativeLayout>

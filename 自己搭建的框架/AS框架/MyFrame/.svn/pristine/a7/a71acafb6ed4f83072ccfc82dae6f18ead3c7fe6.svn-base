@@ -1,0 +1,218 @@
+package com.alnton.myframe.application;
+
+import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
+import android.view.LayoutInflater;
+
+import com.alnton.myframe.R;
+import com.alnton.myframe.config.Config.FilePathConfig;
+import com.alnton.myframe.ui.pay.qq.QQConstants;
+import com.alnton.myframe.wxapi.WXConstants;
+import com.alnton.myframecore.okhttp.OKHttpUtil;
+import com.alnton.myframecore.util.DebugLogUtil;
+import com.alnton.myframecore.util.FileUtil;
+import com.alnton.myframecore.util.ImageUtil;
+import com.alnton.myframecore.util.SharedPreferencesUtil;
+import com.google.gson.Gson;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.tauth.Tencent;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import cn.jpush.android.api.JPushInterface;
+
+/**
+ * <存放应用程序级的全局变量>
+ *
+ * @author 王乾州
+ */
+public class Session extends Application {
+    /**
+     * 单例模式
+     */
+    public static Session instance;
+
+    /**
+     * 缓存各个Activity，目的是为了完全退出应用
+     */
+    private LinkedList<Activity> activityList;
+
+    /**
+     * IWXAPI 是第三方app和微信通信的openapi接口
+     */
+    public IWXAPI wxAPI;
+
+    /**
+     * QQ登录
+     */
+    public Tencent mTencent;
+
+    /**
+     * 是否对报文进行加解密
+     * true:  加密
+     * false: 不加密
+     */
+    public boolean isEncode;
+
+    /**
+     * “00” – 银联正式环境
+     * “01” – 银联测试环境，该环境中不发生真实交易
+     */
+    public String serverMode;
+
+    /**
+     * 布局反射器
+     */
+    public LayoutInflater inflater;
+
+    /**
+     * SharedPreferences工具类
+     */
+    public SharedPreferencesUtil sharedPreferencesUtil;
+
+    /**
+     * Gson 工具
+     */
+    public Gson gson;
+
+    public static Session getInstance() {
+
+        return instance;
+    }
+
+    @Override
+    public void onCreate() {
+        /**
+         * 初始化数据
+         */
+        initData();
+
+        super.onCreate();
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
+        instance = this;
+
+        //初始化ImageLoader
+        ImageUtil.getInstance().initImageLoader(this, FilePathConfig.imageFileDirectory, R.mipmap.default_pic);
+
+        // 是否打印调试的程序日志
+        DebugLogUtil.ISDEBUG = true;
+
+        // 程序出现的崩溃是否写入SD卡
+//        CrashHandler.getInstance().init(this, FilePathConfig.logFileDirectory, URLConfig.UPLOAD_EXCEPTION_URL);
+
+        /**
+         * 是否对报文进行加解密  默认为true 加密
+         */
+        isEncode = true;
+
+        // 银联是否是正式环境
+        serverMode = "00";
+
+        /**
+         * 初始化OkHttp3
+         * headerM: 统一对请求添加头信息 header分为两种
+         * 1： 固定头信息 可以通过下面方式定义Map把头信息放进去
+         * 2:  动态改变的 比如Tokenid是动态的,就需要在改变的业务代码地方修改
+         * 比如 用户登录成功后添加头      则：OKHttpUtil.instance.headerMap.put("key","value");
+         *      用户退出登录tokenid消失  则：OKHttpUtil.instance.headerMap.remove("key");
+         */
+        HashMap<String, String> headerM = new HashMap<String, String>();
+        headerM.put("header_key", "header_value");
+        OKHttpUtil.instance.init(this.getApplicationContext(), isEncode, headerM);
+
+        /**
+         * 刚开始就把根目录文件夹创建好
+         */
+        FileUtil.getInstance().createDirectory(FilePathConfig.projectFileDirectory);
+
+        /**
+         * 初始化 JPush
+         */
+        JPushInterface.init(this);
+
+        /**
+         * 通过WXAPIFactory工厂，获取IWXAPI的实例
+         * checkSignature(最后一个参数):Check whether the WeChat client uses official signature
+         * 是否检查是否官方微信客户端使用签名 设置为false 不检查
+         */
+        wxAPI = WXAPIFactory.createWXAPI(this, WXConstants.APP_ID, false);
+
+        /**
+         * 将应用的APPID注册到微信
+         */
+        wxAPI.registerApp(WXConstants.APP_ID);
+
+        /**
+         * 初始化Tencent 
+         */
+        mTencent = Tencent.createInstance(QQConstants.QQ_APPID, this);
+
+        activityList = new LinkedList<Activity>();
+
+        inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        sharedPreferencesUtil = new SharedPreferencesUtil(this, MODE_PRIVATE);
+
+        gson = new Gson();
+    }
+
+    /**
+     * <添加Activity到容器中>
+     */
+    public void addActivity(Activity activity) {
+        activityList.add(activity);
+    }
+
+    /**
+     * <遍历所有Activity并finish>
+     */
+    public void exit() {
+        for (Activity activity : activityList) {
+            activity.finish();
+        }
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    /**
+     * 根据名字移除Activity
+     */
+    public void removeActivityByName(String... activityName) {
+        for (Activity activity : activityList) {
+            for (String string : activityName) {
+                if (null != activity && activity.getClass().getSimpleName().equals(string)) {
+                    activity.finish();
+                }
+            }
+        }
+    }
+
+    /**
+     * 移除全部的不是首页的Activity
+     */
+    public void removeNotMainActivity() {
+        for (Activity activity : activityList) {
+            if (null != activity && !activity.getClass().getSimpleName().equals("MainActivity")) {
+                activity.finish();
+            }
+        }
+    }
+
+    /**
+     * 得到activityList 的大小
+     */
+    public int getActivityListSize() {
+        if (null != activityList) {
+            return activityList.size();
+        } else {
+            return 0;
+        }
+    }
+}

@@ -1,0 +1,509 @@
+package com.alnton.myFrameCore.util;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.net.Uri;
+import android.text.TextUtils;
+
+/**
+ * <用于存放所有公共的方法>
+ * @author 王乾州
+ */
+@SuppressLint("SimpleDateFormat")
+public class MyFrameCoreTools
+{
+    private static MyFrameCoreTools tools;
+    
+    public static MyFrameCoreTools getInstance()
+    {
+        if (null == tools)
+        {
+            tools = new MyFrameCoreTools();
+        }
+        return tools;
+    }
+    
+    /**
+     * <格式化字符串对象，去掉null>
+     */
+    public String formatString(String content)
+    {
+        if (TextUtils.isEmpty(content) || "null".equalsIgnoreCase(content) || "(null)".equals(content.trim()))
+        {
+            return "";
+        }
+        else
+        {
+            return content;
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * @param Date
+     * 格式：yyyy-MM-dd HH:mm:ss
+     */
+    public String formatTime(Date time)
+    {
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return sdf.format(time);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * @param long
+     * 格式：yyyy-MM-dd HH:mm:ss
+     */
+    public String formatTime(long time)
+    {
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return sdf.format(time);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * @param long
+     * 格式：yyyy-MM-dd HH:mm
+     */
+    public String formatTimeToYMDHM(long time)
+    {
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            return sdf.format(time);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * @param String
+     * 格式：yyyy-MM-dd HH:mm:ss
+     */
+    public long formatTime(String time)
+    {
+        try
+        {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return format.parse(time).getTime();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * @param String
+     * 格式：yyyy-MM-dd
+     */
+    public long formatTimeByYMD(String time)
+    {
+        try
+        {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            return format.parse(time).getTime();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * 格式：mm:ss
+     */
+    public String formatShowTimeToMS(long time)
+    {
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+            return sdf.format(time);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * 格式：HH:mm:ss
+     */
+    public String formatShowTimeToHMS(long time)
+    {
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            return sdf.format(time);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    
+    /**
+     * <格式化时间>
+     * 格式：yyyy-MM-dd
+     */
+    public String formatShowTimeToYMD(long time)
+    {
+        try
+        {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            return sdf.format(time);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    
+    /**
+     * <获取本软件的版本号>
+     */
+    public int getVersionCode(Context context)
+    {
+        PackageInfo packageInfo = null;
+        
+        int versionCode = 0;
+        
+        try
+        {
+            packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName().toString(), 0);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        if (null != packageInfo)
+        {
+            versionCode = packageInfo.versionCode;
+        }
+        return versionCode;
+    }
+    
+    /**
+     * <获取本软件的版本名>
+     */
+    public String getVersionName(Context context)
+    {
+        PackageInfo packageInfo = null;
+        
+        String versionName = "1.0";
+        
+        try
+        {
+            packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName().toString(), 0);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        if (null != packageInfo)
+        {
+            versionName = packageInfo.versionName;
+        }
+        return versionName;
+    }
+    
+    /**
+     * 用来判断服务是否运行. 
+     * @param context 
+     * @param className 判断的服务名字 
+     * @return true 在运行   false 不在运行 
+     */
+    public boolean isServiceRunning(Context mContext, String className)
+    {
+        boolean isRunning = false;
+        ActivityManager activityManager = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(30);
+        if (!(serviceList.size() > 0))
+        {
+            return false;
+        }
+        for (int i = 0; i < serviceList.size(); i++)
+        {
+            if (serviceList.get(i).service.getClassName().contains(className))
+            {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
+    }
+    
+    /**
+     * 用来判断某个Activity是否在栈顶运行. 
+     * @param context 
+     * @param className 判断的Activity名字 
+     * @return true 在运行   false 不在运行 
+     */
+    public boolean isRunningOnTopActivity(Context mContext, String className)
+    {
+        boolean isRunning = false;
+        
+        ActivityManager activityManager = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        ComponentName cn = activityManager.getRunningTasks(1).get(0).topActivity;
+        
+        if (null != cn && cn.getClassName().contains(className))
+        {
+            isRunning = true;
+        }
+        return isRunning;
+    }
+    
+    /**
+     * <毫秒转化成字符串时间 00:00>
+     * @param time:时间的毫秒表示
+     * @author 王乾州
+     */
+    public String longTimeToString(int time)
+    {
+        StringBuilder sb = new StringBuilder();
+        time = time / 1000;
+        int m = time / 60;
+        int s = time % 60;
+        if (time >= 60)
+        {
+            if (m < 10)
+            {
+                sb.append("0");
+                sb.append(String.valueOf(m));
+            }
+            else
+            {
+                sb.append(String.valueOf(m));
+            }
+            sb.append(":");
+            if (s > 9)
+            {
+                sb.append(String.valueOf(s));
+            }
+            else
+            {
+                sb.append("0");
+                sb.append(String.valueOf(s));
+            }
+        }
+        else
+        {
+            sb.append("00:");
+            if (s > 9)
+            {
+                sb.append(String.valueOf(s));
+            }
+            else
+            {
+                sb.append("0");
+                sb.append(String.valueOf(s));
+            }
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * 生成指定不重复的随机数
+     * 
+     * @param begin
+     *            开始数字
+     * @param end
+     *            结束数字
+     * @param count
+     *            共生成即为
+     * @return
+     */
+    public int[] getRandomArray(int begin, int end, int count)
+    {
+        int length = end - begin;
+        if (count > length)
+        {
+            throw new RuntimeException("IllegalArgumentsException: " + "\"count\" shoud NOT greater than (end - benin)");
+        }
+        // 顺序递增的数组
+        int[] ori = new int[length];
+        for (int i = 0; i < length; i++)
+        {
+            ori[i] = i + begin;
+        }
+        
+        int[] array = new int[count];
+        int index, temp;
+        Random random = new Random();
+        for (int i = 0; i < count; i++)
+        {
+            // 从ori中随机取值，赋给array
+            index = random.nextInt(length);
+            array[i] = ori[index];
+            // 把取过的ori数组中的元素跟数组中的最后一个元素交换位置
+            temp = ori[index];
+            ori[index] = ori[length - 1];
+            ori[length - 1] = temp;
+            // 数组长度减1，下次循环将从剩下的值中继续随机抽取
+            length--;
+        }
+        
+        return array;
+    }
+    
+    /** 
+     * byte(字节)根据长度转成kb(千字节)和mb(兆字节) 
+     * @param bytes 
+     * @return 
+     */
+    public String bytesTokb(long bytes)
+    {
+        BigDecimal filesize = new BigDecimal(bytes);
+        BigDecimal megabyte = new BigDecimal(1024 * 1024);
+        float returnValue = filesize.divide(megabyte, 2, BigDecimal.ROUND_UP).floatValue();
+        if (returnValue > 1)
+            return (returnValue + "MB");
+        BigDecimal kilobyte = new BigDecimal(1024);
+        returnValue = filesize.divide(kilobyte, 2, BigDecimal.ROUND_UP).floatValue();
+        return (returnValue + "KB");
+    }
+    
+    /**
+     * 打开文件
+     * @param file
+     */
+    public void openFile(Context context, File file)
+    {
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //设置intent的Action属性 
+        intent.setAction(Intent.ACTION_VIEW);
+        //获取文件file的MIME类型 
+        String type = getMIMEType(file);
+        //设置intent的data和Type属性。 
+        intent.setDataAndType(Uri.fromFile(file), type);
+        //跳转 
+        context.startActivity(intent);
+    }
+    
+    /**
+     * 根据文件后缀名获得对应的MIME类型。
+     * @param file
+     */
+    private String getMIMEType(File file)
+    {
+        String type = "*/*";
+        String fName = file.getName();
+        //获取后缀名前的分隔符"."在fName中的位置。 
+        int dotIndex = fName.lastIndexOf(".");
+        if (dotIndex < 0)
+        {
+            return type;
+        }
+        /* 获取文件的后缀名*/
+        String end = fName.substring(dotIndex, fName.length()).toLowerCase();
+        if (end == "")
+            return type;
+        //在MIME和文件类型的匹配表中找到对应的MIME类型。 
+        for (int i = 0; i < MIME_MapTable.length; i++)
+        { //MIME_MapTable??在这里你一定有疑问，这个MIME_MapTable是什么？ 
+            if (end.equals(MIME_MapTable[i][0]))
+                type = MIME_MapTable[i][1];
+        }
+        return type;
+    }
+    
+    private final String[][] MIME_MapTable = {
+        //{后缀名，MIME类型} 
+        {".3gp", "video/3gpp"}, {".apk", "application/vnd.android.package-archive"}, {".asf", "video/x-ms-asf"},
+        {".avi", "video/x-msvideo"}, {".bin", "application/octet-stream"}, {".bmp", "image/bmp"}, {".c", "text/plain"},
+        {".class", "application/octet-stream"}, {".conf", "text/plain"}, {".cpp", "text/plain"},
+        {".doc", "application/msword"},
+        {".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
+        {".xls", "application/vnd.ms-excel"},
+        {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+        {".exe", "application/octet-stream"}, {".gif", "image/gif"}, {".gtar", "application/x-gtar"},
+        {".gz", "application/x-gzip"}, {".h", "text/plain"}, {".htm", "text/html"}, {".html", "text/html"},
+        {".jar", "application/java-archive"}, {".java", "text/plain"}, {".jpeg", "image/jpeg"}, {".jpg", "image/jpeg"},
+        {".js", "application/x-javascript"}, {".log", "text/plain"}, {".m3u", "audio/x-mpegurl"},
+        {".m4a", "audio/mp4a-latm"}, {".m4b", "audio/mp4a-latm"}, {".m4p", "audio/mp4a-latm"},
+        {".m4u", "video/vnd.mpegurl"}, {".m4v", "video/x-m4v"}, {".mov", "video/quicktime"}, {".mp2", "audio/x-mpeg"},
+        {".mp3", "audio/x-mpeg"}, {".mp4", "video/mp4"}, {".mpc", "application/vnd.mpohun.certificate"},
+        {".mpe", "video/mpeg"}, {".mpeg", "video/mpeg"}, {".mpg", "video/mpeg"}, {".mpg4", "video/mp4"},
+        {".mpga", "audio/mpeg"}, {".msg", "application/vnd.ms-outlook"}, {".ogg", "audio/ogg"},
+        {".pdf", "application/pdf"}, {".png", "image/png"}, {".pps", "application/vnd.ms-powerpoint"},
+        {".ppt", "application/vnd.ms-powerpoint"},
+        {".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation"},
+        {".prop", "text/plain"}, {".rc", "text/plain"}, {".rmvb", "audio/x-pn-realaudio"}, {".rtf", "application/rtf"},
+        {".sh", "text/plain"}, {".tar", "application/x-tar"}, {".tgz", "application/x-compressed"},
+        {".txt", "text/plain"}, {".wav", "audio/x-wav"}, {".wma", "audio/x-ms-wma"}, {".wmv", "audio/x-ms-wmv"},
+        {".wps", "application/vnd.ms-works"}, {".xml", "text/plain"}, {".z", "application/x-compress"},
+        {".zip", "application/x-zip-compressed"}, {"", "*/*"}};
+    
+    /**
+     * <获取四位数字随机数>
+     * 首先，Math.random()取值范围是[0,1)
+     * 那么Math.random()*9000的取值范围是[0,9000);
+     * 那么Math.random()*9000+1000的取值范围是[1000,10000)。
+     */
+    public String getRandom4()
+    {
+        String rand = "0000";
+        try
+        {
+            int d = (int)(Math.random() * 9000) + 1000;
+            rand = String.valueOf(d);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            rand = "0000";
+        }
+        return rand;
+    }
+    
+    /**
+     * <获取UUID>
+     */
+    public String getUUID()
+    {
+        String s = UUID.randomUUID().toString();
+        //去掉“-”符号
+        return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23);
+    }
+}

@@ -1,0 +1,53 @@
+package com.alnton.myframe.util;
+
+import android.app.Dialog;
+import android.view.View;
+
+import com.alnton.myframe.R;
+import com.alnton.myframe.application.Session;
+
+/**
+ * <加载耗时操作时的进度对话框工具类>
+ * @author  王乾州
+ * @createon 2016-9-21
+ */
+public enum ProgressDialogUtil
+{
+    instance;
+    
+    ProgressDialogUtil()
+    {
+        
+    }
+    
+    /**
+     * 自定义dialog
+     */
+    private Dialog progressDialog;
+    
+    /**
+     * 加载dialog
+     */
+    public void showProgressDialog()
+    {
+        if (null == progressDialog)
+        {
+            View view = Session.getInstance().inflater.inflate(R.layout.load_dialog, null);
+            progressDialog = new Dialog(Session.getInstance().getApplicationContext(), R.style.FullScreenDialog);
+            progressDialog.setContentView(view);
+            progressDialog.show();
+        }
+    }
+    
+    /**
+     * 隐藏加载的dialog
+     */
+    public void dismissProgressDialog()
+    {
+        if (null != progressDialog)
+        {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+    }
+}

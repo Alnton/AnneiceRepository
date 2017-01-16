@@ -1,0 +1,193 @@
+package com.alnton.myframe.util.http2;
+
+import java.io.UnsupportedEncodingException;
+
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+
+import android.content.Context;
+import android.view.View;
+
+import com.alnton.myFrameCore.util.DebugLogUtil;
+import com.alnton.myframe.util.http2.config.CallbackConfig;
+import com.alnton.myframe.util.http2.config.RequestConfig;
+
+/**
+ * <HTTP请求接口工具类>
+ * @author  王乾州
+ * @param <T>
+ */
+public class Request
+{
+	/**
+	 * 上下文
+	 */
+	private Context context;
+	
+    /**
+     * 请求地址
+     */
+	private String url;
+	
+	/**
+	 * json参数类
+	 */
+	private RequestJsonParams requestJsonParams;
+	
+	/**
+	 * json参数类
+	 */
+	private String jsonValue;
+	
+	/**
+	 * get请求参数
+	 */
+	private StringBuffer paramsBuffer ;
+	
+	/**
+	 * 请求回调的统一配置
+	 */
+	private CallbackConfig callbackConfig;
+	
+	/**
+	 * <p>HTTP请求接口工具类</p>   
+	 * @param context
+	 */
+	public Request(Context context){
+		this.context = context;
+		this.requestJsonParams = new RequestJsonParams();
+		this.callbackConfig = new CallbackConfig(this.context);
+	}
+	
+	/**
+	 * @Description: 设置请求主题 
+	 * @param isShowProgressDialog 是否弹出showProgressDialog 默认 true 弹出
+	 * @param isOnFailureShowToast 当回调onFailure时是否弹出showToast 默认 true 弹出
+	 */
+	public Request setTheme (boolean isShowProgressDialog,boolean isOnFailureShowToast){
+		this.callbackConfig.setTheme(isShowProgressDialog, isOnFailureShowToast);
+		return this;
+	}
+	
+	/**
+	 * @Description: 设置请求主题（设置这个主题会自动的把isShowToast=false,isOnFailureShowToast=false）  
+	 * @param isShowProgressDialog 是否弹出showProgressDialog （如果是列表界面，使用谷歌自带的下拉刷新动画）
+	 * @param noDataView 显示访问服务器暂无数据时的布局
+	 * @param retryView 显示访问服务器错误时的布局
+	 */
+	public Request setTheme(boolean isShowProgressDialog,View noDataView,View retryView){
+		this.callbackConfig.setTheme(isShowProgressDialog, noDataView, retryView);
+		return this;
+	}
+	
+	
+	/**
+	 * @Description: 设置请求地址
+	 * @param url
+	 * @return
+	 */
+	public Request url(String url){
+		this.url = url;
+		return this;
+	}
+	
+	/**
+	 * @Description: (post)添加Json请求参数 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Request addJsonParams(String key,String value){
+		this.requestJsonParams.put(key, value);
+		return this;
+	}
+	
+	/**
+	 * @Description: (post)添加Json请求参数 
+	 * @param value
+	 * @return
+	 */
+	public Request addJsonParams(String jsonValue){
+		this.jsonValue = jsonValue;
+		return this;
+	}
+	
+	/**
+	 * @Description: (get)添加请求参数 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public Request addParams(String key,String value){
+		if(null==this.paramsBuffer){//第一次初始化StringBuffer
+			this.paramsBuffer = new StringBuffer();
+			this.paramsBuffer.append(url);
+			this.paramsBuffer.append("?");
+		}
+		//是否对key、value进行编码
+		this.paramsBuffer.append(RequestConfig.instance.encode(key));
+		this.paramsBuffer.append("=");
+		this.paramsBuffer.append(RequestConfig.instance.encode(value));
+		return this;
+	} 
+	
+	/**
+	 * @param <T>
+	 * @Description: 传json数据的post请求 
+	 * @param callback
+	 */
+	public  <T> void executeJsonPost(Callback<T> callback){
+		
+		DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "\n" + 
+						"requestJsonParams:" + requestJsonParams.toString()+
+						"\n"+"JsonValue："+jsonValue);
+		
+		//判断是通过哪个方法设置参数的
+		String requestContent="";
+		if(null==this.jsonValue){
+			requestContent = this.requestJsonParams.toString();
+		}else{
+			requestContent = this.jsonValue;
+		}
+		
+		try {
+			//设置参数
+			ByteArrayEntity byteArrayEntity = new ByteArrayEntity(new String(RequestConfig.instance.encode(requestContent).getBytes(), "utf-8").getBytes());
+			byteArrayEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+			
+			CallbackText<T> callbackText = new CallbackText<T>(this.callbackConfig, callback);
+			
+			
+			//请求服务器
+			RequestConfig.instance.getmClient()
+			.post(this.context, this.url, byteArrayEntity, "application/json", callbackText);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * get请求服务器
+	 * @param <T>
+	 * @param callback
+	 * @Description: TODO
+	 */
+	public  <T> void executeGet(Callback<T> callback){
+		DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url );
+		
+		String newUrl="";
+		if(null!=this.paramsBuffer){//有参数的get请求
+			newUrl = this.paramsBuffer.toString();
+		}else{//无参数的get请求
+			newUrl = this.url;
+		}
+		//设置回调
+		CallbackText<T> callbackText = new CallbackText<T>(this.callbackConfig,callback);
+		//请求服务器
+		RequestConfig.instance.getmClient().get(newUrl, callbackText);
+		
+	}
+    
+}

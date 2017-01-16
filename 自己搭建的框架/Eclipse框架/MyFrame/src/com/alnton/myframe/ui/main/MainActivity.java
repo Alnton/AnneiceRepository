@@ -1,0 +1,337 @@
+package com.alnton.myframe.ui.main;
+
+import java.util.ArrayList;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+
+import com.alnton.myFrameResource.adapter.viewpager.MyFragmentPagerAdapter;
+import com.alnton.myFrameResource.entity.TabInfo;
+import com.alnton.myFrameResource.view.ViewPagerCompat;
+import com.alnton.myframe.R;
+import com.alnton.myframe.adapter.MainTabAdapter;
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.config.FusionCode;
+import com.alnton.myframe.fragment.BaseFragmentActivity;
+import com.alnton.myframe.ui.main.grid.GridFragment;
+import com.alnton.myframe.ui.main.homePage.HomepageFragment;
+import com.alnton.myframe.ui.main.myInfo.MyinfoFragment;
+import com.alnton.myframe.ui.main.trolley.TrolleyFragment;
+import com.alnton.myframe.util.ToastUtil;
+import com.alnton.myframe.util.updateSoft.UpdateSoftUtil;
+
+/**
+ * <主界面>
+ * @author 王乾州
+ */
+public class MainActivity extends BaseFragmentActivity implements OnItemClickListener
+{
+    /**
+     * FragmentManager 管理
+     */
+    public FragmentManager fragmentManager;
+    
+    /**
+     * 标签的左右滑动切换
+     */
+    public ViewPagerCompat myViewPager;
+    
+    /**
+     * 滑动页面适配器
+     */
+    public MyFragmentPagerAdapter myViewPagerAdapter;
+    
+    /**
+     * tab集合
+     */
+    public ArrayList<TabInfo> tabInfoList;
+    
+    /**
+     * 底部标签图片适配器
+     */
+    private MainTabAdapter tabAdapter;
+    
+    /**
+     * 缓存之前点击的tab
+     */
+    private int cacheTabIndex;
+    
+    /**
+     * 盛放底部图片的GridView
+     */
+    private GridView bottomMainPage;
+    
+    /**
+     * 连续按两次返回键就退出
+     */
+    private long firstTime;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        if (null == savedInstanceState)
+        {
+            /**
+             * 检测版本更新
+             */
+            UpdateSoftUtil.instance.isUpdateSoft(mContext);
+        }
+        
+        /**
+         * 初始化View
+         */
+        initView();
+        
+        /**
+         * 初始化标签
+         */
+        loadTab();
+        
+        /**
+         * 加载数据
+         */
+        loadView();
+        
+        /**
+         * 设置监听事件
+         */
+        setListener();
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        /**
+         * 当软件被内存回收时候 给他一些数据 防止版本更新方法再次执行
+         */
+        outState.putString("Alnton", "Alnton");
+    }
+    
+    private void initView()
+    {
+        fragmentManager = getSupportFragmentManager();
+        
+        myViewPager = (ViewPagerCompat)findViewById(R.id.myViewpager);
+        /**
+         * 禁止左右滑动
+         */
+        myViewPager.setViewTouchMode(true);
+        
+        bottomMainPage = (GridView)this.findViewById(R.id.tabGridView);
+    }
+    
+    /**
+     * 初始化标签
+     */
+    private void loadTab()
+    {
+        tabInfoList = new ArrayList<TabInfo>();
+            
+        for (int i = 0; i < 4; i++)
+        {
+            TabInfo tabInfo = new TabInfo();
+            tabInfo.setIndex(i);
+            switch (i)
+            {
+                case 0:
+                    /**
+                     * 首页
+                     */
+                    tabInfo.setName(getString(R.string.homePage));
+                    tabInfo.setIcon(R.drawable.menu_home_on);
+                    tabInfo.setFragment(new HomepageFragment());
+                    break;
+                
+                case 1:
+                    /**
+                     * 进货单
+                     */
+                    tabInfo.setName(getString(R.string.trolley));
+                    tabInfo.setIcon(R.drawable.menu_shopcar_off);
+                    tabInfo.setFragment(new TrolleyFragment());
+                    break;
+                
+                case 2:
+                    /**
+                     * 分类
+                     */
+                    tabInfo.setName(getString(R.string.grid));
+                    tabInfo.setIcon(R.drawable.menu_class_off);
+                    tabInfo.setFragment(new GridFragment());
+                    break;
+                
+                case 3:
+                    /**
+                     * 买家个人中心
+                     */
+                    tabInfo.setName(getString(R.string.myInfo));
+                    tabInfo.setIcon(R.drawable.menu_user_off);
+                    tabInfo.setFragment(new MyinfoFragment());
+                    break;
+                default:
+                    break;
+            }
+            tabInfoList.add(tabInfo);
+        }
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            switch (requestCode)
+            {
+                case FusionCode.REQUEST_CODE_SCAN:
+                    /**
+                     * 扫描二维码/条码回传
+                     */
+                    if (data != null)
+                    {
+                        String content = data.getStringExtra(FusionCode.getInstance().DECODED_CONTENT_KEY);
+                        //                        Bitmap bitmap = data.getParcelableExtra(DECODED_BITMAP_KEY);
+                        
+                        if (TextUtils.isEmpty(content))
+                        {
+                            ToastUtil.instance.showToast(mContext, "二维码无效");
+                        }
+                        else
+                        {
+                        }
+                    }
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    
+    /**
+     * 加载数据
+     */
+    private void loadView()
+    {
+        /**
+         * 填充底部标签适配器
+         */
+        tabAdapter = new MainTabAdapter(mContext, tabInfoList);
+        bottomMainPage.setAdapter(tabAdapter);
+        
+        /**
+         * 加载标签对应的Fragment适配器
+         */
+        myViewPagerAdapter = new MyFragmentPagerAdapter(this, fragmentManager, tabInfoList);
+        myViewPager.setAdapter(myViewPagerAdapter);
+        myViewPager.setOffscreenPageLimit(tabInfoList.size());
+    }
+    
+    /**
+     * 刷新底部右上角小图标
+     * @param isShowshape：true显示 false隐藏
+     * @param shape：小图标里面的内容
+     */
+    public void showShape(boolean isShowshape, int shape)
+    {
+        try
+        {
+            tabAdapter.setShape(isShowshape, shape);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setListener()
+    {
+        bottomMainPage.setOnItemClickListener(this);
+        
+        myViewPager.setOnPageChangeListener(new OnPageChangeListener()
+        {
+            
+            @Override
+            public void onPageSelected(int index)
+            {
+                /* activity从1到2滑动，2被加载后掉用此方法 */
+                tabAdapter.setFocus(cacheTabIndex, index);
+                cacheTabIndex = index;
+            }
+            
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2)
+            {
+                /* 从1到2滑动，在1滑动前调用 */
+            }
+            
+            @Override
+            public void onPageScrollStateChanged(int arg0)
+            {
+                // 状态有三个0空闲，1是正在滑行中，2目标加载完毕
+                /**
+                 * Indicates that the pager is in an idle, settled state. The
+                 * current page is fully in view and no animation is in
+                 * progress.
+                 */
+                // public static final int SCROLL_STATE_IDLE = 0;
+                /**
+                 * Indicates that the pager is currently being dragged by the
+                 * user.
+                 */
+                // public static final int SCROLL_STATE_DRAGGING = 1;
+                /**
+                 * Indicates that the pager is in the process of settling to a
+                 * final position.
+                 */
+                // public static final int SCROLL_STATE_SETTLING = 2;
+            }
+        });
+    }
+    
+    @Override
+    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+    {
+        switchPage(position);
+    }
+    
+    /**
+     * 根据索引打开指定的界面
+     */
+    public void switchPage(int id)
+    {
+        myViewPager.setCurrentItem(id);
+        tabAdapter.setFocus(cacheTabIndex, id);
+        cacheTabIndex = id;
+    }
+    
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+    }
+    
+    @Override
+    public void onBackPressed()
+    {
+        if ((System.currentTimeMillis() - firstTime) > 3000)
+        {
+            ToastUtil.instance.showToast(mContext, R.string.exitWarn);
+            firstTime = System.currentTimeMillis();
+        }
+        else
+        {
+            Session.getInstance().exit();
+        }
+    }
+}

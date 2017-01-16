@@ -1,0 +1,26 @@
+package com.alnton.unitTest;
+
+import com.alnton.myframecore.application.CacheSession;
+import com.alnton.myframecore.okhttp.OKHttpUtil;
+
+import org.junit.Test;
+
+/**
+ * OKHttp3  使用案例
+ * 作者：${王乾州} on 2016/10/27 16:00
+ */
+public class UseCase {
+
+    static {
+        OKHttpUtil.instance.init(CacheSession.getInstance().getApplicationContext(),CacheSession.getInstance().getCacheDir(), false, true, null);
+    }
+
+    /**
+     * 测试直接获取字符串
+     */
+    @Test
+    public void getString() {
+        System.out.println("onGetString: " + OKHttpUtil.instance.onGetString("http://www.baidu.com"));
+    }
+
+}

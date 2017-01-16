@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg" >
+
+    <!-- 头部区域 -->
+
+    <RelativeLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px280"
+        >
+        
+        <!-- 顶部banner -->
+        <ImageView 
+            android:id="@+id/bannerImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@mipmap/top_banner_img"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@mipmap/search_bg_black" >
+
+            <!-- 扫一扫区域 -->
+
+            <LinearLayout
+                android:id="@+id/scanLayout"
+                android:layout_width="60dip"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ico_scan_code" />
+
+                <TextView
+                    style="@style/white_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan" />
+            </LinearLayout>
+
+            <!-- 消息区域 -->
+
+            <LinearLayout
+                android:id="@+id/messageLayout"
+                android:layout_width="60dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ico_message" />
+
+                <TextView
+                    style="@style/white_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/message" />
+            </LinearLayout>
+
+            <!-- 搜索宝贝区域 -->
+
+            <TextView
+                android:id="@+id/searchTextView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px64"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/messageLayout"
+                android:layout_toRightOf="@id/scanLayout"
+                android:background="@drawable/input_bg"
+                android:gravity="center_vertical"
+                android:hint="@string/search_hint"
+                android:paddingLeft="@dimen/px20"
+                android:paddingRight="@dimen/px20"
+                android:singleLine="true"
+                android:textColor="@color/typeface_eight"
+                android:textColorHint="@color/typeface_eight"
+                android:textSize="@dimen/size28" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>

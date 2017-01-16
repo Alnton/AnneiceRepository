@@ -1,0 +1,279 @@
+package com.alnton.myframe.adapter;
+
+import java.util.ArrayList;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.alnton.myFrameResource.entity.TabInfo;
+import com.alnton.myframe.R;
+import com.alnton.myframe.config.Config.SystemParamCfg;
+import com.alnton.myframe.util.ViewUtil;
+
+/**
+ * <主界面底部标签适配器>
+ * @author  王乾州
+ */
+public class MainTabAdapter extends BaseAdapter
+{
+    /**
+     * 应用程序上下文
+     */
+    private Context mContext;
+    
+    /**
+     * 标签集合
+     */
+    private ArrayList<TabInfo> tabInfoList;
+    
+    /**
+     * 文本标签控件数组,右上角数字
+     */
+    public TextView[] mTextView, shapeTextView;
+    
+    /**
+     * 图标标签控件数组
+     */
+    private ImageView[] mImageView;
+    
+    /**
+     * 布局反射器
+     */
+    public LayoutInflater inflater;
+    
+    public MainTabAdapter(Context context, ArrayList<TabInfo> tabInfoList)
+    {
+        this.mContext = context;
+        this.tabInfoList = tabInfoList;
+        mTextView = new TextView[tabInfoList.size()];
+        shapeTextView = new TextView[tabInfoList.size()];
+        mImageView = new ImageView[tabInfoList.size()];
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+    
+    public final class ViewHolder
+    {
+        /**
+         * 标签文本控件，右上角数字图标
+         */
+        public TextView mHomePageBottomTV, redTextView;
+        
+        /**
+         * 标签图标控件
+         */
+        public ImageView mHomePageBottomIV;
+        
+        /**
+         * 标签文本
+         */
+        public String tabStr;
+        
+        /**
+         * 标签图标id
+         */
+        public int tabIcon;
+    }
+    
+    @Override
+    public int getCount()
+    {
+        return tabInfoList.size();
+    }
+    
+    @Override
+    public Object getItem(int position)
+    {
+        return tabInfoList.get(position);
+    }
+    
+    @Override
+    public long getItemId(int position)
+    {
+        return position;
+    }
+    
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
+        final ViewHolder viewHolder;
+        if (null == convertView)
+        {
+            viewHolder = new ViewHolder();
+            
+            convertView = inflater.inflate(R.layout.activity_main_tab_item, null);
+            viewHolder.mHomePageBottomIV = (ImageView)convertView.findViewById(R.id.home_page_bottom_iv);
+            viewHolder.redTextView = (TextView)convertView.findViewById(R.id.redTextView);
+            viewHolder.mHomePageBottomTV = (TextView)convertView.findViewById(R.id.home_page_bottom_tv);
+            
+            convertView.setTag(viewHolder);
+        }
+        else
+        {
+            viewHolder = (ViewHolder)convertView.getTag();
+        }
+        
+        if (null == mImageView[position])
+        {
+            mImageView[position] = viewHolder.mHomePageBottomIV;
+        }
+        
+        if (null == mTextView[position])
+        {
+            mTextView[position] = viewHolder.mHomePageBottomTV;
+        }
+        
+        if (null == shapeTextView[position])
+        {
+            shapeTextView[position] = viewHolder.redTextView;
+        }
+        
+        if (parent.getChildCount() == position)
+        {
+            //里面就是正常的position
+            if (0 == position)
+            {
+                mTextView[0].setTextColor(mContext.getResources().getColor(R.color.typeface_one));
+            }
+        }
+        
+        /**
+         * 赋值
+         */
+        TabInfo tabInfo = tabInfoList.get(position);
+        if (null != tabInfo)
+        {
+            viewHolder.tabStr = tabInfo.getName();
+            viewHolder.tabIcon = tabInfo.getIcon();
+        }
+        
+        ViewUtil.setTextView(viewHolder.mHomePageBottomTV, viewHolder.tabStr, SystemParamCfg.DEFAULT_EMPTY_VALUE);
+        viewHolder.mHomePageBottomIV.setImageResource(viewHolder.tabIcon);
+        
+        return convertView;
+    }
+    
+    /**
+     * 点击设置
+     * @param selectedID
+     */
+    public void setFocus(int cacheTabIndex, int selectedID)
+    {
+        if (cacheTabIndex != selectedID)
+        {
+            if (null != mTextView[selectedID])
+            {
+                mTextView[selectedID].setTextColor(mContext.getResources().getColor(R.color.typeface_one));
+            }
+            
+            if (null != mTextView[cacheTabIndex])
+            {
+                mTextView[cacheTabIndex].setTextColor(mContext.getResources().getColor(R.color.typeface_two));
+            }
+            
+            switch (selectedID)
+            {
+                case 0:
+                    if (null != mImageView[0])
+                    {
+                        mImageView[0].setImageResource(R.drawable.menu_home_on);
+                    }
+                    
+                    break;
+                
+                case 1:
+                    if (null != mImageView[1])
+                    {
+                        mImageView[1].setImageResource(R.drawable.menu_shopcar_on);
+                    }
+                    
+                    break;
+                
+                case 2:
+                    if (null != mImageView[2])
+                    {
+                        mImageView[2].setImageResource(R.drawable.menu_class_on);
+                    }
+                    
+                    break;
+                
+                case 3:
+                    if (null != mImageView[3])
+                    {
+                        mImageView[3].setImageResource(R.drawable.menu_user_on);
+                    }
+                    
+                    break;
+                
+                default:
+                    break;
+            }
+            
+            switch (cacheTabIndex)
+            {
+                case 0:
+                    if (null != mImageView[0])
+                    {
+                        mImageView[0].setImageResource(R.drawable.menu_home_off);
+                    }
+                    
+                    break;
+                
+                case 1:
+                    if (null != mImageView[1])
+                    {
+                        mImageView[1].setImageResource(R.drawable.menu_shopcar_off);
+                    }
+                    
+                    break;
+                
+                case 2:
+                    if (null != mImageView[2])
+                    {
+                        mImageView[2].setImageResource(R.drawable.menu_class_off);
+                    }
+                    break;
+                
+                case 3:
+                    if (null != mImageView[3])
+                    {
+                        mImageView[3].setImageResource(R.drawable.menu_user_off);
+                    }
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+    }
+    
+    /**
+     * 右上角图标显示隐藏操作
+     * @param selectedID
+     */
+    public void setShape(boolean isShowshape, int shape)
+    {
+        if (isShowshape)
+        {
+            if (shape > 99)
+            {
+                shape = shape > 99 ? 99 : shape;
+                ViewUtil.setTextView(shapeTextView[1], shape + "+", SystemParamCfg.DEFAULT_EMPTY_VALUE);
+            }
+            else
+            {
+                
+                ViewUtil.setTextView(shapeTextView[1], shape + "", SystemParamCfg.DEFAULT_EMPTY_VALUE);
+            }
+            shapeTextView[1].setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            shapeTextView[1].setVisibility(View.GONE);
+        }
+    }
+}

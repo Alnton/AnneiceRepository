@@ -1,0 +1,97 @@
+package com.alnton.myframe.ui;
+
+import java.io.Serializable;
+
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
+
+import com.alnton.myFrameResource.view.Button.ClickEffectButton;
+import com.alnton.myFrameResource.view.Marquee.MarqueeText;
+import com.alnton.myframe.R;
+import com.alnton.myframe.config.Config.SystemParamCfg;
+import com.alnton.myframe.util.ViewUtil;
+
+/**
+ * 程序界面统一标题基类
+ * @author 王乾州
+ */
+public class BaseTitleActivity extends BaseActivity
+{
+    /**
+     * 返回按钮,右边按钮
+     */
+    public ClickEffectButton backButton, rightButton;
+    
+    /**
+     * 标题
+     */
+    public MarqueeText titleTextView;
+    
+    /**
+     * 右边文字
+     */
+    public TextView rightTextView;
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+    }
+    
+    /**
+     * 初始化控件
+     */
+    public void initView(int titleId)
+    {
+        setTitle(0, titleId);
+    }
+    
+    /**
+     * 初始化控件
+     */
+    public void initView(String title)
+    {
+        setTitle(1, title);
+    }
+    
+    /**
+     * 设置标题 
+     * @param type 0 int， 1 String
+     */
+    private void setTitle(int type, Serializable value)
+    {
+        backButton = (ClickEffectButton)findViewById(R.id.backButton);
+        backButton.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                onBackPressed();
+            }
+        });
+        
+        titleTextView = (MarqueeText)findViewById(R.id.titleTextView);
+        rightButton = (ClickEffectButton)findViewById(R.id.rightButton);
+        rightTextView = (TextView)findViewById(R.id.rightTextView);
+        
+        switch (type)
+        {
+            case 0:
+                int titleId = (Integer)value;
+                if (0 != titleId)
+                {
+                    titleTextView.setText(getResources().getString(titleId));
+                }
+                break;
+            
+            case 1:
+                String title = (String)value;
+                ViewUtil.setTextView(titleTextView, title, SystemParamCfg.DEFAULT_EMPTY_VALUE);
+                break;
+            default:
+                break;
+        }
+    }
+}

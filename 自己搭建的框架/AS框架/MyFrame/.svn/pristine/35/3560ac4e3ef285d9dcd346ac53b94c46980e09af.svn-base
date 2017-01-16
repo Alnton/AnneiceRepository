@@ -1,0 +1,64 @@
+package com.alnton.myframecore.okhttp.callback;
+
+import java.io.Serializable;
+
+/**
+ * <接口返回的统一报文>
+ * 这个就要求所有的接口返回报文 除了 公共的 count code desc 其他和业务相关的key必须是obj
+ *
+ * @author 王乾州
+ * @createon 2016-8-8
+ */
+public class ResponseEntity<T> implements Serializable {
+
+    /**
+     * 泛型value
+     */
+    private T obj;
+    /**
+     * 返回条目数
+     */
+    private String count;
+
+    /**
+     * 返回状态码
+     */
+    private String code;
+
+    /**
+     * 返回的描述信息
+     */
+    private String desc;
+
+    public T getObj() {
+        return obj;
+    }
+
+    public void setObj(T obj) {
+        this.obj = obj;
+    }
+
+    public String getCount() {
+        return count;
+    }
+
+    public void setCount(String count) {
+        this.count = count;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+}

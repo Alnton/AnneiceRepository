@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="250dip"
+  android:background="@color/white"
+  >
+  <RelativeLayout
+	   android:layout_width="fill_parent"
+	   android:layout_height="wrap_content"
+	   android:background="@drawable/title_bg"
+	   android:id="@+id/title_layout"
+	   >
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/app_name"
+		android:layout_centerInParent="true"
+		android:textSize="20sp"
+		android:textColor="@color/white"
+		android:id="@+id/dialogTitleTextView"
+		/>  
+  </RelativeLayout>
+  
+  <View 
+        android:layout_width="fill_parent"
+    	android:layout_height="8dip"
+    	android:layout_alignParentBottom="true"
+    	android:id="@+id/nullView"
+    	/>
+  
+  <LinearLayout
+  		android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_above="@id/nullView"
+    	android:layout_marginLeft="8dip"
+    	android:layout_marginRight="8dip"
+    	android:layout_marginTop="8dip"
+    	android:id="@+id/settingNet_layout"
+    	>
+	<Button
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:background="@drawable/list_xml"
+             android:text="@string/confirm"
+             android:textColor="@color/black" 
+             android:textSize="17sp"
+             android:paddingTop="10dp" 
+             android:paddingBottom="10dp"
+             android:id="@+id/confirmBtn"
+             />
+	
+		<Button
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="10dip"
+             android:layout_weight="1"
+             android:background="@drawable/list_xml"
+             android:text="@string/cancel"
+             android:textColor="@color/black" 
+             android:textSize="17sp"
+             android:paddingTop="10dp" 
+             android:paddingBottom="10dp"
+             android:id="@+id/cancelBtn"
+             />
+		
+    </LinearLayout>
+  
+  <!-- 设置年，月区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_layout"
+        android:layout_above="@id/settingNet_layout"
+        android:gravity="center"
+        android:orientation="horizontal" 
+        >
+
+        <!-- 类别 -->
+        <com.alnton.myFrameResource.view.Wheel.WheelView
+            android:id="@+id/typeview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+  
+    
+</RelativeLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:background="@color/dialog_bg"
+  >
+  <RelativeLayout
+	   android:layout_width="fill_parent"
+	   android:layout_height="55sp"
+	   android:background="@color/dialog_top_title"
+	   android:id="@+id/title_layout"
+	   >
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/app_name"
+		android:layout_centerInParent="true"
+		android:textSize="20sp"
+		android:textColor="@color/white"
+		android:id="@+id/dialogTitleTextView"
+		/>  
+  </RelativeLayout>
+  
+  <TextView
+  		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/network_wrong"
+		android:textSize="18sp"
+		android:layout_centerInParent="true"
+		android:id="@+id/dialogContentTextView"
+  		/>
+  
+    <View 
+        android:layout_width="fill_parent"
+    	android:layout_height="8dip"
+    	android:layout_alignParentBottom="true"
+    	android:id="@+id/nullView"
+    	/>
+    
+    <LinearLayout
+  		android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_above="@id/nullView"
+    	android:layout_marginLeft="8dip"
+    	android:layout_marginRight="8dip"
+    	android:id="@+id/settingNet_layout"
+    	>
+		<Button
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="5dip"
+             android:layout_weight="1"
+             android:background="@drawable/green_btn_select"
+             android:text="@string/cancel"
+             android:textColor="@color/black" 
+             android:textSize="17sp"
+             android:paddingTop="10dp" 
+             android:paddingBottom="10dp"
+             android:id="@+id/cancelBtn"
+             />
+		
+		<Button
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginLeft="5dip"
+             android:layout_weight="1"
+             android:background="@drawable/green_btn_select"
+             android:text="@string/confirm"
+             android:textColor="@color/black" 
+             android:textSize="17sp"
+             android:paddingTop="10dp" 
+             android:paddingBottom="10dp"
+             android:id="@+id/confirmBtn"
+             />
+    </LinearLayout>
+</RelativeLayout>

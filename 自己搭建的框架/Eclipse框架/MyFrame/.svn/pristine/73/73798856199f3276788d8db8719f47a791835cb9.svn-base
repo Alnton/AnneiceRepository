@@ -1,0 +1,22 @@
+package com.alnton.myframe.util.http2;
+
+public interface Callback<T> {
+	
+	/**
+	 * @Description: 成功的回调 
+	 * @param arg0
+	 */
+	public void onSuccess(T arg0);
+	
+	/**
+	 * @Description: 请求失败的回调 
+	 * @param arg0 返回的编码
+	 * @param arg1
+	 */
+	public void onFailure(int arg0, Throwable arg1);
+	
+	/**
+	 * @Description: 请求关闭的回调 
+	 */
+	public void onFinish();
+}

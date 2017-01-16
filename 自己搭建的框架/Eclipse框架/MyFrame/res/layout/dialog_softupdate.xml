@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_style_color" >
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px20"
+        android:gravity="center"
+        android:lines="1"
+        android:text="更新"
+        android:textColor="@color/typeface_five"
+        android:textSize="@dimen/size34"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tv_content"
+        android:layout_marginTop="14dp"
+        android:paddingBottom="@dimen/px24"
+        android:paddingLeft="@dimen/px50"
+        android:paddingRight="@dimen/px50" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_text"
+        android:layout_marginTop="@dimen/px20"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@null"
+            android:padding="@dimen/px24"
+            android:text="取消"
+            android:textColor="@color/typeface_eight"
+            android:textSize="@dimen/size34" />
+
+        <LinearLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/et_login_username"
+            android:background="@color/divider" >
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@null"
+            android:padding="@dimen/px24"
+            android:text="确定"
+            android:textColor="#0099ff"
+            android:textSize="@dimen/size34" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignTop="@id/linearLayout1"
+        android:background="@color/divider" >
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,1 @@
+include ':MyFrameApp', ':MyFrameCore', ':AlipayLib'

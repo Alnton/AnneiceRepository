@@ -1,0 +1,333 @@
+package com.alnton.myframecore.okhttp;
+
+import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.TextUtils;
+
+import com.alnton.myframecore.okhttp.callback.ResultCallback;
+import com.alnton.myframecore.okhttp.interceptor.HeaderRequestInterceptor;
+import com.alnton.myframecore.okhttp.request.RequestParams;
+import com.alnton.myframecore.util.DebugLogUtil;
+import com.alnton.myframecore.util.des.AES;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okio.Buffer;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
+
+/**
+ * @author 王乾州
+ * @explain OKHttp网络请求工具类
+ * @time 2016/10/24 17:19.
+ */
+public enum OKHttpUtil {
+
+    /**
+     * 单例
+     */
+    instance;
+
+    /**
+     * 上下文
+     */
+    private Context mContext;
+
+    /**
+     * 配置超时时长、读取时长、写入时长
+     */
+    private final int connectTimeout = 15;
+    private final int readTimeout = 20;
+    private final int writeTimeout = 20;
+
+    /**
+     * 是否进行加密解密
+     */
+    private boolean isEncode;
+
+    /**
+     * 自定义添加header
+     */
+    public ConcurrentHashMap<String, String> headerMap;
+
+    /**
+     * OkHttp 客户端
+     */
+    private OkHttpClient mOkHttpClient;
+
+    /**
+     * Handler 主线程更新操作
+     */
+    private Handler mainHandler;
+
+    /**
+     * 初始化数据 需要在Application调用
+     *
+     * @param context  上下文 这个其实是业务层传过来的getApplicationContext()
+     * @param isEncode 报文是否支持加密
+     * @param headerM  头信息Map
+     */
+    public void init(Context context, boolean isEncode, HashMap<String, String> headerM) {
+
+        this.mContext = context;
+        this.isEncode = isEncode;
+        mainHandler = new Handler(Looper.getMainLooper());
+
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+
+        /**
+         * 添加header拦截器
+         */
+        headerMap = new ConcurrentHashMap<String, String>();
+        if (null != headerM && !headerM.isEmpty()) {
+            headerMap.putAll(headerM);
+        }
+        clientBuilder.addInterceptor(new HeaderRequestInterceptor());
+
+        mOkHttpClient = clientBuilder.connectTimeout(connectTimeout, TimeUnit.SECONDS)
+                .writeTimeout(writeTimeout, TimeUnit.SECONDS)
+                .readTimeout(readTimeout, TimeUnit.SECONDS)
+                .build();
+    }
+
+    /**
+     * post 请求 单独的参数、单独的文件、参数文件混合 都可以
+     *
+     * @param url：     请求地址
+     * @param params   请求的参数 当没有参数时传null
+     * @param callback 请求的回调对象
+     */
+    public void onPostParams(String url, RequestParams params, ResultCallback callback) {
+        if (isEncode) {
+            String requestContent = "";
+            if (null != params) {
+                requestContent = params.toString();
+            }
+            onPostJson(url, requestContent, callback);
+        } else {
+            DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "   header:" + headerMap.toString() + "   params："
+                    + (null != params ? params.toString() : ""));
+
+            MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+
+            // 添加参数
+            if (null != params && null != params.urlParams && !params.urlParams.isEmpty()) {
+                for (ConcurrentHashMap.Entry<String, Object> entry : params.urlParams.entrySet()) {
+                    builder.addFormDataPart(entry.getKey(), entry.getValue().toString());
+                }
+            }
+
+            // 添加文件
+            if (null != params && null != params.fileParams && !params.fileParams.isEmpty()) {
+                for (ConcurrentHashMap.Entry<String, File> entry : params.fileParams.entrySet()) {
+                    builder.addFormDataPart(entry.getKey(), entry.getValue().getName(), createUploadRequestBody(MediaType.parse("application/octet-stream"), entry.getValue(), callback));
+                }
+            }
+
+            Request request = new Request.Builder().url(url).post(builder.build()).build();
+            operationRequest(request, callback);
+        }
+    }
+
+    /**
+     * 创建文件上传的请求体
+     *
+     * @param contentType
+     * @param file
+     * @param listener
+     * @return
+     */
+    private RequestBody createUploadRequestBody(final MediaType contentType, final File file, final ResultCallback listener) {
+        return new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                return contentType;
+            }
+
+            @Override
+            public long contentLength() {
+                return file.length();
+            }
+
+            @Override
+            public void writeTo(BufferedSink sink) throws IOException {
+                try {
+                    Source source = Okio.source(file);
+                    Buffer buf = new Buffer();
+                    long remaining = contentLength();
+                    for (long readCount; (readCount = source.read(buf, 2048)) != -1; ) {
+                        sink.write(buf, readCount);
+                        if (listener != null) {
+                            listener.onProgress(contentLength(), remaining -= readCount);
+                        }
+                    }
+                    sink.flush();
+                } catch (Exception e) {
+                }
+            }
+        };
+    }
+
+    /**
+     * post 请求提交Json数据
+     *
+     * @param url：     请求地址
+     * @param jsonStr  请求的参数 用RequestParams.toString() 也可以 用 Session.getInstance().gson.toJson() 也可以
+     * @param callback 请求的回调对象
+     */
+    public void onPostJson(String url, String jsonStr, ResultCallback callback) {
+        String requestContent = "";
+        if (!TextUtils.isEmpty(jsonStr)) {
+            if (isEncode) {
+                try {
+                    requestContent = AES.Encrypt(jsonStr);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                requestContent = jsonStr;
+            }
+        }
+
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "   header:" + headerMap.toString() + "   params："
+                + requestContent);
+
+        MediaType jsonType = MediaType.parse("application/json; charset=utf-8");
+        Request request = new Request.Builder().url(url).post(RequestBody.create(jsonType, requestContent)).build();
+        operationRequest(request, callback);
+    }
+
+    /**
+     * get 请求
+     *
+     * @param url：     请求地址
+     * @param params   请求的参数 当没有参数时传null
+     * @param callback 请求的回调对象
+     */
+    public void onGet(String url, RequestParams params, ResultCallback callback) {
+        String newUrl = url;
+        if (null != params) {
+            newUrl = url + "?" + params.getUrlParamString();
+        }
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + newUrl + "   header:" + headerMap.toString());
+
+        Request request = new Request.Builder().url(newUrl).build();
+        operationRequest(request, callback);
+    }
+
+    /**
+     * get 请求 直接返回字符串
+     *
+     * @param url：请求地址
+     */
+    public String onGetString(String url) {
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "   header:" + headerMap.toString());
+
+        String is = null;
+        try {
+            Request request = new Request.Builder().url(url).build();
+            Response response = mOkHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                is = response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return is;
+    }
+
+    /**
+     * get 请求 直接Response
+     *
+     * @param url：请求地址
+     */
+    public Response onGetResponse(String url) {
+        DebugLogUtil.e(DebugLogUtil.TAG, "url：" + url + "   header:" + headerMap.toString());
+
+        try {
+            Request request = new Request.Builder().url(url).build();
+            return mOkHttpClient.newCall(request).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 处理异步请求
+     */
+    private void operationRequest(Request request, final ResultCallback callback) {
+        Call call = mOkHttpClient.newCall(request);
+        // 设置请求的Call 用于取消当前的网络请求 call.cancel();
+        callback.setCall(mContext, call);
+        callback.onStart();
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, final IOException e) {
+                if (e != null && TextUtils.equals(e.getMessage(), "Canceled")) {
+                    //如果是取消导致的异常，直接调用onFinish函数
+                    callback.onFinish();
+                } else {
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onError(e, -1, e.getMessage());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, final okhttp3.Response response) {
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.parseResponse(response);
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 动态设置头信息
+     */
+    public void setHeader(String key, String value) {
+        this.headerMap.put(key, value);
+    }
+
+    /**
+     * 清除所有的header信息
+     */
+    public void clearAllHeader() {
+        headerMap.clear();
+    }
+
+    /**
+     * 清除指定key的header信息
+     */
+    public void clearTheHeader(String key) {
+        headerMap.put(key, "");
+    }
+
+    /**
+     * 判断是否需要加密
+     */
+    public boolean isEncode() {
+        return isEncode;
+    }
+}

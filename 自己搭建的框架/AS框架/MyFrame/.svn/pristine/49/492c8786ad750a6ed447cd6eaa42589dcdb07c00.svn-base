@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 自定义CustomDialog的主题样式 -->
+    <style name="customDialogTheme" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item> <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item> <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item> <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item> <!-- 没有标题 -->
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item> <!-- 设置dialog的背景 -->
+        <item name="android:backgroundDimEnabled">true</item> <!-- 背景是否模糊显示 -->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- 底部弹出的对话框动画 -->
+    <style name="customDialogAnimstyle">
+        <item name="android:windowEnterAnimation">@anim/bottom_dialog_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/bottom_dialog_out_anim</item>
+    </style>
+    
+    <!-- 微信支付 Navigation Header -->
+    <style name="NavPage">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@color/navpage</item>
+    </style>
+
+    <!-- 系统主题 -->
+    <style name="myTheme" parent="android:Theme.NoTitleBar">  
+       <item name="android:windowAnimationStyle">@style/AnimationActivity</item>  
+   </style>
+    
+    <!-- Activity进入和退出的动画主题 -->
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/animation_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/animation_left_out</item>
+        <!-- <item name="android:activityCloseEnterAnimation">@anim/animation_right_out</item>
+        <item name="android:activityCloseExitAnimation">@anim/animation_left_in</item> -->
+    </style>
+    
+    <style name="white_12">
+        <item name="android:textSize">@dimen/size12</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="white_14">
+        <item name="android:textSize">@dimen/size14</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="white_16">
+        <item name="android:textSize">@dimen/size16</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="white_18">
+        <item name="android:textSize">@dimen/size18</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="white_20">
+        <item name="android:textSize">@dimen/size20</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="white_25">
+        <item name="android:textSize">@dimen/size25</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
+     <style name="white_28">
+        <item name="android:textSize">@dimen/size28</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
+     <style name="white_32">
+        <item name="android:textSize">@dimen/size32</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
+    <style name="white_36">
+        <item name="android:textSize">@dimen/size36</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="black_12">
+        <item name="android:textSize">@dimen/size12</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="black_14">
+        <item name="android:textSize">@dimen/size14</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="black_16">
+        <item name="android:textSize">@dimen/size16</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="black_18">
+        <item name="android:textSize">@dimen/size18</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="black_20">
+        <item name="android:textSize">@dimen/size20</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="black_25">
+        <item name="android:textSize">@dimen/size25</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="gray_12">
+        <item name="android:textSize">@dimen/size12</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="gray_14">
+        <item name="android:textSize">@dimen/size14</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="gray_16">
+        <item name="android:textSize">@dimen/size16</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="gray_18">
+        <item name="android:textSize">@dimen/size18</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="gray_20">
+        <item name="android:textSize">@dimen/size20</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="gray_25">
+        <item name="android:textSize">@dimen/size25</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="red_12">
+        <item name="android:textSize">@dimen/size12</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="red_14">
+        <item name="android:textSize">@dimen/size14</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="red_16">
+        <item name="android:textSize">@dimen/size16</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="red_18">
+        <item name="android:textSize">@dimen/size18</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="red_20">
+        <item name="android:textSize">@dimen/size20</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <style name="red_25">
+        <item name="android:textSize">@dimen/size25</item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+</resources>

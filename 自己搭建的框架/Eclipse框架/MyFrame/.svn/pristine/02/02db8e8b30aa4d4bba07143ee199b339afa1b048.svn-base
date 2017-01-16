@@ -1,0 +1,954 @@
+package com.alnton.myframe.ui.pay;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.alipay.android.app.sdk.AliPay;
+import com.alnton.myFrameResource.view.Button.ClickEffectButton;
+import com.alnton.myFrameResource.view.Marquee.MarqueeText;
+import com.alnton.myframe.R;
+import com.alnton.myframe.application.Session;
+import com.alnton.myframe.config.Config.URLConfig;
+import com.alnton.myframe.config.FusionCode;
+import com.alnton.myframe.entity.http.ResponseEntity;
+import com.alnton.myframe.entity.pay.PayInfo;
+import com.alnton.myframe.entity.pay.PayType;
+import com.alnton.myframe.entity.user.User;
+import com.alnton.myframe.ui.BaseActivity;
+import com.alnton.myframe.ui.pay.alipay.AlipayUtil;
+import com.alnton.myframe.ui.pay.alipay.Result;
+import com.alnton.myframe.util.MyframeTools;
+import com.alnton.myframe.util.ToastUtil;
+import com.alnton.myframe.util.http.HttpInterface;
+import com.alnton.myframe.util.http.JsonRequestParams;
+import com.alnton.myframe.util.http.RequestCallback;
+import com.alnton.myframe.wxapi.MD5;
+import com.alnton.myframe.wxapi.Util;
+import com.alnton.myframe.wxapi.WXConstants;
+import com.google.gson.reflect.TypeToken;
+import com.tencent.mm.sdk.constants.Build;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.unionpay.UPPayAssistEx;
+
+/**
+ * <支付方式选择界面>
+ * @author  王乾州
+ */
+public class ChoicePayTypeActivity extends BaseActivity implements OnClickListener
+{
+    /**
+     * 支付请求
+     */
+    private static final int RQF_PAY = 1;
+    
+    /**
+     * 标题
+     */
+    private MarqueeText titleTextView;
+    
+    /**
+     * 返回按钮
+     */
+    private ClickEffectButton backButton;
+    
+    /**
+     * 确认支付按钮
+     */
+    private LinearLayout submitLayout;
+    
+    /**
+     * 支付宝支付区域, 微信支付区域,银联支付区域
+     */
+    private RelativeLayout alipayLayout, wxLayout, yinlianLayout;
+    
+    /**
+     * 支付宝支付选中图片, 微信支付选中图片,银联支付选中图片
+     */
+    private ImageView alipayImageView, wxImageView, yinlianImageView;
+    
+    /**
+     * 商品总价,产品名称，订单编号
+     */
+    private String productTotal, productName, orderCode;
+    
+    /**
+     * 哪种支付的标志(0:支付宝  1:微信 2:银联)
+     */
+    private int flag = 2;
+    
+    /**
+     * 微信支付
+     * 32位内的随机串,防重发（nonceStr）
+     * 商家根据文档填写的数据和签名（packageValue）
+     */
+    private String nonceStr, packageValue;
+    
+    /**
+     * 时间戳,防重发(timeStamp)
+     */
+    private long timeStamp;
+    
+    Handler mHandler = new Handler()
+    {
+        public void handleMessage(android.os.Message msg)
+        {
+            Result result = new Result((String)msg.obj);
+            switch (msg.what)
+            {
+                case RQF_PAY:
+                    /**
+                     * 支付
+                     */
+                    ToastUtil.instance.showToast(mContext, result.getResult());
+                    String resultCode = result.getResultCode();
+                    if (null != resultCode && "9000".equals(resultCode.trim()))
+                    {
+                        sendBroadcast(new Intent(FusionCode.getInstance().PAYSUCCESSUPDATETAB_ACTION));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        };
+    };
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_checkstand);
+        
+        /**
+         * 获取上个界面传的值
+         */
+        getBundler();
+        
+        /**
+         * 初始化View
+         */
+        initView();
+        
+        /**
+         * 设置事件监听
+         */
+        setListener();
+        
+        /**
+         * 查询数据字典，获取是否有微信支付
+         */
+        getPayType();
+    }
+    
+    private void getBundler()
+    {
+        Bundle bundle = getIntent().getExtras();
+        if (null != bundle)
+        {
+            productName = bundle.getString("productName");
+            orderCode = bundle.getString("orderCode");
+            productTotal = bundle.getString("productTotal");
+        }
+    }
+    
+    private void initView()
+    {
+        
+        backButton = (ClickEffectButton)findViewById(R.id.backButton);
+        
+        titleTextView = (MarqueeText)findViewById(R.id.titleTextView);
+        titleTextView.setText(R.string.checkstand);
+        
+        alipayImageView = (ImageView)findViewById(R.id.alipayImageView);
+        wxImageView = (ImageView)findViewById(R.id.wxImageView);
+        yinlianImageView = (ImageView)findViewById(R.id.yinlianImageView);
+        
+        alipayLayout = (RelativeLayout)findViewById(R.id.alipayLayout);
+        wxLayout = (RelativeLayout)findViewById(R.id.wxLayout);
+        yinlianLayout = (RelativeLayout)findViewById(R.id.yinlianLayout);
+        
+        submitLayout = (LinearLayout)findViewById(R.id.submitLayout);
+    }
+    
+    private void setListener()
+    {
+        backButton.setOnClickListener(this);
+        
+        alipayLayout.setOnClickListener(this);
+        wxLayout.setOnClickListener(this);
+        yinlianLayout.setOnClickListener(this);
+        submitLayout.setOnClickListener(this);
+    }
+    
+    /**
+     * 查询数据字典，获取是否有微信支付
+     */
+    private void getPayType()
+    {
+        JsonRequestParams params = new JsonRequestParams();
+        params.put("supCateKey", "pay_type");
+        
+        RequestCallback<PayType> req =
+            new RequestCallback<PayType>(mContext, true, false, new TypeToken<ResponseEntity<PayType>>()
+            {
+            }.getType())
+            {
+                
+                @Override
+                public void onSuccess(ArrayList<PayType> listInfo)
+                {
+                    super.onSuccess(listInfo);
+                    
+                    for (PayType type : listInfo)
+                    {
+                        if (null != type && "wechat".equals(type.getCategoryKey()))
+                        {
+                            wxLayout.setVisibility(View.VISIBLE);
+                            break;
+                        }
+                    }
+                }
+            };
+        req.setOnFailureShowToast(false);
+        HttpInterface.onPostWithJson(mContext, URLConfig.PAYTYPE_URL, params, req);
+    }
+    
+    private static enum LocalRetCode
+    {
+        ERR_OK, ERR_HTTP, ERR_JSON, ERR_OTHER
+    }
+    
+    private static class GetAccessTokenResult
+    {
+        public LocalRetCode localRetCode = LocalRetCode.ERR_OTHER;
+        
+        public String accessToken;
+        
+        public int expiresIn;
+        
+        public int errCode;
+        
+        public String errMsg;
+        
+        public void parseFrom(String content)
+        {
+            if (content == null || content.length() <= 0)
+            {
+                localRetCode = LocalRetCode.ERR_JSON;
+                return;
+            }
+            
+            try
+            {
+                JSONObject json = new JSONObject(content);
+                if (json.has("access_token"))
+                { // success case
+                    accessToken = json.getString("access_token");
+                    expiresIn = json.getInt("expires_in");
+                    localRetCode = LocalRetCode.ERR_OK;
+                }
+                else
+                {
+                    errCode = json.getInt("errcode");
+                    errMsg = json.getString("errmsg");
+                    localRetCode = LocalRetCode.ERR_JSON;
+                }
+                
+            }
+            catch (Exception e)
+            {
+                localRetCode = LocalRetCode.ERR_JSON;
+            }
+        }
+    }
+    
+    private static class GetPrepayIdResult
+    {
+        public LocalRetCode localRetCode = LocalRetCode.ERR_OTHER;
+        
+        public String prepayId;
+        
+        public int errCode;
+        
+        public String errMsg;
+        
+        public void parseFrom(String content)
+        {
+            if (content == null || content.length() <= 0)
+            {
+                localRetCode = LocalRetCode.ERR_JSON;
+                return;
+            }
+            
+            try
+            {
+                JSONObject json = new JSONObject(content);
+                if (json.has("prepayid"))
+                { // success case
+                    prepayId = json.getString("prepayid");
+                    localRetCode = LocalRetCode.ERR_OK;
+                }
+                else
+                {
+                    localRetCode = LocalRetCode.ERR_JSON;
+                }
+                
+                errCode = json.getInt("errcode");
+                errMsg = json.getString("errmsg");
+                
+            }
+            catch (Exception e)
+            {
+                localRetCode = LocalRetCode.ERR_JSON;
+            }
+        }
+    }
+    
+    private class GetAccessTokenTask extends AsyncTask<Void, Void, GetAccessTokenResult>
+    {
+        private ProgressDialog dialog;
+        
+        @Override
+        protected void onPreExecute()
+        {
+            dialog =
+                ProgressDialog.show(ChoicePayTypeActivity.this,
+                    getString(R.string.app_tip),
+                    getString(R.string.getting_access_token));
+        }
+        
+        @Override
+        protected void onPostExecute(GetAccessTokenResult result)
+        {
+            if (dialog != null)
+            {
+                dialog.dismiss();
+            }
+            
+            if (result.localRetCode == LocalRetCode.ERR_OK)
+            {
+                ToastUtil.instance.showToast(mContext, R.string.get_access_token_succ);
+                
+                GetPrepayIdTask getPrepayId = new GetPrepayIdTask(result.accessToken);
+                getPrepayId.execute();
+            }
+            else
+            {
+                ToastUtil.instance.showToast(mContext,
+                    getString(R.string.get_access_token_fail, result.localRetCode.name()));
+            }
+        }
+        
+        @Override
+        protected GetAccessTokenResult doInBackground(Void... params)
+        {
+            GetAccessTokenResult result = new GetAccessTokenResult();
+            
+            String url =
+                String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
+                    WXConstants.APP_ID,
+                    WXConstants.APP_SECRET);
+            
+            byte[] buf = Util.httpGet(url);
+            if (buf == null || buf.length == 0)
+            {
+                result.localRetCode = LocalRetCode.ERR_HTTP;
+                return result;
+            }
+            
+            String content = new String(buf);
+            result.parseFrom(content);
+            return result;
+        }
+    }
+    
+    private class GetPrepayIdTask extends AsyncTask<Void, Void, GetPrepayIdResult>
+    {
+        private ProgressDialog dialog;
+        
+        private String accessToken;
+        
+        public GetPrepayIdTask(String accessToken)
+        {
+            this.accessToken = accessToken;
+        }
+        
+        @Override
+        protected void onPreExecute()
+        {
+            dialog =
+                ProgressDialog.show(ChoicePayTypeActivity.this,
+                    getString(R.string.app_tip),
+                    getString(R.string.getting_prepayid));
+        }
+        
+        @Override
+        protected void onPostExecute(GetPrepayIdResult result)
+        {
+            if (dialog != null)
+            {
+                dialog.dismiss();
+            }
+            
+            if (result.localRetCode == LocalRetCode.ERR_OK)
+            {
+                ToastUtil.instance.showToast(mContext, R.string.get_prepayid_succ);
+                sendPayReq(result);
+            }
+            else
+            {
+                ToastUtil.instance.showToast(mContext,
+                    getString(R.string.get_prepayid_fail, result.localRetCode.name()));
+            }
+        }
+        
+        @Override
+        protected void onCancelled()
+        {
+            super.onCancelled();
+        }
+        
+        @Override
+        protected GetPrepayIdResult doInBackground(Void... params)
+        {
+            
+            String url = String.format("https://api.weixin.qq.com/pay/genprepay?access_token=%s", accessToken);
+            String entity = genProductArgs();
+            
+            GetPrepayIdResult result = new GetPrepayIdResult();
+            
+            byte[] buf = Util.httpPost(url, entity);
+            if (buf == null || buf.length == 0)
+            {
+                result.localRetCode = LocalRetCode.ERR_HTTP;
+                return result;
+            }
+            
+            String content = new String(buf);
+            result.parseFrom(content);
+            return result;
+        }
+    }
+    
+    private String genProductArgs()
+    {
+        JSONObject json = new JSONObject();
+        
+        try
+        {
+            json.put("appid", WXConstants.APP_ID);
+            // traceId 由开发者自定义，可用于订单的查询与跟踪，建议根据支付用户信息生成此id  建议 traceid 字段包含用户信息及订单信息，方便后续对订单状态的查询和跟踪
+            String traceId = "1" + "_" + orderCode;
+            json.put("traceid", traceId);
+            nonceStr = genNonceStr();
+            json.put("noncestr", nonceStr);
+            
+            List<NameValuePair> packageParams = new LinkedList<NameValuePair>();
+            // 银行类型,在微信中使用 WX
+            packageParams.add(new BasicNameValuePair("bank_type", "WX"));
+            packageParams.add(new BasicNameValuePair("body", productName));
+            // 现金支付币种,目前只支 持人民币,默认值是 1-人 民币
+            packageParams.add(new BasicNameValuePair("fee_type", "1"));
+            // 字符编码,取值:GBK、 UTF-8,默认:GBK。
+            packageParams.add(new BasicNameValuePair("input_charset", "UTF-8"));
+            // 商户服务器(notify_url)支 付结果
+            packageParams.add(new BasicNameValuePair("notify_url", WXConstants.WX_NOTIFY_URL));
+            // 商户系统的订单号,与请求一致。
+            packageParams.add(new BasicNameValuePair("out_trade_no", orderCode));
+            // 商户号,也即之前步骤的 partnerid,由微信统一分 配的 10 位正整数 (120XXXXXXX)号
+            packageParams.add(new BasicNameValuePair("partner", WXConstants.PARTNER_ID));
+            packageParams.add(new BasicNameValuePair("spbill_create_ip", "196.168.1.1"));
+            // 支付金额,单位为分,如 果 discount 有值,通知 的 total_fee + discount = 请求的 total_fee
+            BigDecimal fenBigDecimal = null;
+            String total_fee = "";
+            try
+            {
+                BigDecimal productTotalBigDecimal = new BigDecimal(productTotal);
+                BigDecimal baiBigDecimal = new BigDecimal("100");
+                fenBigDecimal = productTotalBigDecimal.multiply(baiBigDecimal);
+                if (null != fenBigDecimal)
+                {
+                    total_fee = String.valueOf(fenBigDecimal.intValue());
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            packageParams.add(new BasicNameValuePair("total_fee", total_fee));
+            packageValue = genPackage(packageParams);
+            
+            json.put("package", packageValue);
+            timeStamp = genTimeStamp();
+            json.put("timestamp", timeStamp);
+            
+            List<NameValuePair> signParams = new LinkedList<NameValuePair>();
+            signParams.add(new BasicNameValuePair("appid", WXConstants.APP_ID));
+            signParams.add(new BasicNameValuePair("appkey", WXConstants.APP_KEY));
+            signParams.add(new BasicNameValuePair("noncestr", nonceStr));
+            signParams.add(new BasicNameValuePair("package", packageValue));
+            signParams.add(new BasicNameValuePair("timestamp", String.valueOf(timeStamp)));
+            signParams.add(new BasicNameValuePair("traceid", traceId));
+            json.put("app_signature", genSign(signParams));
+            
+            json.put("sign_method", "sha1");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        
+        return json.toString();
+    }
+    
+    private String genNonceStr()
+    {
+        Random random = new Random();
+        return MD5.getMessageDigest(String.valueOf(random.nextInt(10000)).getBytes());
+    }
+    
+    private String genPackage(List<NameValuePair> params)
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = 0; i < params.size(); i++)
+        {
+            sb.append(params.get(i).getName());
+            sb.append('=');
+            sb.append(params.get(i).getValue());
+            sb.append('&');
+        }
+        sb.append("key=");
+        sb.append(WXConstants.PARTNER_KEY); // 注意：不能hardcode在客户端，建议genPackage这个过程都由服务器端完成
+        
+        // 进行md5摘要前，params内容为原始内容，未经过url encode处理
+        String packageSign = MD5.getMessageDigest(sb.toString().getBytes()).toUpperCase();
+        
+        return URLEncodedUtils.format(params, "utf-8") + "&sign=" + packageSign;
+    }
+    
+    private long genTimeStamp()
+    {
+        return System.currentTimeMillis() / 1000;
+    }
+    
+    private String genSign(List<NameValuePair> params)
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        int i = 0;
+        for (; i < params.size() - 1; i++)
+        {
+            sb.append(params.get(i).getName());
+            sb.append('=');
+            sb.append(params.get(i).getValue());
+            sb.append('&');
+        }
+        sb.append(params.get(i).getName());
+        sb.append('=');
+        sb.append(params.get(i).getValue());
+        
+        String sha1 = Util.sha1(sb.toString());
+        return sha1;
+    }
+    
+    /**
+     * 微信支付原生API需要调用的方法
+     */
+    private void sendPayReq(GetPrepayIdResult result)
+    {
+        PayReq req = new PayReq();
+        req.appId = WXConstants.APP_ID;
+        req.partnerId = WXConstants.PARTNER_ID;
+        req.prepayId = result.prepayId;
+        req.nonceStr = nonceStr;
+        req.timeStamp = String.valueOf(timeStamp);
+        req.packageValue = "Sign=" + packageValue;
+        
+        List<NameValuePair> signParams = new LinkedList<NameValuePair>();
+        signParams.add(new BasicNameValuePair("appid", req.appId));
+        signParams.add(new BasicNameValuePair("appkey", WXConstants.APP_KEY));
+        signParams.add(new BasicNameValuePair("noncestr", req.nonceStr));
+        signParams.add(new BasicNameValuePair("package", req.packageValue));
+        signParams.add(new BasicNameValuePair("partnerid", req.partnerId));
+        signParams.add(new BasicNameValuePair("prepayid", req.prepayId));
+        signParams.add(new BasicNameValuePair("timestamp", req.timeStamp));
+        req.sign = genSign(signParams);
+        
+        // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+        Session.getInstance().wxAPI.sendReq(req);
+    }
+    
+    /**
+     * 福中集团支付组新的调用方法
+     */
+    private void wxPayByfuzhong()
+    {
+        JsonRequestParams params = new JsonRequestParams();
+        params.put("orderCode", orderCode);
+        params.put("userKey", User.instance.getLoginKey());
+        params.put("payType", "3");
+        
+        HttpInterface.onPostWithJson(mContext, URLConfig.WXPAY_URL, params, new RequestCallback<PayInfo>(mContext,
+            new TypeToken<ResponseEntity<PayInfo>>()
+            {
+            }.getType())
+        {
+            @Override
+            public void onSuccess(PayInfo info)
+            {
+                super.onSuccess(info);
+                
+                if ("0".equals(info.getTip()) || "".equals(info.getTip()))
+                {
+                    sendPayReqNew(info);
+                }
+                else if ("1".equals(info.getTip()))
+                {
+                    MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                        ChoicePayTypeActivity.this,
+                        "亲，该订单已经关闭！");
+                }
+                else if ("2".equals(info.getTip()))
+                {
+                    MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                        ChoicePayTypeActivity.this,
+                        "亲，该订单已经支付！");
+                }
+                else if ("3".equals(info.getTip()))
+                {
+                    MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                        ChoicePayTypeActivity.this,
+                        "亲，支付过于频繁请稍后再试！");
+                }
+                else
+                {
+                    MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                        ChoicePayTypeActivity.this,
+                        "亲，服务器出异常请稍后再试！");
+                }
+            }
+        });
+    }
+    
+    /**
+     * 福中集团支付组新的调用方法
+     */
+    private void sendPayReqNew(PayInfo info)
+    {
+        PayReq req = new PayReq();
+        req.appId = WXConstants.APP_ID;
+        req.partnerId = WXConstants.PARTNER_ID;
+        req.prepayId = info.getWechatPrepay();
+        req.nonceStr = info.getWechatNoncestr();
+        req.timeStamp = info.getWechatTimestamp();
+        req.packageValue = "Sign=" + info.getWechatSign();
+        
+        List<NameValuePair> signParams = new LinkedList<NameValuePair>();
+        signParams.add(new BasicNameValuePair("appid", req.appId));
+        signParams.add(new BasicNameValuePair("noncestr", req.nonceStr));
+        signParams.add(new BasicNameValuePair("package", req.packageValue));
+        signParams.add(new BasicNameValuePair("partnerid", req.partnerId));
+        signParams.add(new BasicNameValuePair("prepayid", req.prepayId));
+        signParams.add(new BasicNameValuePair("timestamp", req.timeStamp));
+        req.sign = genSign(signParams);
+        
+        // 在支付之前，如果应用没有注册到微信，应该先调用IWXMsg.registerApp将应用注册到微信
+        Session.getInstance().wxAPI.sendReq(req);
+        finish();
+    }
+    
+    /**
+     * 确认支付
+     */
+    private void pay()
+    {
+        switch (flag)
+        {
+            case 0:
+                /**
+                 * 支付宝
+                 */
+                try
+                {
+                    new Thread()
+                    {
+                        public void run()
+                        {
+                            AliPay alipay = new AliPay(ChoicePayTypeActivity.this, mHandler);
+                            
+                            //设置为沙箱模式，不设置默认为线上环境
+                            //alipay.setSandBox(true);
+                            
+                            // TODO out_trade_no  subject  body notify_url
+                            String result =
+                                alipay.pay(AlipayUtil.getInstance().getOrderInfo(orderCode,
+                                    productName,
+                                    productName,
+                                    productTotal));
+                            
+                            Message msg = new Message();
+                            msg.what = RQF_PAY;
+                            msg.obj = result;
+                            mHandler.sendMessage(msg);
+                        }
+                    }.start();
+                    
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                    ToastUtil.instance.showToast(mContext, R.string.remote_call_failed);
+                }
+                break;
+            
+            case 1:
+                /**
+                 * 微信
+                 */
+                boolean isPaySupported =
+                    Session.getInstance().wxAPI.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
+                if (!isPaySupported)
+                {
+                    ToastUtil.instance.showToast(mContext, R.string.isPaySupported);
+                }
+                else
+                {
+                    /**
+                     * 福中集团支付组新的调用方法
+                     */
+                    wxPayByfuzhong();
+                    try
+                    {
+                        //                        new GetAccessTokenTask().execute();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            
+            case 2:
+                /**
+                 * 银联
+                 */
+                JsonRequestParams params = new JsonRequestParams();
+                params.put("orderCode", orderCode);
+                params.put("userKey", User.instance.getLoginKey());
+                params.put("payType", "1");
+                
+                HttpInterface.onPostWithJson(mContext, URLConfig.YINLIANPAY_URL, params, new RequestCallback<PayInfo>(
+                    mContext, new TypeToken<ResponseEntity<PayInfo>>()
+                    {
+                    }.getType())
+                {
+                    @Override
+                    public void onSuccess(PayInfo info)
+                    {
+                        super.onSuccess(info);
+                        
+                        if ("0".equals(info.getTip()) || "".equals(info.getTip()))
+                        {
+                            // “00” – 银联正式环境
+                            // “01” – 银联测试环境，该环境中不发生真实交易
+                            String serverMode = "01";
+                            UPPayAssistEx.startPay(mContext, null, null, info.getSerialNumber(), serverMode);
+                        }
+                        else if ("1".equals(info.getTip()))
+                        {
+                            MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                                ChoicePayTypeActivity.this,
+                                "亲，该订单已经关闭！");
+                        }
+                        else if ("2".equals(info.getTip()))
+                        {
+                            MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                                ChoicePayTypeActivity.this,
+                                "亲，该订单已经支付！");
+                        }
+                        else if ("3".equals(info.getTip()))
+                        {
+                            MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                                ChoicePayTypeActivity.this,
+                                "亲，支付过于频繁请稍后再试！");
+                        }
+                        else
+                        {
+                            MyframeTools.getInstance().showDialogCenterOneButton(mContext,
+                                ChoicePayTypeActivity.this,
+                                "亲，服务器出异常请稍后再试！");
+                        }
+                    }
+                });
+                break;
+            
+            default:
+                ToastUtil.instance.showToast(mContext, R.string.choicePay);
+                break;
+        }
+    }
+    
+    /**
+     * 银联支付反馈的结果
+     * 商户订单是否成功支付应该以商户后台收到全渠道返回的支付结果为准，此处支付控件返回的结果仅作为参考
+     */
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+        String str = data.getExtras().getString("pay_result");
+        if (str.equalsIgnoreCase("success"))
+        {
+            // 跳转到支付成功界面
+            Bundle bundle = new Bundle();
+            bundle.putString("orderCode", orderCode);
+            //            MyFrameResourceTools.getInstance().startActivity(mContext, PaySuccessActivity.class, bundle);
+            setResult(RESULT_OK);
+            finish();
+            // 支付成功后，extra中如果存在result_data，取出校验
+            //result_data结构见c）result_data参数说明
+            if (data.hasExtra("result_data"))
+            {
+                String sign = data.getExtras().getString("result_data");
+            }
+            else
+            {
+                //未收到签名信息
+                //建议通过商户后台查询支付结果
+            }
+        }
+        else if (str.equalsIgnoreCase("fail"))
+        {
+            MyframeTools.getInstance().showDialogCenterOneButton(mContext, ChoicePayTypeActivity.this, "支付失败！");
+        }
+        else if (str.equalsIgnoreCase("cancel"))
+        {
+            MyframeTools.getInstance().showDialogCenterOneButton(mContext, ChoicePayTypeActivity.this, "你已取消了本次订单的支付！");
+        }
+    }
+    
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.backButton:
+                /**
+                 * 放弃支付
+                 */
+                giveUpPay();
+                break;
+            
+            case R.id.alipayLayout:
+                /**
+                 * 支付宝支付
+                 */
+                if (0 == flag)
+                {
+                    alipayImageView.setImageResource(R.drawable.uncheck);
+                    flag = -1;
+                }
+                else
+                {
+                    wxImageView.setImageResource(R.drawable.uncheck);
+                    yinlianImageView.setImageResource(R.drawable.uncheck);
+                    
+                    alipayImageView.setImageResource(R.drawable.check);
+                    flag = 0;
+                }
+                break;
+            
+            case R.id.wxLayout:
+                /**
+                 * 微信支付
+                 */
+                if (1 == flag)
+                {
+                    wxImageView.setImageResource(R.drawable.uncheck);
+                    flag = -1;
+                }
+                else
+                {
+                    alipayImageView.setImageResource(R.drawable.uncheck);
+                    yinlianImageView.setImageResource(R.drawable.uncheck);
+                    
+                    wxImageView.setImageResource(R.drawable.check);
+                    flag = 1;
+                }
+                break;
+            
+            case R.id.yinlianLayout:
+                /**
+                 * 银联支付
+                 */
+                if (2 == flag)
+                {
+                    yinlianImageView.setImageResource(R.drawable.uncheck);
+                    flag = -1;
+                }
+                else
+                {
+                    alipayImageView.setImageResource(R.drawable.uncheck);
+                    wxImageView.setImageResource(R.drawable.uncheck);
+                    
+                    yinlianImageView.setImageResource(R.drawable.check);
+                    flag = 2;
+                }
+                break;
+            
+            case R.id.submitLayout:
+                /**
+                 * 确认支付
+                 */
+                pay();
+                break;
+            
+            default:
+                break;
+        }
+    }
+    
+    /**
+     * 放弃支付
+     */
+    private void giveUpPay()
+    {
+        MyframeTools.getInstance().showDialogCenter(mContext,
+            R.layout.dialog_xml,
+            ChoicePayTypeActivity.this,
+            "是否放弃本次支付?");
+    }
+    
+    @Override
+    public void onBackPressed()
+    {
+        setResult(RESULT_OK);
+        /**
+         * 放弃支付
+         */
+        giveUpPay();
+    }
+}

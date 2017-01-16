@@ -1,0 +1,58 @@
+package com.alnton.myframe.ui.picture;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.alnton.myframe.util.okhttp.callback.ResponseEntity;
+
+import java.util.ArrayList;
+
+/**
+ * 展示图片实体类
+ *
+ * @author 王乾州
+ * @createon 2016-8-30
+ */
+public class PictureInfo extends ResponseEntity implements Parcelable {
+
+    private ArrayList<PictureInfoListInfo> listInfo;
+
+    public ArrayList<PictureInfoListInfo> getListInfo() {
+        return listInfo;
+    }
+
+    public void setListInfo(ArrayList<PictureInfoListInfo> listInfo) {
+        this.listInfo = listInfo;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(this.listInfo);
+    }
+
+    public PictureInfo() {
+    }
+
+    protected PictureInfo(Parcel in) {
+        this.listInfo = new ArrayList<PictureInfoListInfo>();
+        in.readList(this.listInfo, PictureInfoListInfo.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<PictureInfo> CREATOR = new Parcelable.Creator<PictureInfo>() {
+        @Override
+        public PictureInfo createFromParcel(Parcel source) {
+            return new PictureInfo(source);
+        }
+
+        @Override
+        public PictureInfo[] newArray(int size) {
+            return new PictureInfo[size];
+        }
+    };
+}

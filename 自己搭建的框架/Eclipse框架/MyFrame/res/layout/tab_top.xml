@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <!-- 顶部标签区域 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:background="@color/white"
+        >
+
+        <GridView
+            android:id="@+id/tabGridView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:listSelector="@android:color/transparent"
+            android:verticalSpacing="0dip" />
+
+        <ImageView
+            android:id="@+id/iv_fragment_test_tabline"
+            android:layout_width="85dp"
+            android:layout_height="3dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/typeface_one" />
+    </RelativeLayout>
+
+    <!-- 顶部下面容器,自定义ViewPager -->
+
+    <com.alnton.myFrameResource.view.ViewPagerCompat
+        android:id="@+id/myViewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:duplicateParentState="true"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+</LinearLayout>

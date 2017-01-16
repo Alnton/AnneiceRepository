@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/MyFrame.iml" filepath="$PROJECT_DIR$/MyFrame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyFrameApp/MyFrameApp.iml" filepath="$PROJECT_DIR$/MyFrameApp/MyFrameApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyFrameCore/MyFrameCore.iml" filepath="$PROJECT_DIR$/MyFrameCore/MyFrameCore.iml" />
+    </modules>
+  </component>
+</project>

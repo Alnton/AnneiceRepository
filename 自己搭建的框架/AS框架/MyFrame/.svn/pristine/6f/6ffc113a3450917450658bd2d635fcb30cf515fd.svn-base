@@ -1,0 +1,124 @@
+package com.alnton.myframe.ui.welcome;
+
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.alnton.myframecore.application.CacheSession;
+import com.alnton.myframe.R;
+import com.alnton.myframe.entity.user.User;
+import com.alnton.myframe.ui.BaseActivity;
+import com.alnton.myframe.ui.guide.GuideActivity;
+import com.alnton.myframe.ui.main.MainActivity;
+import com.alnton.myframecore.util.MyFrameCoreTools;
+
+/**
+ * <广告界面>
+ *
+ * @author 王乾州
+ */
+public class ADActivity extends BaseActivity {
+    /**
+     * 广告图片
+     */
+    private ImageView adImageView;
+
+    /**
+     * 时间倒计时
+     */
+    private TextView timeTextView;
+
+    /**
+     * 倒计时
+     */
+    private MyCountDownTimer mc;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setContentView(R.layout.activity_ad);
+
+        timeTextView = (TextView) findViewById(R.id.timeTextView);
+        adImageView = (ImageView) findViewById(R.id.adImageView);
+
+        if (null != CacheSession.getInstance().bitmap) {
+            adImageView.setImageBitmap(CacheSession.getInstance().bitmap);
+        }
+
+        mc = new MyCountDownTimer(5000, 1000);
+        mc.start();
+
+        timeTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mc.cancel();
+
+                if (User.instance.isFirstLogin()) {
+                    /**
+                     * 进入指引页
+                     */
+                    MyFrameCoreTools.getInstance().startActivity(mContext, GuideActivity.class, null);
+                } else {
+                    /**
+                     * 进入主界面
+                     */
+                    MyFrameCoreTools.getInstance().startActivity(mContext, MainActivity.class, null);
+                }
+                finish();
+            }
+        });
+    }
+
+    /**
+     * 继承 CountDownTimer 防范
+     * <p>
+     * 重写 父类的方法 onTick() 、 onFinish()
+     */
+    class MyCountDownTimer extends CountDownTimer {
+        /**
+         * @param millisInFuture    表示以毫秒为单位 倒计时的总数
+         *                          <p>
+         *                          例如 millisInFuture=1000 表示1秒
+         * @param countDownInterval 表示 间隔 多少微秒 调用一次 onTick 方法
+         *                          <p>
+         *                          例如: countDownInterval =1000 ; 表示每1000毫秒调用一次onTick()
+         */
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        public void onFinish() {
+            if (User.instance.isFirstLogin()) {
+                /**
+                 * 进入指引页
+                 */
+                MyFrameCoreTools.getInstance().startActivity(mContext, GuideActivity.class, null);
+            } else {
+                /**
+                 * 进入主界面
+                 */
+                MyFrameCoreTools.getInstance().startActivity(mContext, MainActivity.class, null);
+            }
+            finish();
+        }
+
+        public void onTick(long millisUntilFinished) {
+            timeTextView.setText(millisUntilFinished / 1000 + "s");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        if (null != CacheSession.getInstance().bitmap && !CacheSession.getInstance().bitmap.isRecycled()) {
+            CacheSession.getInstance().bitmap.recycle();
+            CacheSession.getInstance().bitmap = null;
+            System.gc();
+        }
+
+        super.onDestroy();
+    }
+}

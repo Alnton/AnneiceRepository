@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 这个文件只写特殊像素或者字体大小，默认的都在MyFrameResource中 -->
+    
+</resources>

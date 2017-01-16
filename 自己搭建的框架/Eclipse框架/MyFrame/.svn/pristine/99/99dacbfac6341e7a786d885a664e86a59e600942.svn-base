@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/backgroud_shape"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/px60"
+        android:text="下线通知"
+        android:textColor="@color/typeface_five"
+        android:textSize="@dimen/size32" />
+
+    <TextView
+        android:id="@+id/dialog_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/px60"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
+        android:layout_marginTop="@dimen/px20"
+        android:textColor="@color/typeface_seven"
+        android:textSize="@dimen/size28" />
+
+    <include layout="@layout/view_line" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <com.alnton.myFrameResource.view.Button.ClickEffectButton
+            android:id="@+id/dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px88"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="退出"
+            android:textColor="#03a2fd"
+            android:textSize="@dimen/size32" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:background="@color/divider" />
+
+        <com.alnton.myFrameResource.view.Button.ClickEffectButton
+            android:id="@+id/dialog_confim"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px88"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="重新登录"
+            android:textColor="#03a2fd"
+            android:textSize="@dimen/size32" />
+    </LinearLayout>
+
+</LinearLayout>

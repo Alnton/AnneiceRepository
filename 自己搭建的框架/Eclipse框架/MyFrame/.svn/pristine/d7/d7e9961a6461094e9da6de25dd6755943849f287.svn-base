@@ -1,0 +1,135 @@
+package com.alnton.myframe.util.http2;
+
+import com.alnton.myframe.entity.http.RequestEntity;
+
+import android.content.Context;
+
+public class TestRequest {
+	
+	/**
+	 * @Description: post请求 有参数(复杂的json数据)
+	 */
+	public void testRequest1(){
+		Context context = null;
+		new Request(context)
+		.url("url")
+		.addJsonParams("复杂的json数据")
+		.setTheme(true, null, null)//设置请求主题 
+		.setTheme(false, false)//设置请求主题 
+		.executeJsonPost(new Callback<RequestEntity>() {
+			@Override
+			public void onSuccess(RequestEntity arg0) {
+				
+			}
+
+			@Override
+			public void onFailure(int arg0, Throwable arg1) {
+				
+			}
+
+			@Override
+			public void onFinish() {
+			}
+		});
+	}
+	
+	/**
+	 * @Description: post请求 有参数(简单的json数据)
+	 */
+	public void testRequest2(){
+		Context context = null;
+		new Request(context)
+		.url("url")
+		.addJsonParams("key","value")
+		.addJsonParams("orderCode","1609281517582210")
+		.executeJsonPost(new Callback<String>() {
+			@Override
+			public void onSuccess(String arg0) {
+				
+			}
+
+			@Override
+			public void onFailure(int arg0, Throwable arg1) {
+				
+			}
+			@Override
+			public void onFinish() {
+			}
+		});
+	}
+	
+	/**
+	 * @Description: post请求 无参数
+	 */
+	public void testRequest3(){
+		Context context = null;
+		new Request(context)
+		.url("url")
+		.executeJsonPost(new Callback<String>() {
+			@Override
+			public void onSuccess(String arg0) {
+				
+			}
+
+			@Override
+			public void onFailure(int arg0, Throwable arg1) {
+				
+			}
+
+			@Override
+			public void onFinish() {
+			}
+		});
+	}
+	
+	/**
+	 * @Description: get请求 有参数
+	 */
+	public void testRequest4(){
+		Context context = null;
+		new Request(context)
+		.url("url")
+		.addParams("key","value")
+		.addParams("orderCode","1609281517582210")
+		.executeGet(new Callback<String>() {
+			@Override
+			public void onSuccess(String arg0) {
+				
+			}
+
+			@Override
+			public void onFailure(int arg0, Throwable arg1) {
+				
+			}
+
+			@Override
+			public void onFinish() {
+			}
+		});
+	}
+	
+	/**
+	 * @Description: get请求 无参数
+	 */
+	public void testRequest5(){
+		Context context = null;
+		new Request(context)
+		.url("url")
+		.executeGet(new Callback<String>() {
+			@Override
+			public void onSuccess(String arg0) {
+				
+			}
+
+			@Override
+			public void onFailure(int arg0, Throwable arg1) {
+				
+			}
+
+			@Override
+			public void onFinish() {
+			}
+		});
+	}
+	
+}

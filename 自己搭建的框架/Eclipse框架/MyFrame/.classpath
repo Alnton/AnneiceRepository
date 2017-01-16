@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="libs/gson-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/alipay.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-net-3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/AMap_Location_V2.7.0_20160726.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/libammsdk.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/open_sdk_r5509_lite.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/mta-sdk-1.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/UPPayAssistEx.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/UPPayPluginExPro.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/android-async-http-1.4.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jpush-android-2.1.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/MyFrameCore.jar"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/MyFrameResource"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

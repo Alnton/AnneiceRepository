@@ -1,0 +1,578 @@
+package com.alnton.myframe.util;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.alnton.myframe.R;
+import com.alnton.myframe.adapter.homePage.CityWheelAdapter;
+import com.alnton.myframe.config.Config.SystemParamCfg;
+import com.alnton.myframe.config.FusionCode;
+import com.alnton.myframe.db.CityManager;
+import com.alnton.myframe.entity.City;
+import com.alnton.myframecore.util.FileUtil;
+import com.alnton.myframecore.util.ImageUtil;
+import com.alnton.myframecore.util.MyFrameCoreTools;
+import com.alnton.myframecore.view.Button.ClickEffectButton;
+import com.alnton.myframecore.view.Wheel.OnWheelScrollListener;
+import com.alnton.myframecore.view.Wheel.WheelView;
+import com.alnton.myframecore.view.util.CustomDialog;
+
+import java.util.ArrayList;
+
+/**
+ * <用于存放所有公共的方法>
+ *
+ * @author 王乾州
+ */
+public class MyframeTools {
+    private static MyframeTools tools;
+
+    /**
+     * 省份城市集合
+     */
+    private ArrayList<City> provinceList, cityList, townList;
+
+    /**
+     * 城市数据库管理类
+     */
+    public CityManager cityManager;
+
+    /**
+     * 双击某个按钮的最后一次时间
+     */
+    private long lastClickTime;
+
+    public static MyframeTools getInstance() {
+        if (null == tools) {
+            tools = new MyframeTools();
+        }
+        return tools;
+    }
+
+    /**
+     * <选择省份城市区域>
+     *
+     * @param province 界面上显示的老的省份传递过来
+     * @param city     界面上显示的老的城市传递过来
+     * @param town     界面上显示的老的区县传递过来
+     * @param handler  用于接收新选择的省份、城市、区域 字符串用","间隔
+     */
+    public void choiceProvinceCity(final Context context, final String province, final String city, final String town,
+                                   final Handler handler) {
+        if (null == cityManager) {
+            cityManager = new CityManager(context);
+            cityManager.insertDb();
+        }
+
+        provinceList = cityManager.queryProvinces();
+
+        new CustomDialog(context, true, R.layout.dialog_provincecity)
+                .show(new CustomDialog.CustomDialogListener() {
+                    @Override
+                    public void onDismissed() {
+                        //对话框销毁后调用
+                    }
+
+                    @Override
+                    public void onBuildView(View view, final CustomDialog customDialog) {
+                        //设置View中的事件
+                        final WheelView provinceWheelview = (WheelView) view.findViewById(R.id.provinceWheelview);
+                        final WheelView cityWheelview = (WheelView) view.findViewById(R.id.cityWheelview);
+                        final WheelView townWheelview = (WheelView) view.findViewById(R.id.townWheelview);
+                        provinceWheelview.setVisibleItems(7);
+                        cityWheelview.setVisibleItems(7);
+                        townWheelview.setVisibleItems(7);
+
+                        provinceWheelview.addScrollingListener(new OnWheelScrollListener() {
+
+                            @Override
+                            public void onScrollingStarted(WheelView wheel) {
+                            }
+
+                            @Override
+                            public void onScrollingFinished(WheelView wheel) {
+                                cityList = cityManager.queryCitysTowns(provinceList.get(wheel.getCurrentItem()).getCityCode());
+                                cityWheelview.setAdapter(new CityWheelAdapter(cityList));
+                                cityWheelview.setCurrentItem(0);
+
+                                if (null != cityList && cityList.size() > 0) {
+                                    townList = cityManager.queryCitysTowns(cityList.get(cityWheelview.getCurrentItem()).getCityCode());
+                                } else {
+                                    townList = new ArrayList<City>();
+                                }
+                                townWheelview.setAdapter(new CityWheelAdapter(townList));
+                                townWheelview.setCurrentItem(0);
+
+                            }
+                        });
+
+                        cityWheelview.addScrollingListener(new OnWheelScrollListener() {
+
+                            @Override
+                            public void onScrollingStarted(WheelView wheel) {
+                            }
+
+                            @Override
+                            public void onScrollingFinished(WheelView wheel) {
+                                if (null != cityList && cityList.size() > 0) {
+                                    townList = cityManager.queryCitysTowns(cityList.get(wheel.getCurrentItem()).getCityCode());
+                                } else {
+                                    townList = new ArrayList<City>();
+                                }
+                                townWheelview.setAdapter(new CityWheelAdapter(townList));
+                                townWheelview.setCurrentItem(0);
+
+                            }
+                        });
+
+                        /**
+                         * 填充省份数据
+                         */
+                        provinceWheelview.setAdapter(new CityWheelAdapter(provinceList, 11));
+                        if (!TextUtils.isEmpty(province)) {
+                            for (int i = 0; i < provinceList.size(); i++) {
+                                if (province.equals(provinceList.get(i).getCityName())) {
+                                    provinceWheelview.setCurrentItem(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            provinceWheelview.setCurrentItem(0);
+                        }
+
+                        cityList = cityManager.queryCitysTowns(provinceList.get(provinceWheelview.getCurrentItem()).getCityCode());
+
+                        /**
+                         * 填充城市数据
+                         */
+                        if (null != cityList && cityList.size() > 0) {
+                            cityWheelview.setAdapter(new CityWheelAdapter(cityList, 11));
+                            if (!TextUtils.isEmpty(city)) {
+                                for (int i = 0; i < cityList.size(); i++) {
+                                    if (city.equals(cityList.get(i).getCityName())) {
+                                        cityWheelview.setCurrentItem(i);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                cityWheelview.setCurrentItem(0);
+                            }
+                        }
+
+                        if (null != cityList && cityList.size() > 0) {
+                            townList = cityManager.queryCitysTowns(cityList.get(cityWheelview.getCurrentItem()).getCityCode());
+                        }
+
+                        /**
+                         * 填充区县数据
+                         */
+                        if (null != townList && townList.size() > 0) {
+                            townWheelview.setAdapter(new CityWheelAdapter(townList, 11));
+                            if (!TextUtils.isEmpty(town)) {
+                                for (int i = 0; i < townList.size(); i++) {
+                                    if (town.equals(townList.get(i).getCityName())) {
+                                        townWheelview.setCurrentItem(i);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                townWheelview.setCurrentItem(0);
+                            }
+                        }
+
+                        TextView cancelTextView = (TextView) view.findViewById(R.id.cancelTextView);
+                        TextView confirmTextView = (TextView) view.findViewById(R.id.confirmTextView);
+
+                        cancelTextView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+                            }
+                        });
+
+                        confirmTextView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+
+                                /**
+                                 * 确定
+                                 */
+                                String pro = " ", ci = " ", town = " ", proCode = " ", ciCode = " ", townCode = " ";
+                                if (null != provinceList && provinceList.size() > 0) {
+                                    pro = provinceList.get(provinceWheelview.getCurrentItem()).getCityName();
+                                    proCode = provinceList.get(provinceWheelview.getCurrentItem()).getCityCode();
+                                }
+
+                                if (null != cityList && cityList.size() > 0) {
+                                    ci = cityList.get(cityWheelview.getCurrentItem()).getCityName();
+                                    ciCode = cityList.get(cityWheelview.getCurrentItem()).getCityCode();
+                                }
+
+                                if (null != townList && townList.size() > 0) {
+                                    town = townList.get(townWheelview.getCurrentItem()).getCityName();
+                                    townCode = townList.get(townWheelview.getCurrentItem()).getCityCode();
+                                }
+
+                                handler.obtainMessage(FusionCode.instance.HANDLER_CHANGE_CITY,
+                                        pro + "," + ci + "," + town + "," + proCode + "," + ciCode + "," + townCode).sendToTarget();
+                            }
+                        });
+                    }
+                });
+    }
+
+    /**
+     * <选择省份城市>
+     *
+     * @param province 界面上显示的老的省份传递过来
+     * @param city     界面上显示的老的城市传递过来
+     * @param handler  用于接收新选择的省份、城市 字符串用","间隔
+     */
+    public void choiceProvinceCity(final Context context, final String province, final String city, final Handler handler) {
+
+        if (null == cityManager) {
+            cityManager = new CityManager(context);
+            cityManager.insertDb();
+        }
+
+        provinceList = cityManager.queryProvinces();
+
+        new CustomDialog(context, true, R.layout.dialog_provincecity)
+                .show(new CustomDialog.CustomDialogListener() {
+                    @Override
+                    public void onDismissed() {
+                        //对话框销毁后调用
+                    }
+
+                    @Override
+                    public void onBuildView(View view, final CustomDialog customDialog) {
+                        //设置View中的事件
+
+                        final WheelView provinceWheelview = (WheelView) view.findViewById(R.id.provinceWheelview);
+                        final WheelView cityWheelview = (WheelView) view.findViewById(R.id.cityWheelview);
+                        WheelView townWheelview = (WheelView) view.findViewById(R.id.townWheelview);
+                        townWheelview.setVisibility(View.GONE);
+                        provinceWheelview.setVisibleItems(7);
+                        cityWheelview.setVisibleItems(7);
+
+                        provinceWheelview.addScrollingListener(new OnWheelScrollListener() {
+
+                            @Override
+                            public void onScrollingStarted(WheelView wheel) {
+                            }
+
+                            @Override
+                            public void onScrollingFinished(WheelView wheel) {
+                                cityList = cityManager.queryCitysTowns(provinceList.get(wheel.getCurrentItem()).getCityCode());
+                                cityWheelview.setAdapter(new CityWheelAdapter(cityList));
+                                cityWheelview.setCurrentItem(0);
+                            }
+                        });
+
+                        /**
+                         * 填充省份数据
+                         */
+                        provinceWheelview.setAdapter(new CityWheelAdapter(provinceList, 11));
+                        if (!TextUtils.isEmpty(province)) {
+                            for (int i = 0; i < provinceList.size(); i++) {
+                                if (province.equals(provinceList.get(i).getCityName())) {
+                                    provinceWheelview.setCurrentItem(i);
+                                    break;
+                                }
+                            }
+                        } else {
+                            provinceWheelview.setCurrentItem(0);
+                        }
+
+                        cityList = cityManager.queryCitysTowns(provinceList.get(provinceWheelview.getCurrentItem()).getCityCode());
+
+                        /**
+                         * 填充城市数据
+                         */
+                        if (null != cityList && cityList.size() > 0) {
+                            cityWheelview.setAdapter(new CityWheelAdapter(cityList, 11));
+                            if (!TextUtils.isEmpty(city)) {
+                                for (int i = 0; i < cityList.size(); i++) {
+                                    if (city.equals(cityList.get(i).getCityName())) {
+                                        cityWheelview.setCurrentItem(i);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                cityWheelview.setCurrentItem(0);
+                            }
+                        }
+
+                        TextView cancelTextView = (TextView) view.findViewById(R.id.cancelTextView);
+                        TextView confirmTextView = (TextView) view.findViewById(R.id.confirmTextView);
+
+                        cancelTextView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+                            }
+                        });
+
+                        confirmTextView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+
+                                /**
+                                 * 确定
+                                 */
+                                String pro = " ", ci = " ", town = " ", proCode = " ", ciCode = " ", townCode = " ";
+                                if (null != provinceList && provinceList.size() > 0) {
+                                    pro = provinceList.get(provinceWheelview.getCurrentItem()).getCityName();
+                                    proCode = provinceList.get(provinceWheelview.getCurrentItem()).getCityCode();
+                                }
+
+                                if (null != cityList && cityList.size() > 0) {
+                                    ci = cityList.get(cityWheelview.getCurrentItem()).getCityName();
+                                    ciCode = cityList.get(cityWheelview.getCurrentItem()).getCityCode();
+                                }
+
+                                handler.obtainMessage(FusionCode.instance.HANDLER_CHANGE_CITY,
+                                        pro + "," + ci + "," + town + "," + proCode + "," + ciCode + "," + townCode).sendToTarget();
+                            }
+                        });
+                    }
+                });
+    }
+
+    /**
+     * <从相册或者拍照获取图片 从底部弹出的选择方式>
+     */
+    public void choiceImageFromBottom(final Activity mContext, final String imagePath) {
+        if (isFastDoubleClick()) {
+            return;
+        }
+
+        new CustomDialog(mContext, true, R.layout.photo_choose_dialog)
+                .show(new CustomDialog.CustomDialogListener() {
+                    @Override
+                    public void onDismissed() {
+                        //对话框销毁后调用
+                    }
+
+                    @Override
+                    public void onBuildView(View view, final CustomDialog customDialog) {
+                        //设置View中的事件
+                        Button cameraButton = (Button) view.findViewById(R.id.cameraButton);
+                        Button albumButton = (Button) view.findViewById(R.id.albumButton);
+                        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
+
+                        cameraButton.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                /**
+                                 * 拍照
+                                 */
+                                customDialog.dismiss();
+                                ImageUtil.getInstance().takePicture(mContext, imagePath);
+                            }
+                        });
+
+                        albumButton.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                /**
+                                 * 去相册
+                                 */
+                                customDialog.dismiss();
+                                ImageUtil.getInstance().selectPhoto(mContext);
+                            }
+                        });
+
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                /**
+                                 * 取消
+                                 */
+                                customDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+    }
+
+
+    /**
+     * 判断选择的时间是否大于等于当前时间7天
+     * 7天：604800000 毫秒
+     *
+     * @param selectDate: 选择的时间
+     * @return
+     */
+    public boolean isSevenDays(String selectDate) {
+        long selectTime = MyFrameCoreTools.getInstance().formatTimeByYMD(selectDate);
+
+        if (selectTime - System.currentTimeMillis() >= 604800000) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param contextType 上下文的类型（FusionCode.BASEACTIVITY，FusionCode.BASEFRAGMENTACTIVITY）
+     * @param @param      path
+     * @param @return     设定文件
+     * @return boolean    返回类型
+     * @throws
+     * @Title: isCorrectImageFormat
+     * @Description: TODO(判断上传图片是否大于5M，是否是 jpg, png, jpeg格式)
+     */
+    public boolean isCorrectImageFormat(Context mContext, int contextType, String path) {
+        //  jpg ,png,jpeg
+        double fileSize = FileUtil.getInstance().getFileOrFilesSize(path, 3);
+        if (fileSize < FusionCode.instance.PIC_MAXSIZE) {
+            String format = path.substring(path.lastIndexOf("."), path.length());
+            if (format.equals(".jpg") || format.equals(".png") || format.equals(".jpeg")) {
+                return true;
+            } else {
+                ToastUtil.instance.showToast(mContext, "请上传就jpg,png,jpeg格式的图片");
+                return false;
+            }
+        } else {
+            ToastUtil.instance.showToast(mContext, "上传图片不能大于" + FusionCode.instance.PIC_MAXSIZE + "M");
+            return false;
+        }
+    }
+
+    /**
+     * 手机号中间四位用*加密
+     *
+     * @param phoneNum：手机号
+     * @return
+     */
+    public String phoneEncode(String phoneNum) {
+        if (!TextUtils.isEmpty(phoneNum) && phoneNum.length() == 11) {
+            return phoneNum.substring(0, 3) + "****" + phoneNum.substring(7);
+        }
+        return SystemParamCfg.DEFAULT_EMPTY_VALUE;
+    }
+
+    /**
+     * 银行卡后四位明文 其他用*加密
+     *
+     * @param bankAccount
+     * @return
+     */
+    public String bankAccountEncode(String bankAccount) {
+        if (!TextUtils.isEmpty(bankAccount) && bankAccount.length() >= 4) {
+            return "****" + "   " + "****" + "   " + "****" + "   " + bankAccount.substring(bankAccount.length() - 4);
+        }
+        return SystemParamCfg.DEFAULT_EMPTY_VALUE;
+    }
+
+    /**
+     * @param @return 设定文件
+     * @return boolean    返回类型
+     * @throws
+     * @Title: isFastDoubleClick
+     * @Description: (防止重复点击)
+     */
+    public boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        if (0 < timeD && timeD < 500) {
+            return true;
+        }
+        lastClickTime = time;
+        return false;
+    }
+
+    /**
+     * 点击Dialog确定的回调
+     */
+    public interface OnAffirmClickListener {
+        public void onClick(View v, Dialog dialog);
+    }
+
+    /**
+     * 只显示一个确定按钮的中间对话框
+     * 点击确定按钮关闭Dialog
+     *
+     * @param context： 上下文
+     * @param content： 内容文本
+     */
+    public void showDialogCenterOneBtn(Context context, final String content) {
+        new CustomDialog(context, false, R.layout.dialog_button_one)
+                .show(new CustomDialog.CustomDialogListener() {
+                    @Override
+                    public void onDismissed() {
+                        //对话框销毁后调用
+                    }
+
+                    @Override
+                    public void onBuildView(View view, final CustomDialog customDialog) {
+                        //设置View中的事件
+                        TextView dialog_content = (TextView) view.findViewById(R.id.dialog_content);
+                        dialog_content.setText(content);
+                        ClickEffectButton confirmBtn = (ClickEffectButton) view.findViewById(R.id.dialog_confim);
+                        confirmBtn.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+    }
+
+    /**
+     * 显示两个按钮的中间对话框
+     * 点击取消按钮关闭对话框，点击确定按钮 自己实现接口监听处理自己的业务逻辑
+     *
+     * @param context：               上下文
+     * @param content：               内容文本
+     * @param onAffirmClickListener: 点击确定按钮的监听 如果为null 则点击确定按钮关闭对话框
+     */
+    public void showDialogCenterTwoBtn(Context context, final String content, final OnAffirmClickListener onAffirmClickListener) {
+        new CustomDialog(context, false, R.layout.dialog_xml)
+                .show(new CustomDialog.CustomDialogListener() {
+                    @Override
+                    public void onDismissed() {
+                        //对话框销毁后调用
+                    }
+
+                    @Override
+                    public void onBuildView(View view, final CustomDialog customDialog) {
+                        //设置View中的事件
+                        TextView dialog_content = (TextView) view.findViewById(R.id.dialog_content);
+                        dialog_content.setText(content);
+                        ClickEffectButton cancel = (ClickEffectButton) view.findViewById(R.id.dialog_cancel);
+                        cancel.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+                            }
+                        });
+                        ClickEffectButton confirmBtn = (ClickEffectButton) view.findViewById(R.id.dialog_confim);
+                        confirmBtn.setOnClickListener(new OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                if (null == onAffirmClickListener) {
+                                    customDialog.dismiss();
+                                } else {
+                                    onAffirmClickListener.onClick(v, customDialog);
+                                }
+                            }
+                        });
+                    }
+                });
+    }
+}
