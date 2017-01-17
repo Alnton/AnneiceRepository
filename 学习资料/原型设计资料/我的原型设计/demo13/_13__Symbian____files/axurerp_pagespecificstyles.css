@@ -1,0 +1,2470 @@
+﻿body {
+    margin: 0px;
+}
+
+div {
+    background-repeat: no-repeat;
+}
+
+.raw_image {
+    width: 100%;
+    height: 100%;
+}
+
+.preload {
+    display: none;
+}
+#main_container {
+}
+
+.form_sketch {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.u0_normal {
+    background-image: url('../_13__Symbian____files/u0_normal.png');
+}
+
+.u0_container {
+    position:absolute;
+    left:80px;
+    top:61px;
+    width:274px;
+    height:600px;
+}
+
+#u0_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:280px;
+    height:606px;
+}
+
+.u1 {
+    position:absolute;
+    left:2px;
+    top:292px;
+    width:270px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u2_normal {
+    background-image: url('../_13__Symbian____files/u2_normal.png');
+}
+
+.u2_container {
+    position:absolute;
+    left:97px;
+    top:79px;
+    width:240px;
+    height:320px;
+}
+
+#u2_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:246px;
+    height:326px;
+}
+
+.u3 {
+    position:absolute;
+    left:2px;
+    top:152px;
+    width:236px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u4_normal {
+    background-image: url('../_13__Symbian____files/u4_normal.png');
+}
+
+.u4_container {
+    position:absolute;
+    left:193px;
+    top:64px;
+    width:60px;
+    height:10px;
+}
+
+#u4_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:16px;
+}
+
+.u5 {
+    position:absolute;
+    left:2px;
+    top:-3px;
+    width:56px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u6_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u6_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u6_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u6_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u6_container {
+    position:absolute;
+    left:97px;
+    top:406px;
+    width:60px;
+    height:25px;
+}
+
+#u6_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u7 {
+    position:absolute;
+    left:2px;
+    top:-2px;
+    width:56px;
+    height:29px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u8_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u8_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u8_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u8_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u8_container {
+    position:absolute;
+    left:97px;
+    top:561px;
+    width:60px;
+    height:25px;
+}
+
+#u8_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u9 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u10_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u10_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u10_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u10_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u10_container {
+    position:absolute;
+    left:97px;
+    top:594px;
+    width:60px;
+    height:25px;
+}
+
+#u10_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u11 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u12_mouseOver {
+    background-image: url('../_13__Symbian____files/右方向键_u12_mouseOver.png');
+}
+
+.u12_mouseDown {
+    background-image: url('../_13__Symbian____files/右方向键_u12_mouseDown.png');
+}
+
+.u12_selected {
+    background-image: url('../_13__Symbian____files/右方向键_u12_selected.png');
+}
+
+.u12_normal {
+    background-image: url('../_13__Symbian____files/右方向键_u12_normal.png');
+}
+
+.u12_container {
+    position:absolute;
+    left:250px;
+    top:440px;
+    width:25px;
+    height:50px;
+}
+
+#u12_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:31px;
+    height:56px;
+}
+
+.u13 {
+    position:absolute;
+    left:2px;
+    top:17px;
+    width:21px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u14_mouseOver {
+    background-image: url('../_13__Symbian____files/下方向键_u14_mouseOver.png');
+}
+
+.u14_mouseDown {
+    background-image: url('../_13__Symbian____files/下方向键_u14_mouseDown.png');
+}
+
+.u14_selected {
+    background-image: url('../_13__Symbian____files/下方向键_u14_selected.png');
+}
+
+.u14_normal {
+    background-image: url('../_13__Symbian____files/下方向键_u14_normal.png');
+}
+
+.u14_container {
+    position:absolute;
+    left:191px;
+    top:497px;
+    width:50px;
+    height:25px;
+}
+
+#u14_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:56px;
+    height:31px;
+}
+
+.u15 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:46px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u16_mouseOver {
+    background-image: url('../_13__Symbian____files/下方向键_u14_mouseOver.png');
+}
+
+.u16_mouseDown {
+    background-image: url('../_13__Symbian____files/下方向键_u14_mouseDown.png');
+}
+
+.u16_selected {
+    background-image: url('../_13__Symbian____files/下方向键_u14_selected.png');
+}
+
+.u16_normal {
+    background-image: url('../_13__Symbian____files/下方向键_u14_normal.png');
+}
+
+.u16_container {
+    position:absolute;
+    left:191px;
+    top:408px;
+    width:50px;
+    height:25px;
+}
+
+#u16_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:56px;
+    height:31px;
+}
+
+.u17 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:46px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u18_mouseOver {
+    background-image: url('../_13__Symbian____files/确认键_u18_mouseOver.png');
+}
+
+.u18_mouseDown {
+    background-image: url('../_13__Symbian____files/确认键_u18_mouseDown.png');
+}
+
+.u18_selected {
+    background-image: url('../_13__Symbian____files/确认键_u18_selected.png');
+}
+
+.u18_normal {
+    background-image: url('../_13__Symbian____files/确认键_u18_normal.png');
+}
+
+.u18_container {
+    position:absolute;
+    left:191px;
+    top:440px;
+    width:50px;
+    height:50px;
+}
+
+#u18_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:56px;
+    height:56px;
+}
+
+.u19 {
+    position:absolute;
+    left:2px;
+    top:17px;
+    width:46px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u20_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u20_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u20_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u20_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u20_container {
+    position:absolute;
+    left:97px;
+    top:529px;
+    width:60px;
+    height:25px;
+}
+
+#u20_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u21 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u22_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u22_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u22_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u22_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u22_container {
+    position:absolute;
+    left:97px;
+    top:626px;
+    width:60px;
+    height:25px;
+}
+
+#u22_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u23 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:46px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u24_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u24_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u24_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u24_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u24_container {
+    position:absolute;
+    left:278px;
+    top:406px;
+    width:60px;
+    height:25px;
+}
+
+#u24_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u25 {
+    position:absolute;
+    left:2px;
+    top:-2px;
+    width:56px;
+    height:29px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u26_normal {
+    background-image: url('../_13__Symbian____files/u26_normal.png');
+}
+
+.u26_container {
+    position:absolute;
+    left:211px;
+    top:460px;
+    width:10px;
+    height:10px;
+}
+
+#u26_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:16px;
+    height:16px;
+}
+
+.u27 {
+    position:absolute;
+    left:2px;
+    top:-3px;
+    width:6px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u28_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u28_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u28_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u28_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u28_container {
+    position:absolute;
+    left:188px;
+    top:561px;
+    width:60px;
+    height:25px;
+}
+
+#u28_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u29 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u30_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u30_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u30_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u30_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u30_container {
+    position:absolute;
+    left:188px;
+    top:594px;
+    width:60px;
+    height:25px;
+}
+
+#u30_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u31 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u32_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u32_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u32_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u32_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u32_container {
+    position:absolute;
+    left:188px;
+    top:529px;
+    width:60px;
+    height:25px;
+}
+
+#u32_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u33 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u34_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u34_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u34_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u34_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u34_container {
+    position:absolute;
+    left:188px;
+    top:626px;
+    width:60px;
+    height:25px;
+}
+
+#u34_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u35 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u36_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u36_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u36_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u36_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u36_container {
+    position:absolute;
+    left:278px;
+    top:561px;
+    width:60px;
+    height:25px;
+}
+
+#u36_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u37 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u38_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u38_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u38_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u38_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u38_container {
+    position:absolute;
+    left:278px;
+    top:594px;
+    width:60px;
+    height:25px;
+}
+
+#u38_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u39 {
+    position:absolute;
+    left:2px;
+    top:-10px;
+    width:56px;
+    height:44px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u40_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u40_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u40_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u40_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u40_container {
+    position:absolute;
+    left:278px;
+    top:529px;
+    width:60px;
+    height:25px;
+}
+
+#u40_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u41 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:22px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u42_mouseOver {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseOver.png');
+}
+
+.u42_mouseDown {
+    background-image: url('../_13__Symbian____files/左软键_u6_mouseDown.png');
+}
+
+.u42_selected {
+    background-image: url('../_13__Symbian____files/左软键_u6_selected.png');
+}
+
+.u42_normal {
+    background-image: url('../_13__Symbian____files/左软键_u6_normal.png');
+}
+
+.u42_container {
+    position:absolute;
+    left:278px;
+    top:626px;
+    width:60px;
+    height:25px;
+}
+
+#u42_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:66px;
+    height:31px;
+}
+
+.u43 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:56px;
+    height:20px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u44_normal {
+    background-image: url('../_13__Symbian____files/u44_normal.png');
+}
+
+.u44_container {
+    position:absolute;
+    left:211px;
+    top:417px;
+    width:10px;
+    height:10px;
+}
+
+#u44_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:16px;
+    height:16px;
+}
+
+.u45 {
+    position:absolute;
+    left:2px;
+    top:-3px;
+    width:6px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u46_normal {
+    background-image: url('../_13__Symbian____files/u46_normal.png');
+}
+
+.u46_container {
+    position:absolute;
+    left:211px;
+    top:505px;
+    width:10px;
+    height:10px;
+}
+
+#u46_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:16px;
+    height:16px;
+}
+
+.u47 {
+    position:absolute;
+    left:2px;
+    top:-3px;
+    width:6px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u48_mouseOver {
+    background-image: url('../_13__Symbian____files/右方向键_u12_mouseOver.png');
+}
+
+.u48_mouseDown {
+    background-image: url('../_13__Symbian____files/右方向键_u12_mouseDown.png');
+}
+
+.u48_selected {
+    background-image: url('../_13__Symbian____files/右方向键_u12_selected.png');
+}
+
+.u48_normal {
+    background-image: url('../_13__Symbian____files/右方向键_u12_normal.png');
+}
+
+.u48_container {
+    position:absolute;
+    left:157px;
+    top:440px;
+    width:25px;
+    height:50px;
+}
+
+#u48_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:31px;
+    height:56px;
+}
+
+.u49 {
+    position:absolute;
+    left:2px;
+    top:17px;
+    width:21px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u50_normal {
+    background-image: url('../_13__Symbian____files/u50_normal.png');
+}
+
+.u50_container {
+    position:absolute;
+    left:165px;
+    top:460px;
+    width:10px;
+    height:10px;
+}
+
+#u50_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:16px;
+    height:16px;
+}
+
+.u51 {
+    position:absolute;
+    left:2px;
+    top:-3px;
+    width:6px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u52_normal {
+    background-image: url('../_13__Symbian____files/u52_normal.png');
+}
+
+.u52_container {
+    position:absolute;
+    left:258px;
+    top:460px;
+    width:10px;
+    height:10px;
+}
+
+#u52_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:16px;
+    height:16px;
+}
+
+.u53 {
+    position:absolute;
+    left:2px;
+    top:-3px;
+    width:6px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#u54 {
+    position:absolute;
+    left:97px;
+    top:79px;
+    width:241px;
+    height:321px;
+    overflow:hidden;
+}
+
+#pd2u54 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:241px;
+    height:321px;
+    
+}
+
+.u55_normal {
+    background-image: url('../_13__Symbian____files/u55_normal.png');
+}
+
+.u55_container {
+    position:absolute;
+    left:1px;
+    top:294px;
+    width:238px;
+    height:25px;
+}
+
+#u55_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:244px;
+    height:31px;
+}
+
+.u56 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:234px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u57 {
+    position:absolute;
+    left:8px;
+    top:300px;
+    width:31px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u58 {
+    position:absolute;
+    left:205px;
+    top:300px;
+    width:31px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u59 {
+    position:absolute;
+    left:102px;
+    top:300px;
+    width:40px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#u60 {
+    position:absolute;
+    left:1px;
+    top:100px;
+    width:200px;
+    height:194px;
+    overflow:hidden;
+}
+
+#pd0u60 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:200px;
+    height:194px;
+    
+}
+
+.u61_menu {
+    background-image: url('../_13__Symbian____files/u61_menu.png');
+}
+
+.u61_menu {
+    position:absolute;
+    left:-2px;
+    top:122px;
+    width:113px;
+    height:78px;
+}
+
+#u61_menu {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:110px;
+    height:75px;
+}
+
+#u62 {
+    position:absolute;
+    left:3px;
+    top:3px;
+    width:103px;
+    height:68px
+}
+
+.u63_normal {
+    background-image: url('../_13__Symbian____files/u63_normal.png');
+}
+
+.u63_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:98px;
+    height:21px;
+}
+
+#u63_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:104px;
+    height:27px;
+}
+
+.u64 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:94px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u65_normal {
+    background-image: url('../_13__Symbian____files/u63_normal.png');
+}
+
+.u65_container {
+    position:absolute;
+    left:0px;
+    top:21px;
+    width:98px;
+    height:21px;
+}
+
+#u65_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:104px;
+    height:27px;
+}
+
+.u66 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:94px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u67_normal {
+    background-image: url('../_13__Symbian____files/u63_normal.png');
+}
+
+.u67_container {
+    position:absolute;
+    left:0px;
+    top:42px;
+    width:98px;
+    height:21px;
+}
+
+#u67_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:104px;
+    height:27px;
+}
+
+.u68 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:94px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u69_normal {
+    background-image: url('../_13__Symbian____files/u69_normal.png');
+}
+
+.u69_container {
+    position:absolute;
+    left:20px;
+    top:1px;
+    width:220px;
+    height:30px;
+}
+
+#u69_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:226px;
+    height:36px;
+}
+
+.u70 {
+    position:absolute;
+    left:2px;
+    top:7px;
+    width:216px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u71 {
+    position:absolute;
+    left:50px;
+    top:8px;
+    width:70px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u72_normal {
+    background-image: url('../_13__Symbian____files/u72_normal.png');
+}
+
+.u72_container {
+    position:absolute;
+    left:2px;
+    top:6px;
+    width:20px;
+    height:20px;
+}
+
+#u72_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u73 {
+    position:absolute;
+    left:2px;
+    top:-2px;
+    width:16px;
+    height:25px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#pd1u54 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:241px;
+    height:321px;
+    
+}
+
+.u74_normal {
+    background-image: url('../_13__Symbian____files/u69_normal.png');
+}
+
+.u74_container {
+    position:absolute;
+    left:20px;
+    top:1px;
+    width:220px;
+    height:30px;
+}
+
+#u74_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:226px;
+    height:36px;
+}
+
+.u75 {
+    position:absolute;
+    left:2px;
+    top:7px;
+    width:216px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u76_normal {
+    background-image: url('../_13__Symbian____files/u55_normal.png');
+}
+
+.u76_container {
+    position:absolute;
+    left:1px;
+    top:294px;
+    width:238px;
+    height:25px;
+}
+
+#u76_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:244px;
+    height:31px;
+}
+
+.u77 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:234px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u78 {
+    position:absolute;
+    left:102px;
+    top:300px;
+    width:40px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u79 {
+    position:absolute;
+    left:50px;
+    top:8px;
+    width:70px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u80 {
+    position:absolute;
+    left:8px;
+    top:300px;
+    width:31px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u81 {
+    position:absolute;
+    left:205px;
+    top:300px;
+    width:31px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#u82 {
+    position:absolute;
+    left:0px;
+    top:100px;
+    width:200px;
+    height:194px;
+    overflow:hidden;
+}
+
+#pd0u82 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:200px;
+    height:194px;
+    
+}
+
+.u83_menu {
+    background-image: url('../_13__Symbian____files/u83_menu.png');
+}
+
+.u83_menu {
+    position:absolute;
+    left:-2px;
+    top:99px;
+    width:68px;
+    height:99px;
+}
+
+#u83_menu {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:65px;
+    height:96px;
+}
+
+#u84 {
+    position:absolute;
+    left:3px;
+    top:3px;
+    width:58px;
+    height:89px
+}
+
+.u85_normal {
+    background-image: url('../_13__Symbian____files/u85_normal.png');
+}
+
+.u85_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:53px;
+    height:21px;
+}
+
+#u85_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:59px;
+    height:27px;
+}
+
+.u86 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:49px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u87_normal {
+    background-image: url('../_13__Symbian____files/u85_normal.png');
+}
+
+.u87_container {
+    position:absolute;
+    left:0px;
+    top:21px;
+    width:53px;
+    height:21px;
+}
+
+#u87_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:59px;
+    height:27px;
+}
+
+.u88 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:49px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u89_normal {
+    background-image: url('../_13__Symbian____files/u85_normal.png');
+}
+
+.u89_container {
+    position:absolute;
+    left:0px;
+    top:42px;
+    width:53px;
+    height:21px;
+}
+
+#u89_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:59px;
+    height:27px;
+}
+
+.u90 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:49px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u91_normal {
+    background-image: url('../_13__Symbian____files/u85_normal.png');
+}
+
+.u91_container {
+    position:absolute;
+    left:0px;
+    top:63px;
+    width:53px;
+    height:21px;
+}
+
+#u91_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:59px;
+    height:27px;
+}
+
+.u92 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:49px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u93_menu {
+    background-image: url('../_13__Symbian____files/u93_menu.png');
+}
+
+.u93_menu {
+    position:absolute;
+    left:53px;
+    top:21px;
+    width:63px;
+    height:57px;
+}
+
+#u93_menu {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:60px;
+    height:54px;
+}
+
+#u94 {
+    position:absolute;
+    left:3px;
+    top:3px;
+    width:53px;
+    height:47px
+}
+
+.u95_normal {
+    background-image: url('../_13__Symbian____files/u95_normal.png');
+}
+
+.u95_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:48px;
+    height:21px;
+}
+
+#u95_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:54px;
+    height:27px;
+}
+
+.u96 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:44px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u97_normal {
+    background-image: url('../_13__Symbian____files/u95_normal.png');
+}
+
+.u97_container {
+    position:absolute;
+    left:0px;
+    top:21px;
+    width:48px;
+    height:21px;
+}
+
+#u97_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:54px;
+    height:27px;
+}
+
+.u98 {
+    position:absolute;
+    left:2px;
+    top:2px;
+    width:44px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u99_normal {
+    background-image: url('../_13__Symbian____files/u72_normal.png');
+}
+
+.u99_container {
+    position:absolute;
+    left:2px;
+    top:6px;
+    width:20px;
+    height:20px;
+}
+
+#u99_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:26px;
+    height:26px;
+}
+
+.u100 {
+    position:absolute;
+    left:2px;
+    top:-2px;
+    width:16px;
+    height:25px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#pd0u54 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:241px;
+    height:321px;
+    
+}
+
+.u101_normal {
+    background-image: url('../_13__Symbian____files/u101_normal.png');
+}
+
+.u101_container {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:240px;
+    height:320px;
+}
+
+#u101_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:246px;
+    height:326px;
+}
+
+.u102 {
+    position:absolute;
+    left:2px;
+    top:152px;
+    width:236px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u103_container {
+    position:absolute;
+    left:100px;
+    top:210px;
+    width:40px;
+    height:40px;
+}
+
+#u103_img {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:40px;
+    height:40px;
+}
+
+.u104 {
+    position:absolute;
+    left:2px;
+    top:12px;
+    width:36px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u105 {
+    position:absolute;
+    left:45px;
+    top:263px;
+    width:165px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#u106 {
+    position:absolute;
+    left:97px;
+    top:299px;
+    width:241px;
+    height:101px;
+    overflow:hidden;
+}
+
+#pd1u106 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:241px;
+    height:101px;
+    
+}
+
+.u107_normal {
+    background-image: url('../_13__Symbian____files/u107_normal.png');
+}
+
+.u107_container {
+    position:absolute;
+    left:1px;
+    top:0px;
+    width:238px;
+    height:80px;
+}
+
+#u107_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:244px;
+    height:86px;
+}
+
+.u108 {
+    position:absolute;
+    left:2px;
+    top:32px;
+    width:234px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u109_normal {
+    background-image: url('../_13__Symbian____files/u55_normal.png');
+}
+
+.u109_container {
+    position:absolute;
+    left:1px;
+    top:75px;
+    width:238px;
+    height:25px;
+}
+
+#u109_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:244px;
+    height:31px;
+}
+
+.u110 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:234px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u111 {
+    position:absolute;
+    left:102px;
+    top:81px;
+    width:40px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u112 {
+    position:absolute;
+    left:8px;
+    top:81px;
+    width:31px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u113 {
+    position:absolute;
+    left:205px;
+    top:81px;
+    width:31px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u114_normal {
+    background-image: url('../_13__Symbian____files/u114_normal.png');
+}
+
+.u114_container {
+    position:absolute;
+    left:10px;
+    top:10px;
+    width:220px;
+    height:50px;
+}
+
+#u114_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:226px;
+    height:56px;
+}
+
+.u115 {
+    position:absolute;
+    left:2px;
+    top:17px;
+    width:216px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u116 {
+    position:absolute;
+    left:20px;
+    top:27px;
+    width:200px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+#pd0u106 {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:241px;
+    height:101px;
+    
+}
+
+.u117_normal {
+    background-image: url('../_13__Symbian____files/u107_normal.png');
+}
+
+.u117_container {
+    position:absolute;
+    left:1px;
+    top:0px;
+    width:238px;
+    height:80px;
+}
+
+#u117_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:244px;
+    height:86px;
+}
+
+.u118 {
+    position:absolute;
+    left:2px;
+    top:32px;
+    width:234px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u119_normal {
+    background-image: url('../_13__Symbian____files/u55_normal.png');
+}
+
+.u119_container {
+    position:absolute;
+    left:1px;
+    top:75px;
+    width:238px;
+    height:25px;
+}
+
+#u119_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:244px;
+    height:31px;
+}
+
+.u120 {
+    position:absolute;
+    left:2px;
+    top:4px;
+    width:234px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u121 {
+    position:absolute;
+    left:102px;
+    top:81px;
+    width:40px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u122 {
+    position:absolute;
+    left:8px;
+    top:81px;
+    width:31px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u123_normal {
+    background-image: url('../_13__Symbian____files/u114_normal.png');
+}
+
+.u123_container {
+    position:absolute;
+    left:10px;
+    top:10px;
+    width:220px;
+    height:50px;
+}
+
+#u123_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:226px;
+    height:56px;
+}
+
+.u124 {
+    position:absolute;
+    left:2px;
+    top:17px;
+    width:216px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u125 {
+    position:absolute;
+    left:20px;
+    top:27px;
+    width:200px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u126 {
+    position:absolute;
+    left:46px;
+    top:20px;
+    width:40px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u127 {
+    position:absolute;
+    left:746px;
+    top:20px;
+    width:40px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u128 {
+    position:absolute;
+    left:396px;
+    top:20px;
+    width:40px;
+    height:13px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u129_line {
+    background-image: url('../_13__Symbian____files/u129_line.png');
+}
+
+.u129_line {
+    position:absolute;
+    left:0px;
+    top:4px;
+    width:800px;
+    height:3px;
+}
+
+.u129 {
+    position:absolute;
+    left:10px;
+    top:40px;
+    width:800px;
+    height:10px;
+    
+}
+
+.u130_normal {
+    background-image: url('../_13__Symbian____files/u130_normal.png');
+}
+
+.u130_container {
+    position:absolute;
+    left:400px;
+    top:80px;
+    width:409px;
+    height:30px;
+}
+
+#u130_img {
+    position:absolute;
+    left:-3px;
+    top:-3px;
+    width:415px;
+    height:36px;
+}
+
+.u131 {
+    position:absolute;
+    left:2px;
+    top:7px;
+    width:405px;
+    height:16px;
+    ;
+    ;
+    ;
+    font-family:Arial;
+    text-align:left;
+    word-wrap:break-word;
+}
+
+.u132 {
+    position:absolute;
+    left:400px;
+    top:110px;
+    width:410px;
+    height:200px;
+    ;
+    background-color:#D7D7D7;;
+    text-align: left;;
+    font-family:'Arial';
+    font-size: 13px;
+    color:#000000;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    
+}
+
