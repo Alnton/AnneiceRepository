@@ -1,0 +1,924 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>一步一步教你如何安装Oracle&nbsp;10g_中关村在线_知识学堂</title>
+<meta http-equiv="pragma" content="no-cache" />
+<meta content="all" name="robots" />
+<meta content="index, follow" name="googlebot" />
+<meta name="keywords" content="一步一步教你如何安装Oracle&nbsp;10g " />
+<meta name="description" content="今天在自己的电脑上安装了ORACLE10g，现在介绍下自己的安装过程：
+环境：OS：WIN2000Server
+MEM：250M（哈哈是有点小，安装时还有警告呢~）
+DB：ORACLE10.2.0
+1）。可以到ORACLE的官方网站去下载她的安装压缩包： " />
+<meta http-equiv="Content-Type" content="text/html" charset="gbk" />
+
+<link href="http://icon.zol-img.com.cn/public/css/article_page09.css?2010" type="text/css" rel="stylesheet" />
+<link href="/include/uni_foot.css" type="text/css" rel="stylesheet" />
+<link href="/include/add.css" type="text/css" rel="stylesheet" />
+<link href="/css/individual.css" type="text/css" rel="stylesheet" />
+<link  href="http://icon.zol-img.com.cn/public/css/web_head_980.css"  type="text/css" rel="stylesheet" />
+
+<script language="javascript" type="text/javascript" src="http://icon.zol-img.com.cn/js/jquery_1.3.2.js"></script>
+<script language="javascript" type="text/javascript" src="http://icon.zol-img.com.cn/public/js/doc09_adj.js?2010"></script>
+<script language="JavaScript" src="http://icon.zol-img.com.cn/swfobject.js?1" type="text/javascript"></script>
+<script language="JavaScript" src="http://icon.zol.com.cn/js/define.js" type="text/javascript"></script>
+
+
+<base target="_blank" />
+</head>
+<body>
+<div class="div_body">
+  <div class="top_ad"></div>
+  <script language="JavaScript" src="http://icon.zol-img.com.cn/getcook.js" type="text/javascript"></script>
+<div id="zol_head">
+	<ul class="zol_login">
+      <script language="javascript">
+		if (!userid) {	
+			document.write('<li><a href="http://service.zol.com.cn/user/login.php" target="_self">登录</a></li><li class="spd">|</li><li><a href="http://service.zol.com.cn/user/register.php">注册</a>&nbsp;</li>');	
+		}else{
+			document.write('<li><a href="http://my.zol.com.cn/'+userid+'/"><b>'+userid+'</b></a></li><li class="spd">|</li><li class="am" onmouseover="document.getElementById(\'uCent\').style.visibility=\'visible\';" onmouseout="document.getElementById(\'uCent\').style.visibility=\'hidden\';"><a href="http://my.zol.com.cn/'+userid+'/">个人中心<!--[if IE 7]><!--></a><!--<![endif]--><!--[if lte IE 6]><table><tr><td><![endif]--><ul id="uCent" name="uCent" style="z-index: 10001;"><li><a href="http://my.zol.com.cn/'+userid+'/">个人中心</a></li><li><a href="http://blog.zol.com.cn/'+userid+'/">我的博客</a></li><li><a href="http://t.zol.com.cn/'+userid+'/">我的微博</a></li></ul><!--[if lte IE 6]></td></tr></table></a><![endif]--></li><li class="spd">|</li><li><span id="msg_n"><a href="http://my.zol.com.cn/'+userid+'/message/">短消息</a></span></li><li class="spd">|</li><li><a href="http://service.zol.com.cn/user/login.php?type=quit&backUrl='+backUrl+'" target="_self">退出</a>&nbsp;</li>');
+		}
+	  </script>
+	</ul>
+	<ul class="zol_more_list" style="display:none" id="menu_more_list" onmouseover="__mores()" onmouseout="__moreh()">
+		<li><a target="_self" href="http://zj.zol.com.cn/">模拟攒机</a></li>
+		<li><a target="_self" href="http://zdc.zol.com.cn/">ZDC调研中心</a></li>
+		<li><a target="_self" href="http://dealer.zol.com.cn/">经销商</a></li>
+		<li><a target="_self" href="http://flea.zol.com.cn/">二手</a></li>
+		<li><a target="_self" href="http://top.zol.com.cn/">排行榜</a></li>
+		<li class="zol_line"><a href="http://www.zol.com/" target="_self">中关村商城</a></li>
+		<li><a target="_self" href="http://blog.zol.com.cn/">博客</a></li>
+		<li><a target="_self" href="http://photo.zol.com.cn/">相册</a></li>
+		<li><a target="_self" class="zeroc" href="http://v.zol.com.cn/">视频</a></li>
+		<li><a target="_self" href="http://www.zol.com.cn/all.html">全部 >></a></li>
+	</ul>
+	<div class="zol_top_nav"><a target="_self" href="http://www.zol.com.cn/">ZOL首页</a><a target="_self" href="http://detail.zol.com.cn/">产品报价</a><a target="_self" href="http://bbs.zol.com.cn/">论坛</a><a target="_self" href="http://dealer.zol.com.cn/">经销商</a><a target="_self" href="http://xiazai.zol.com.cn/">软件下载</a><a class="zol_ask" href="http://wen.zol.com.cn/">问答堂>></a><a target="_self" href="http://www.zol.com.cn/help/mobile_client.html" class="zol_h_3g_a">中关村在线手机版软件</a><a href="http://www.zol.com.cn/all.html"  class="zol_more"  id="menu_more" onmouseover="__mores()" onmouseout="__moreh()">更多</a>
+	</div>
+	<div class="zol_nav clearfix">
+    <a href="http://www.zol.com.cn" title="中关村在线" class="zol_logo"><strong>中关村在线</strong></a>
+		<ul class="zol_nav_list">
+			<li class="zol_mobile">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://mobile.zol.com.cn/" target="_self">手机</a></p>
+						<ul>
+							<li><a href="http://mobile.zol.com.cn/" target="_self">手机频道</a></li>
+							<li><a href="http://sjbbs.zol.com.cn/" target="_self">手机论坛</a></li>
+							<li><a href="http://sj.zol.com.cn/" target="_self">手机软件</a></li>
+						    <li><a href="http://3.zol.com.cn/" target="_self">3G频道</a></li>
+						    <li><a href="http://mobile.zol.com.cn/iphone/" target="_self">iPhone 4</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li class="zol_nb">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://nb.zol.com.cn/" target="_self">笔记本电脑</a></p>
+						<div class="zol_shadow1"><ul class="clearfix">
+                          <li><a href="http://nb.zol.com.cn/" target="_self">笔记本频道</a></li>
+                          <li><a href="http://nbbbs.zol.com.cn/" target="_self">笔记本论坛</a></li>
+                          <li><a href="http://pc.zol.com.cn/" target="_self">台式电脑</a></li>
+                          <li><a href="http://netbook.zol.com.cn/" target="_self">上网本频道</a></li>
+                          <li><a href="http://aio.zol.com.cn/" target="_self">一体台式机</a></li>
+                          <li><a href="http://ipad.zol.com.cn/" target="_self">iPad频道</a></li>
+                          <li><a href="http://ebook.zol.com.cn/" target="_self">电子书</a></li>
+                          <li><a href="http://pad.zol.com.cn/" target="_self">平板电脑</a></li>
+                          <li><a href="http://mid.zol.com.cn/" target="_self">MID</a></li>
+						</ul></div>
+					</div>
+				</div>
+			</li>
+			<li class="zol_dcdv">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://dcdv.zol.com.cn/" target="_self">数码相机</a></p>
+						<ul>
+							<li><a href="http://dcdv.zol.com.cn/" target="_self">相机频道</a></li>
+              <li><a href="http://dv.zol.com.cn/" target="_self">摄像机</a></li>
+							<li><a href="http://dcbbs.zol.com.cn/" target="_self">摄影论坛</a></li>
+							<li><a href="http://mst.zol.com.cn/" target="_self">移动存储</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li class="zol_mp3"><a target="_self" href="http://mp3.zol.com.cn/">MP3</a>/<a target="_self" href="http://mp4.zol.com.cn/">MP4</a>/<a target="_self" href="http://gps.zol.com.cn/">GPS</a></li>
+			<li class="zol_diy">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://diy.zol.com.cn/" target="_self">DIY硬件</a></p>
+            <div class="zol_shadow1">
+              <ul class="clearfix">
+                <li><a href="http://zj.zol.com.cn/" target="_self">模拟攒机</a></li>
+                <li><a href="http://power.zol.com.cn/" target="_self">机箱电源</a></li>
+                <li><a href="http://cpu.zol.com.cn/" target="_self">CPU</a></li>
+                <li><a href="http://cooler.zol.com.cn/" target="_self">散热器</a></li>
+                <li><a href="http://mb.zol.com.cn/" target="_self">主板</a></li>
+                <li><a href="http://dvd.zol.com.cn/" target="_self">光驱</a></li>
+                <li><a href="http://vga.zol.com.cn/" target="_self">显卡</a></li>
+                <li><a href="http://mouse.zol.com.cn/" target="_self">键盘鼠标</a></li>
+                <li><a href="http://memory.zol.com.cn/" target="_self">内存硬盘</a></li>
+                <li><a href="http://diybbs.zol.com.cn/">硬件论坛</a></li>
+                <li><a href="http://lcd.zol.com.cn/" target="_self">显示器</a></li>
+              </ul>
+            </div>
+					</div>
+				</div>
+			</li>
+			<li class="zol_hardware">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://diy.zol.com.cn/" target="_self">硬件外设</a></p>
+						<ul>
+							<li><a target="_self" href="http://lcd.zol.com.cn/">显示器</a></li>
+							<li><a target="_self" href="http://sound.zol.com.cn/">音箱</a></li>
+							<li><a target="_self" href="http://headphone.zol.com.cn/">耳机</a></li>
+							<li><a target="_self" href="http://webcam.zol.com.cn/">摄像头</a></li>
+							<li><a target="_self" href="http://mouse.zol.com.cn/">键盘鼠标</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li class="zol_oa">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://oa.zol.com.cn/" target="_self">办公</a></p>
+						<ul>
+							<li><a href="http://oa.zol.com.cn/printer.html" target="_self">打印机</a></li>
+							<li><a href="http://oa.zol.com.cn/aio.html" target="_self">一体机</a></li>
+							<li><a href="http://oa.zol.com.cn/mfp.html" target="_self">复印机</a></li>
+							<li><a href="http://oa.zol.com.cn/lmp.html" target="_self">大幅面</a></li>
+							<li><a href="http://projector.zol.com.cn/" target="_self">投影机</a></li>
+							<li><a href="http://oa.zol.com.cn/haocai.shtml" target="_self">耗材</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li class="zol_jd">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://jd.zol.com.cn/" target="_self">家电</a></p>
+						<ul>
+							<li><a href="http://jd.zol.com.cn/" target="_self">数字家庭</a></li>
+							<li><a href="http://tv.zol.com.cn/" target="_self">液晶电视</a></li>
+							<li><a href="http://projector.zol.com.cn/" target="_self">投影机</a></li>
+							<li><a href="http://ht.zol.com.cn/" target="_self">家庭影院</a></li>
+              <li><a href="http://hd.zol.com.cn/" target="_self">高清</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li class="zol_soft">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a href="http://xiazai.zol.com.cn/" target="_self">软件</a></p>
+						<ul>
+							<li><a href="http://xiazai.zol.com.cn/" target="_self">软件下载</a></li>
+							<li><a href="http://driver.zol.com.cn/" target="_self">驱动下载</a></li>
+							<li><a href="http://xiazai.zol.com.cn/article_topic/more/2_1260.shtml" target="_self">软件资讯</a></li>
+							<li><a href="http://caifu.zol.com.cn/" target="_self">商业软件</a></li>
+							<li><a href="http://q.zol.com.cn/bbs/" target="_self">软件论坛</a></li>
+							<li><a href="http://windows7.zol.com.cn/" target="_self">win7预装</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li class="zol_biz">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a target="_self" href="http://biz.zol.com.cn/">企业</a></p>
+            <div class="zol_shadow1">
+              <ul class="clearfix">
+                <li><a target="_self" href="http://smb.zol.com.cn/">企业首页</a></li>
+                <li><a target="_self" href="http://cio.zol.com.cn/">信息化</a></li>
+                <li><a target="_self" href="http://server.zol.com.cn/">服务器</a></li>
+                <li><a target="_self" href="http://stor.zol.com.cn/">企业存储</a></li>
+                <li><a target="_self" href="http://net.zol.com.cn/">网络设备</a></li>
+                <li><a target="_self" href="http://epc.zol.com.cn/">工作站</a></li>
+                <li><a href="http://security.zol.com.cn/" target="_self">安防监控</a></li>
+                <li><a target="_self" href="http://solution.zol.com.cn/">白皮书</a></li>
+                <li><a href="http://safe.zol.com.cn/" target="_self">企业安全</a></li>
+                <li><a target="_self" href="http://techbbs.zol.com.cn/">技术论坛</a></li>
+                <li><a target="_self" href="http://cloud.zol.com.cn/">云计算</a></li>
+              </ul>
+            </div>
+					</div>
+				</div>
+			</li>
+			<li class="zol_game">
+				<div class="zol_noshadow" onmouseover="__ms(this)" onmouseout="__mh(this)">
+					<div class="zol_subnav">
+						<p><a target="_self" href="http://game.zol.com.cn/">游戏</a></p>
+						<ul>
+							<li><a target="_self" href="http://game.zol.com.cn/">游戏频道</a></li>
+							<li><a target="_self" href="http://youxi.zol.com.cn/">游戏库</a></li>
+							<li><a target="_self" href="http://play.zol.com.cn/">小游戏</a></li>
+							<li><a target="_self" href="http://gamebbs.zol.com.cn/">游戏论坛</a></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	
+</div>
+<script language="javascript" type="text/javascript"> 
+function __ms(obj){obj.className = "zol_shadow";}
+function __mh(obj){obj.className = "zol_noshadow";}
+function __mores(){document.getElementById("menu_more_list").style.display='';}
+function __moreh(){document.getElementById("menu_more_list").style.display='none';}
+</script>
+
+  <div class="bodyW mt8">
+        <div id="top_tl_ad" rel="coordinate">
+            <center><div id="AD50068" style="width:760px;height:92px;text-align:center;float:none;"></div><script language="javascript">var fo = new SWFObject("http://pic.zol-img.com.cn/201101/hp37115ser760_0104.swf", "_AD50068", "760", "90", "7");fo.addParam("wmode", "opaque");fo.write("AD50068");</script></center><script  language="javascript">var a =+ new Date;document.write('<img src="http://imp.zol.com.cn/imphit0001.gif?impid=hp37115ser760&tmp='+a+'" width=0 height=0 border=0 style="display:none">');</script>
+        </div>
+        <div class="Br r">
+          <div class="Br_1">今日导读</div>
+          <div class="Br_2">
+          <div  id="coordinate">
+            ·<a href="http://server.zol.com.cn/212/2123800.html" title ="英特尔&quot;视觉生活&quot;调查显示:视觉体验成趋势 ">英特尔"视觉生活"调查显示:视觉体</a><br /> ·<a href="http://server.zol.com.cn/212/2123515.html" title ="微软正式宣布Windows 8支持ARM架构">微软正式宣布Windows 8支持ARM架</a><br /> ·<a href="http://server.zol.com.cn/212/2123511.html" title ="微软首次演示Windows8  主应用于平板电脑">微软首次演示Windows8  主应用于</a><br /> ·<a href="http://server.zol.com.cn/212/2123455.html" title ="2010让人颇感意外的五个云计算细节">2010让人颇感意外的五个云计算细</a><br /> ·<a href="http://server.zol.com.cn/212/2123365.html" title ="2010年Web服务器总结：Apache的大年">2010年Web服务器总结：Apache的大</a><br /> ·<a href="http://server.zol.com.cn/212/2123364.html" title ="鲍尔默称未来云计算业务助长微软收入">鲍尔默称未来云计算业务助长微软</a><br /> ·<a href="http://server.zol.com.cn/212/2123357.html" title ="苹果Mac OS X云操作可实现网络启动功能">苹果Mac OS X云操作可实现网络启</a><br /> ·<a href="http://server.zol.com.cn/212/2123356.html" title ="微软2011年想要重振雄风七条锦囊妙计">微软2011年想要重振雄风七条锦囊</a><br /> ·<a href="http://server.zol.com.cn/212/2121560.html" title ="配4块SAS硬盘 1U戴尔R410报价13600元">配4块SAS硬盘 1U戴尔R410报价136</a><br /> ·<a href="http://server.zol.com.cn/212/2122485.html" title ="旧平台促销 配E5504戴尔R710仅11700元">旧平台促销 配E5504戴尔R710仅11</a><br /> ·<a href="http://server.zol.com.cn/212/2121629.html" title ="理想整合平台 IBM x3850 X5售145000元">理想整合平台 IBM x3850 X5售145</a><br /> ·<a href="http://server.zol.com.cn/212/2121679.html" title ="适合数据中心 1U戴尔R610报价14500元">适合数据中心 1U戴尔R610报价145</a><br />
+          </div>
+          </div>
+        </div>
+    </div>
+    <script language="javascript" type="text/javascript">
+        adj_func()
+    </script>
+  <div class="Bc mt8">
+    <div class="Bc_1">热点推荐</div>
+    <ul>
+      <li><a href="http://server.zol.com.cn/78/781135.html"target=_blank><font color=#CC0000 style="font-size:12px;font-weight:normal;">洪力称最适合SMB应用</font></a></li>
+      <li><a href="http://server.zol.com.cn/78/781352.html"target=_blank><font color=#CC0000 style="font-size:12px;font-weight:normal;">浪潮标准模块服务器揭密</font></a>
+</li>
+      <li><a href="http://server.zol.com.cn/77/772377.html"target=_blank><font color=#CC0000 style="font-size:12px;font-weight:normal;">戴尔双路PE 2950售16700</font></a></li>
+      <li><a href="http://server.zol.com.cn/21/215184.html"target=_blank><font color=#CC0000 style="font-size:12px;font-weight:normal;">IBM服务器虚拟技术</font></a>
+</li>
+      <li><a href="http://server.zol.com.cn/63/633543.html"target=_blank><font color=#CC0000 style="font-size:12px;font-weight:normal;">存储专家明星5盘位NAS</font></a>
+</li>
+    </ul>
+    </div>
+  
+  
+  <div class="Logo mt8">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="234"><a href="http://server.zol.com.cn/"><img src="http://icon.zol-img.com.cn/doc/2007/logo132.gif" width="195" height="29" /></a></td>
+        <td id="ap_brand"><a href="http://server.zol.com.cn/manu_122.shtml">IBM</a> | <a href="http://server.zol.com.cn/manu_21.shtml">DELL</a> | <a href="http://server.zol.com.cn/manu_223.shtml">HP</a> | <a href="http://server.zol.com.cn/manu_20.shtml">浪潮</a> | <a href="http://server.zol.com.cn/manu_160.shtml">联想</a> | <a href="http://server.zol.com.cn/manu_1032.shtml">曙光</a> | <a href="http://server.zol.com.cn/manu_227.shtml">华硕</a> | <a href="http://server.zol.com.cn/manu_283.shtml">富士通</a> | <a href="http://server.zol.com.cn/manu_3761.shtml">强氧</a> | <a href="http://server.zol.com.cn/manu_list.html">更多>></a></td></tr></table></div>
+  <div></div>
+  <div class="Logo_1 lania">
+    <div class="r">
+      <form name="search_frmb" method="get" action="http://search.zol.com.cn/s/search.php">
+        <input type="text" name="keyword"  class="txt" style="border-right:0"/>
+        <input type="image" src="http://icon.zol-img.com.cn/sound/090401/btn_se.gif" />
+      </form>
+    </div>
+    <div class="Logo_11 r"><a href="http://price.zol.com.cn/157/1579275.html">windows7预装</a> <a href="http://server.zol.com.cn/topic/1275317.html">至强5500</a> </div><!-- write by article_page09/hot_words_ssi.php -->
+    <a href="http://www.zol.com.cn/" target="_self">ZOL首页</a> > <a href="http://server.zol.com.cn/" target="_self">服务器</a> > <a href="/more/2_730.shtml" target="_self">知识学堂</a> > <a href="/more/3_2520.shtml" target="_self">Oracle</a> > 一步一步教你如何安装Oracle&nbsp;10g 
+    </div><br class="clear" />
+</div>
+<!-- content 开始 -->
+<div class="div_body">
+  <div class="Ac">
+    <div class="Al">
+      <div class="Al_1">
+        <div class="bl_img_mid"></div>
+        <div class="Al_11 hui6 tm">
+                <h1>一步一步教你如何安装Oracle&nbsp;10g</h1><br />
+                作者：<a href="http://service.zol.com.cn/doclist/author.php?author=中国it实验室&class_id=132">中国it实验室</a>  【转载】 中国it实验室 2009年03月25日 18:03 
+            </div><br class="clear" />
+        <div class="bl_img_mid">
+            
+        </div><br class="c" />
+        <div class="Al_12" id="cotent_idd">
+            <br clear="all" /><div style="float:right"></div>
+
+
+
+</A>
+<P>&nbsp;&nbsp;&nbsp; 今天在自己的电脑上安装了ORACLE 10g，现在介绍下自己的安装过程：</P>
+<P>&nbsp;&nbsp;&nbsp; 环境：OS： WIN 2000 Server</P>
+<P>&nbsp;&nbsp;&nbsp; MEM：250M（哈哈是有点小，安装时还有警告呢~）</P>
+<P>&nbsp;&nbsp;&nbsp; DB： ORACLE 10.2.0</P>
+<P>&nbsp;&nbsp;&nbsp; 1）。可以到ORACLE的官方网站去下载</A>她的安装压缩包：http://www.oracle.com/technology/global/cn/software/products/database/oracle10g/index.html</A></P>
+<P>&nbsp;&nbsp;&nbsp; 2）。解压缩后就可以安装了。执行SETUP.EXE</P>
+<P>&nbsp;&nbsp;&nbsp; 3）。在DOS下运行片刻进入ORACLE 10G安装-安装方法界面在这里你要指定自己的安装方法，ORACLE提供了两种安装方法：基本安装（I）和高级安装（A）</P>
+<P>&nbsp;&nbsp;&nbsp; 基本安装（I）：使用标准配置选项（需要输入的内容最少）执行完整的10g安装。注意：此选项使用文件系统进行存储</A>，并将一个口令用于所有数据库帐户（SYS、SYSTEM、SYSMAN、DBSNMP）。要设置安装的主目录、安装类型和创建启动数据库。</P>
+<P>&nbsp;&nbsp;&nbsp; 高级安装（A）：可提供高级选项，例如：为不同的帐户设置不同的口令，选择数据库语言，产品语言，自动备份，定制安装以及备用存储</A>选项（自动存储管理）。</P>
+<P>&nbsp;&nbsp;&nbsp; ORACLE默认的为基本安装。选择相应的安装方法后，下一步。我为高级安装。</P>
+<P>&nbsp;&nbsp;&nbsp; 4）。选择安装类型：（企业版、标准版、个人版、定制）。这里选择企业版。下一步。</P>
+<P>&nbsp;&nbsp;&nbsp; 5）。指定主目录详细信息：包括安装产品的名称及安装产品的完整路径。选择后下一步。</P>
+<P>&nbsp;&nbsp;&nbsp; 6）。进入产品特定先决条件的检查界面：在这里要检查安装ORACLE所需的<a href="http://detail.zol.com.cn/os_index/subcate121_list_1.html" class="hui14_line"><font style="color:#333">操作系统</font></a>需求、物理<a href="http://detail.zol.com.cn/memory_index/subcate3_list_1.html" class="hui14_line"><font style="color:#333">内存</font></a>需求、网络配置需求等等。检查后的结果就在该界面下边的下拉框中。可能个别的检查结果会失败，但不会影响安装。</P>
+<P>&nbsp;&nbsp;&nbsp; 如果在第3）步选择了基本安装的话，就不用执行4）、5）步了。直接进入第6）步。</P>
+<P>&nbsp;&nbsp;&nbsp; 继续下一步，可能会有警告可以忽律。</P>
+<P>&nbsp;&nbsp;&nbsp; 7）。如果本机上还安装了其他版本的数据库的话，可能会询问是否升级现有的数据库。选择否。下一步。</P>
+<P>&nbsp;&nbsp;&nbsp; 8）。选择配置选项（创建数据库、配置自动存储管理（ASM）、仅安装<a href="http://xiazai.zol.com.cn/databank_soft_index/databank_page_1.html" class="hui14_line"><font style="color:#333">数据库软件</font></a>）。</P>
+<P>&nbsp;&nbsp;&nbsp; 9）。选择数据库配置即选择你要创建的数据库类型：（一般用途、事务处理、数据仓库、高级）。</P>
+<P>&nbsp;&nbsp;&nbsp; 10）。指定数据库配置选项（数据库命名：全局数据库名和系统标示符SID、数据库字符集、数据库示例是否创建带样本的数据库）。</P>
+<P>&nbsp;&nbsp;&nbsp; 11）。选择数据库管理选项：默认为使用database control管理数据库，是否启用<a href="http://detail.zol.com.cn/mail_index/subcate145_list_1.html" class="hui14_line"><font style="color:#333">电子邮件</font></a>通知。</P>
+<P>&nbsp;&nbsp;&nbsp; 12）。指定数据库存储选项：选定要创建数据库的存储机制（文件系统即你创建的数据库的文件的位置、自动存储管理、裸设备。）</P>
+<P>&nbsp;&nbsp;&nbsp; 13）。指定备份和恢复选项：选择是否起用自动备份选项。</P>
+<P>&nbsp;&nbsp;&nbsp; 14）。指定数据库方案的口令。包括SYS、SYSTEM、SYSMAN、DBSNMP的口令。注意口令的首字符为字母。</P>
+<P>&nbsp;&nbsp;&nbsp; 15）。最后生成ORACLE UNIVERSAL INSTALL的概要文件。仔细检查概要文件确定自己的选项，如果没有什么更改的了，点安装就开始ORACLE 10g的安装了。具体的安装时间不同，根据硬件的配置有关。</P>
+<P>&nbsp;&nbsp;&nbsp; 至此整个的安装过程就结束了。</P>
+<P>&nbsp;&nbsp;&nbsp; 由于时间关系介绍的不够详细，请大家原谅！！！</P>
+<P></P>
+<P>　　3、设置tnsnames.ora</P>
+<P>　　其次，要配置<a href="http://detail.zol.com.cn/server_index/subcate31_list_1.html" class="hui14_line"><font style="color:#333">服务器</font></a></A>端的tnsnames.ora文件。该文件的位置在$ORACLE_HOME/network/admin下面。同样可以通过运行netasst来进行配置。</P>
+<P>　　在tnsnames.ora文件中需要增加如下一项: 
+<br clear="all"  style="font-size:0;line-height:0"/><TABLE style="BORDER-RIGHT: #cccccc 1px dotted; TABLE-LAYOUT: fixed; BORDER-TOP: #cccccc 1px dotted; BORDER-LEFT: #cccccc 1px dotted; BORDER-BOTTOM: #cccccc 1px dotted" cellSpacing=0 cellPadding=6 width="95%" align=center border=0>
+<TBODY>
+<TR>
+<TD style="WORD-WRAP: break-word" bgColor=#f3f3f3><FONT face=Verdana>&nbsp;&nbsp;&nbsp; EXTPROC_CONNECTION_DATA,EXTPROC_CONNECTION_DATA.WORLD =<BR>&nbsp;&nbsp;&nbsp; (DESCRIPTION =<BR>&nbsp;&nbsp;&nbsp; (ADDRESS_LIST =<BR>&nbsp;&nbsp;&nbsp; (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC))<BR>&nbsp;&nbsp;&nbsp; )<BR>&nbsp;&nbsp;&nbsp; (CONNECT_DATA =<BR>&nbsp;&nbsp;&nbsp; (SID = PLSExtProc)<BR>&nbsp;&nbsp;&nbsp; )&nbsp;&nbsp; )</FONT></TD></TR></TBODY></TABLE></P>
+<P>　　注意其中，KEY 和SID必须与listener.ora中的key 和sid_name对应相同。</P>
+<P>　　<STRONG>三.设置词法分析器(lexer)</STRONG></P>
+<P>　　Oracle 缺省使用basic_lexer这个分析器。basic_lexer针对英语。要指定使用中文分析器, 操作步骤:</P>
+<P>　　1.用ctxsys用户登陆intermedia text manager，口令ctxsys:</P>
+<P>　　2.选择首选项——〉语言指示器——〉创建，输入指示器的名字如chinese_lexer，选择lexer下的chinese_vgrnm_lexer 。</P>
+<P>　　3.建立intermedia索引，指定索引名，选择方案和表下的字段，例如system方案下的DOM_1_DOCLIB中的CURRENTTEXT字段，首选项中选择chinese_lexer 。</P>
+<P>　　这样建立的全文检索索引，就会使用chinese_vgram_lexer作为分析器。</P>
+<P>　　4.在索引建好后，在该用户下查到Oracle自动产生了以下几个表，可以使用dba studio查看:(假设索引名为myindex): 
+<TABLE style="BORDER-RIGHT: #cccccc 1px dotted; TABLE-LAYOUT: fixed; BORDER-TOP: #cccccc 1px dotted; BORDER-LEFT: #cccccc 1px dotted; BORDER-BOTTOM: #cccccc 1px dotted" cellSpacing=0 cellPadding=6 width="95%" align=center border=0>
+<TBODY>
+<TR>
+<TD style="WORD-WRAP: break-word" bgColor=#f3f3f3>DR$myindex$I，DR$myindex$K，DR$myindex$R，DR$myindex$N</TD></TR></TBODY></TABLE></P>
+<P>　　其中以I表最重要，查询该表: 
+<TABLE style="BORDER-RIGHT: #cccccc 1px dotted; TABLE-LAYOUT: fixed; BORDER-TOP: #cccccc 1px dotted; BORDER-LEFT: #cccccc 1px dotted; BORDER-BOTTOM: #cccccc 1px dotted" cellSpacing=0 cellPadding=6 width="95%" align=center border=0>
+<TBODY>
+<TR>
+<TD style="WORD-WRAP: break-word" bgColor=#f3f3f3>select token_text, token_count from DR$I_RSK1$I where rownum&lt;=20;</TD></TR></TBODY></TABLE></P>
+<P>　　可以看到该表中保存的是Oracle分析你的文档后，生成的term记录，包括term出现的位置、次数、hash值等。</P>
+<P>　　<STRONG>四.使用job定时同步和优化</STRONG></P>
+<P>　　在intermedia索引建好后，如果表中的数据发生变化，增加或修改了记录，由于对表所发生的任何dml语句，都不会自动修改索引，因此，必须定时同步(sync)和优化(optimize)索引，以正确反映数据的变化。</P>
+<P>　　同步(sync):将新的term 保存到I表;</P>
+<P>　　优化(optimize):清除I表的垃圾，主要是将已经被删除的term从I表删除。</P>
+<P>　　Oracle提供了一个ctx server来做这个同步和优化的工作，只需要在后台运行这个进程，它会监视数据的变化，及时进行同步。但存在许多问题。可以用下的两个job来完成(该job要建在和表同一个用户下): 
+<TABLE style="BORDER-RIGHT: #cccccc 1px dotted; TABLE-LAYOUT: fixed; BORDER-TOP: #cccccc 1px dotted; BORDER-LEFT: #cccccc 1px dotted; BORDER-BOTTOM: #cccccc 1px dotted" cellSpacing=0 cellPadding=6 width="95%" align=center border=0>
+<TBODY>
+<TR>
+<TD style="WORD-WRAP: break-word" bgColor=#f3f3f3><FONT face=Verdana>&nbsp;&nbsp;&nbsp; -- sync:<BR>&nbsp;&nbsp;&nbsp; VARIABLE jobno number;<BR>&nbsp;&nbsp;&nbsp; BEGIN<BR>&nbsp;&nbsp;&nbsp; DBMS_JOB.SUBMIT(:jobno,'ctx_ddl.sync_index(''myindex'');',<BR>&nbsp;&nbsp;&nbsp; SYSDATE, 'SYSDATE + (1/24/4)');<BR>&nbsp;&nbsp;&nbsp; commit;<BR>&nbsp;&nbsp;&nbsp; END;</FONT></TD></TR></TBODY></TABLE></P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<TABLE style="BORDER-RIGHT: #cccccc 1px dotted; TABLE-LAYOUT: fixed; BORDER-TOP: #cccccc 1px dotted; BORDER-LEFT: #cccccc 1px dotted; BORDER-BOTTOM: #cccccc 1px dotted" cellSpacing=0 cellPadding=6 width="95%" align=center border=0>
+<TBODY>
+<TR>
+<TD style="WORD-WRAP: break-word" bgColor=#f3f3f3><FONT face=Verdana>&nbsp;&nbsp;&nbsp; -- optimizer<BR>&nbsp;&nbsp;&nbsp; VARIABLE jobno number;<BR>&nbsp;&nbsp;&nbsp; BEGIN<BR>&nbsp;&nbsp;&nbsp; DBMS_JOB.SUBMIT(:jobno,'ctx_ddl.optimize_index(''myindex'',''FULL'');',<BR>&nbsp;&nbsp;&nbsp; SYSDATE, 'SYSDATE + 1');<BR>&nbsp;&nbsp;&nbsp; commit;<BR>&nbsp;&nbsp;&nbsp; END;</FONT></TD></TR></TBODY></TABLE></P>
+<P>　　其中，第一个job的SYSDATE + (1/24/4)是指每隔15分钟同步一次，第二个job的SYSDATE + 1是每隔1天做一次全优化。具体的时间间隔，你可以根据自己的应用的需要而定。至此，你的全文检索功能已设置完成。</P>
+<P></P>
+        </div>
+        <div class="mt8 Al_13"><ul class="xgyd">
+            <li><strong>&nbsp;相关阅读：</strong></li>
+    <li>·Oracle服务器虚拟化 VMware的沉默杀手?<br>
+              &nbsp;&nbsp;<a href="http://server.zol.com.cn/204/2049819.html" rel="search">http://server.zol.com.cn/204/2049819.html</a></li><li>·阻止其他组织维护Sun硬件 甲骨文被起诉<br>
+              &nbsp;&nbsp;<a href="http://server.zol.com.cn/205/2054225.html" rel="search">http://server.zol.com.cn/205/2054225.html</a></li><li>·Oracle大谈云计算规划 私有公共两不误<br>
+              &nbsp;&nbsp;<a href="http://server.zol.com.cn/203/2034692.html" rel="search">http://server.zol.com.cn/203/2034692.html</a></li><li>·甲骨文或成云实施障碍 赫德言论再惹非议<br>
+              &nbsp;&nbsp;<a href="http://server.zol.com.cn/204/2043396.html" rel="search">http://server.zol.com.cn/204/2043396.html</a></li><li>·Oracle服务器虚拟化 VMware的沉默杀手?<br>
+              &nbsp;&nbsp;<a href="http://server.zol.com.cn/208/2087837.html" rel="search">http://server.zol.com.cn/208/2087837.html</a></li>
+    </ul>
+     
+</div>
+        <script language="javascript" type="text/javascript"  src="/include/relate_reading.php?document_id=1273903"></script>
+    <div class="Al_2">
+        <div class="Al_21">
+            <div>
+                看完本文后的感觉：<br /><a href="/top.html" class="lan12i">好文/烂文排行</a>
+            </div>
+            <div id="vote_content"><a href="javascript:void(0)" onclick="change_vote(1273903, 1)" target="_self" class="Al_22">写得好</a><a href="javascript:void(0)" onclick="change_vote(1273903, 0)" target="_self" class="Al_22">写得差</a></div><a href="/" class="Al_23" target="_self">返回服务器首页</a>
+        </div><script type="text/javascript">init_content(1273903);</script><div id="ouku_ad"></div>
+    </div>
+    
+          
+          <div class="docshare">分享到：
+    <div style="display: none;">
+    	<form target="_blank" method="post" action="http://www.kaixin001.com/repaste/share.php" name="kaixin001_repaste">
+    		<input type="hidden" value="" name="rtitle"><input type="hidden" value="" name="rcontent"><input type="hidden" value="" name="rurl">
+    	</form>
+    </div>
+    <span class="sharesina"><a href="javascript:repost(1);" target="_self" title="将该文章分享到新浪微博">新浪微博</a></span>
+    <span class="sharebaish"><a title="将该文章分享到白社会" href="javascript:repost(3);" target="_self">白社会</a></span>
+    <span class="sharekaixin001"><a href="javascript:repost(4);" target="_self" title="将该文章分享到开心网">开心网</a></span>
+    <span class="share_renren"><a href="javascript:repost(5);" target="_self">人人网</a></span>
+    <span class="share_qq"><a title="将该文章分享到QQ空间" href="javascript:repost(8);" target="_self">QQ空间</a></span>
+</div>
+
+          <ul class="Al_3_3 lania mt8 tm">
+          <li><a href="http://service.zol.com.cn/complain/complain.php?id=32">文章内容投诉</a></li>
+          <li><a href="http://techbbs.zol.com.cn/">论坛</a></li>
+          <li><a href="javascript:add_favorite()" target="_self">收藏此页</a></li>
+          <li><a href="javascript:window.close()" target="_self">关闭本页</a></li>
+          <li><a href="http://3g.zol.com.cn/">手机看新闻</a></li>
+          <li style="border:0"><a href="http://dealer.zol.com.cn/service.html">客服投诉热线</a></li>
+          </ul>
+      </div>
+      <div class="le_tl Al_4 tm" id="le_tl_two"></div> 
+      <div class="Al0"></div>
+      
+      <div class="le_tl mt5 oaj" id="le_tl_one"><script>
+document.write('<script type="text/javascript" src="http://stat.zol.com.cn/cgrs/tag_vpv.php?'+Math.random()+'"></scr'+'ipt>');
+    document.write('<script type="text/javascript" src="http://stat.zol.com.cn/cgrs/bms_tag.php?'+Math.random()+'"></scr'+'ipt>');
+</script></div>
+      
+      <div class="Al0"></div>
+        <div class="Al_6">
+            <div class="Al_61">
+              <div>服务器选机中心</div>
+            </div>
+            <div class="r lania"><img src="http://icon.zol-img.com.cn/sound/090401/hot.gif" /><div><a href="http://top.zol.com.cn/compositor/31/server.html" class="fb">热门服务器</a> | </div><img src="http://icon.zol-img.com.cn/sound/090401/pai.gif" /><div><a href="http://top.zol.com.cn/compositor/31/manu_attention.html" class="fb">服务器品牌</a> | </div><img src="http://icon.zol-img.com.cn/sound/090401/jiantou.gif" /><div><a href="http://top.zol.com.cn/compositor/31/hit_wave.html" class="fb">上升最快的服务器</a></div>    </div>
+        </div>
+        <div class="Al_62 lania">
+            <dl>
+              <dt>品 牌</dt>
+              <dd style="width: 600px;"><a href="http://detail.zol.com.cn/server_index/subcate31_122_list_1.html">IBM</a><a href="http://detail.zol.com.cn/server_index/subcate31_21_list_1.html">DELL</a><a href="http://detail.zol.com.cn/server_index/subcate31_223_list_1.html">HP</a><a href="http://detail.zol.com.cn/server_index/subcate31_20_list_1.html">浪潮</a><a href="http://detail.zol.com.cn/server_index/subcate31_160_list_1.html">联想</a><a href="http://detail.zol.com.cn/server_index/subcate31_1032_list_1.html">曙光</a><a href="http://detail.zol.com.cn/server_index/subcate31_227_list_1.html">华硕</a><a href="http://detail.zol.com.cn/server_index/subcate31_283_list_1.html">富士通</a><a href="http://detail.zol.com.cn/server_index/subcate31_3761_list_1.html">强氧</a><a href="http://detail.zol.com.cn/server_index/subcate31_32814_list_1.html">亿时空</a><a href="http://detail.zol.com.cn/server_index/subcate31_821_list_1.html">SUN</a><a href="http://detail.zol.com.cn/server_index/subcate31_681_list_1.html">宝德</a><a href="http://detail.zol.com.cn/server_index/subcate31_1678_list_1.html">五舟</a><a href="http://detail.zol.com.cn/server_index/subcate31_212_list_1.html">方正</a><a href="http://detail.zol.com.cn/server_index/subcate31_544_list_1.html">苹果</a><a href="http://detail.zol.com.cn/server_index/subcate31_1596_list_1.html">金品</a><a href="http://detail.zol.com.cn/server_index/subcate31_1189_list_1.html">航天联志</a><a href="http://detail.zol.com.cn/server_index/subcate31_33311_list_1.html">正睿</a></dd>
+            </dl>
+            <dl>
+              <dt>价 格</dt>
+              <dd><a href="http://detail.zol.com.cn/server_index/subcate31_list_0_1.html">6000以下</a><a href="http://detail.zol.com.cn/server_index/subcate31_list_6000_1.html">6000-12000</a><a href="http://detail.zol.com.cn/server_index/subcate31_list_12000_1.html">12000-18000</a><a href="http://detail.zol.com.cn/server_index/subcate31_list_18000_1.html">18000-28000</a><a href="http://detail.zol.com.cn/server_index/subcate31_list_28000_1.html">28000-50000</a><a href="http://detail.zol.com.cn/server_index/subcate31_list_50000_1.html">50000-80000</a><a href="http://detail.zol.com.cn/server_index/subcate31_list_80000_1.html">80000以上</a></dd>
+            </dl>
+            <dl style="border:0">
+              <dt>类别</dt>
+              <dd><A href="http://detail.zol.com.cn/server_index/subcate31_list_p7290_1.html">机架式</A> <A href="http://detail.zol.com.cn/server_index/subcate31_list_p1108_1.html">塔式</A>  <A href="http://detail.zol.com.cn/server_index/subcate31_list_p4463_1.html">刀片式</A> </dd>
+            </dl>
+        </div><!-- write by article_page09/choose_center.php -->
+      
+      <div class="Al0"></div><div class="Al_7 lania">
+        <div class="Al_71">智能手机装机必备</div><ul class="sort_ul"><li><a href="http://sj.zol.com.cn/detail/17/16079.shtml"><img src="http://dg2.zol-img.com.cn/74_module_images/10/4c57d8647ff12.jpg" width=20 height=20 alt="手机迅雷" />手机迅雷</a></li><li><a href="http://sj.zol.com.cn/detail/16/15883.shtml"><img src="http://dg1.zol-img.com.cn/74_module_images/10/4c57d7f5210c2.jpg" width=20 height=20 alt="万能来电通" />万能来电通</a></li><li><a href="http://sj.zol.com.cn/detail/16/15660.shtml"><img src="http://dg3.zol-img.com.cn/74_module_images/10/4c57d5998d343.jpg" width=20 height=20 alt="酷狗叮咚" />酷狗叮咚</a></li><li><a href="http://sj.zol.com.cn/detail/16/15926.shtml"><img src="http://dg2.zol-img.com.cn/74_module_images/10/4c57d5793e3bb.jpg" width=20 height=20 alt="GO浏览器" />GO浏览器</a></li><li><a href="http://sj.zol.com.cn/detail/16/15667.shtml"><img src="http://dg3.zol-img.com.cn/74_module_images/10/4c57d34b0c724.jpg" width=20 height=20 alt="卡巴斯基" />卡巴斯基</a></li><li><a href="http://sj.zol.com.cn/detail/12/11998.shtml"><img src="http://dg2.zol-img.com.cn/74_module_images/10/4c57d2fc8207a.jpg" width=20 height=20 alt="万能播放器" />万能播放器</a></li><li><a href="http://sj.zol.com.cn/detail/16/15792.shtml"><img src="http://dg1.zol-img.com.cn/74_module_images/10/4c57d15f6dff6.jpg" width=20 height=20 alt="安全管家" />安全管家</a></li><li><a href="http://sj.zol.com.cn/detail/17/16062.shtml"><img src="http://dg3.zol-img.com.cn/74_module_images/10/4c57cfdceb77e.jpg" width=20 height=20 alt="墨迹天气" />墨迹天气</a></li><li><a href="http://sj.zol.com.cn/detail/16/15959.shtml"><img src="http://dg2.zol-img.com.cn/74_module_images/10/4c57ce4005c1c.jpg" width=20 height=20 alt="Rmvb播放器" />Rmvb播放器</a></li><li><a href="http://sj.zol.com.cn/detail/14/13431.shtml"><img src="http://dg1.zol-img.com.cn/74_module_images/10/4c57cdd0be173.jpg" width=20 height=20 alt="迷你地图" />迷你地图</a></li><li><a href="http://sj.zol.com.cn/detail/14/13468.shtml"><img src="http://dg3.zol-img.com.cn/74_module_images/10/4c57cbdb2e05a.jpg" width=20 height=20 alt="手机飞信" />手机飞信</a></li><li><a href="http://sj.zol.com.cn/detail/16/15692.shtml"><img src="http://dg1.zol-img.com.cn/74_module_images/10/4c57cb0d3c1a6.jpg" width=20 height=20 alt="QQ游戏大厅" />QQ游戏大厅</a></li><li><a href="http://sj.zol.com.cn/detail/16/15426.shtml"><img src="http://dg3.zol-img.com.cn/74_module_images/10/4c57c92a5dc91.jpg" width=20 height=20 alt="金山卫士" />金山卫士</a></li><li><a href="http://sj.zol.com.cn/detail/16/15834.shtml"><img src="http://dg2.zol-img.com.cn/74_module_images/10/4c57c799100b4.jpg" width=20 height=20 alt="UC浏览器" />UC浏览器</a></li><li><a href="http://sj.zol.com.cn/detail/16/15467.shtml"><img src="http://dg2.zol-img.com.cn/74_module_images/10/4c57c4c6c840c.jpg" width=20 height=20 alt="手机QQ2010" />手机QQ2010</a></li></ul>
+</div>
+      <div class="Al0"></div>
+    <div class="Al_7 lania">
+        <div class="Al_71">视觉焦点</div>
+        <div class="Al_72"><a href="http://oa.zol.com.cn/212/2121307.html"><img src="http://dg2.zol-img.com.cn/95_module_images/11/4d2675b01d326.jpg" width="140" height="80" alt="云打印A3+一体机是神马？" /></a><br />
+        <a href="http://oa.zol.com.cn/212/2121307.html">云打印A3+一体机是神马？</a> </div><div class="Al_72"><a href="http://net.zol.com.cn/212/2120517.html   "><img src="http://dg2.zol-img.com.cn/95_module_images/11/4d266f173da42.png" width="140" height="80" alt="iPhone绝配网络分享器" /></a><br />
+        <a href="http://net.zol.com.cn/212/2120517.html   ">iPhone绝配网络分享器</a> </div><div class="Al_72"><a href="http://gpsbbs.zol.com.cn/1/93_635.html   "><img src="http://dg3.zol-img.com.cn/95_module_images/11/4d266e39edd94.jpg" width="140" height="80" alt="【视频】奥巴马将承认外星人曾造访地球 " /></a><br />
+        <a href="http://gpsbbs.zol.com.cn/1/93_635.html   ">【视频】奥巴马将承认外星人曾造访地球 </a> </div><div class="Al_72">
+        <a href="http://photo.xgo.com.cn/ablum/6/list_5971_1.html"><img src="http://imgm.xgo-img.com.cn/12_module_images/4d115632766f6.gif" width="140" height="80" alt="新一代连拍女王彭梦连拍55张" /></a><br />
+        <a href="http://photo.xgo.com.cn/ablum/6/list_5971_1.html">新一代连拍女王彭梦连拍55张</a>
+    </div>
+    </div>
+    <div class="Al_7 lania mt8" style="padding-bottom:0px;height:25px;overflow:hidden;"><div style="line-height:25px;padding-left:15px;"><strong>热词：</strong><a href="http://windows7.zol.com.cn/">win7 正版</a>&nbsp;&nbsp;<a href="http://detail.zol.com.cn/notebook_index/subcate16_21_list_1.html">DELL</a>&nbsp;&nbsp;<a href="http://mobile.zol.com.cn/manu_1434.shtml">魅族</a>&nbsp;&nbsp;<a href="http://detail.zol.com.cn/cell_phone/index181201.shtml">魅族 M9</a>&nbsp;&nbsp;<a href="http://news.zol.com.cn/topic/1605994.html">CES2011</a>&nbsp;&nbsp;<a href="tp://diybbs.zol.com.cn/2/3_12910.html">情人节祝福</a>&nbsp;&nbsp;<a href="http://detail.zol.com.cn/cell_phone/index212894.shtml">魅族 m8</a>&nbsp;&nbsp;<a href="http://detail.zol.com.cn/cell_phone/index244394.shtml">诺基亚 C7</a>&nbsp;&nbsp;<a href="http://mobile.zol.com.cn/manu_544.shtml">苹果iPhone</a>&nbsp;&nbsp;<a href="http://driver.zol.com.cn/detail/12/116675.shtml">驱动精灵</a>&nbsp;&nbsp;</div></div> <div class="Al0"></div><!-- write by vision_focus.php -->
+    </div>
+    <div class="Ar">
+      <div class="Al0"></div>
+      <div class="ri_ad" id="ra_one"></div>
+      
+<!--dell-->
+<div class="Al0"></div>
+<div class="Ar_1">
+    <div class="Ar_11">
+        <div class="fb">戴尔促销</div>
+        <ul class="r switc" id="slid_e">
+            <li class="act" rel="dello"><a>整机/笔记本</a></li>
+            <li class="nor" rel="dellt"><a>特价</a></li>
+            <li class="nor" rel="dellh"><a>优惠</a></li>
+        </ul> 
+    </div>
+    <br class="clear" />
+    <div class="Ar_con" id="dello">
+        <div class="Ar_25">
+            
+                <div class="Ar_dell_1"><a href="http://nb.zol.com.cn/128/1288547.html"><img src="http://dg6.zol-img.com.cn/95_module_images/348279.jpg"  alt="戴尔1545本"  width="60" height="45"/></a><br />
+                <a href="http://nb.zol.com.cn/128/1288547.html"  title="戴尔1545本" class="lan">戴尔1545本</a></div>
+            <ul class="lania">
+                <li><span class="lan">[导购]</span><a href="http://nb.zol.com.cn/178/1780104.html"  title="戴尔i5芯灵越15R独显彩壳本持续送礼" style="text-decoration:none">戴尔i5芯灵越15R独显彩壳本持续</a></li><li><span class="lan">[导购]</span><a href="http://pc.zol.com.cn/178/1780122.html"  title="酷睿2独显大液晶 戴尔560电脑4999元" style="text-decoration:none">酷睿2独显大液晶 戴尔560电脑4</a></li><li><span class="lan">[行情]</span><a href="http://pc.zol.com.cn/177/1778135.html"  title="双核20吋液晶 戴尔560独显电脑4099元" style="text-decoration:none">双核20吋液晶 戴尔560独显电脑</a></li>
+            </ul>
+        </div>
+        <div class="Ar_dell_2"><a href="http://altfarm.mediaplex.com/ad/ck/10592-62014-23401-16" class="hof">买超低价本,免费电话800-858-2339更多惊喜等待您</a></div>
+    </div>
+    <br clear="all" style="font:0/0 arial"/>
+    <div class="bl_img_mid" style="padding:3px 0;display:none" id="dellt">
+        <div style="width:293px;height:107px;overflow:hidden"><a href="http://altfarm.mediaplex.com/ad/ck/10592-62014-23401-16"><img src="http://icon.zol-img.com.cn/sound/090401/ad_dell.gif" border="0" /></a> </div>
+    </div>
+    <br clear="all" style="font:0/0 arial"/>
+    <div class="Ar_con" id="dellh" style="display:none"> 
+        <div class="Ar_25">
+            
+                <div class="Ar_dell_1"><a href="http://nb.zol.com.cn/128/1285170.html"><img src="http://dg3.zol-img.com.cn/95_module_images/348278.jpg"  alt="戴尔E6500本"  width="60" height="45"/></a><br />
+                <a href="http://nb.zol.com.cn/128/1285170.html"  title="戴尔E6500本" class="lan">戴尔E6500</a></div>
+            <ul class="lania">
+                <li><span class="lan">[导购]</span><a href="http://nb.zol.com.cn/177/1778113.html"  title="配i7四核 戴尔新思跃14独显本限时特惠" style="text-decoration:none">配i7四核 戴尔新思跃14独显本限</a></li><li><span class="lan">[导购]</span><a href="http://nb.zol.com.cn/177/1774671.html"  title="i5芯独显高速硬盘 戴尔合金商务本特惠" style="text-decoration:none">i5芯独显高速硬盘 戴尔合金商务</a></li><li><span class="lan">[促销]</span><a href="http://nb.zol.com.cn/177/1773522.html"  title="i5芯海量存储 戴尔灵越13R独显本送礼" style="text-decoration:none">i5芯海量存储 戴尔灵越13R独显</a></li>
+            </ul>
+        </div>
+        <div class="Ar_dell_2"><a href="http://altfarm.mediaplex.com/ad/ck/10592-62014-23401-16" class="hof">买超低价本,免费电话800-858-2339更多惊喜等待您</a></div>
+    </div>
+    
+    <div class="Ar_12"> <img src="http://icon.zol-img.com.cn/sound/090401/logo_dell.gif"  /> <marquee scrolldelay="120" onmouseout="this.start()" onmouseover="this.stop()" style="width:204px;float:right"> <a href="http://www1.ap.dell.com/cn/zh/home/Desktops/desktop-inspiron-545s/pd.aspx?refid=desktop-inspiron-545s&s=dhs&cs=cndhs1&~ck=mn" >nspiron 545s：戴尔inspiron灵越545s，320G超大硬盘仅需￥3260，800-858-2339手机400-884-9428。　</a>  <a href="http://www1.ap.dell.com/cn/zh/home/Laptops/laptop-inspiron-1545/pd.aspx?refid=laptop-inspiron-1545&s=dhs&cs=cndhs1&~ck=mn" >Inspiron15（1545）：戴尔inspiron灵越15，250G+512M独显仅￥4499，800-858-2339手机400-884-9428。　</a>  </marquee></div>
+</div>
+<script language="javascript" type="text/javascript" src="http://icon.zol-img.com.cn/js/slide_show.js"></script>
+<!--dell-->
+
+      
+      
+      
+      
+      
+      <div class="ri_ad" id="ra_two"></div> 
+      
+      
+      <div class="ri_ad" id="ra_sev"></div>
+      <!--new产品排行 start-->
+            <div class="div_bai" id="old_bd">　</div>
+            <dl class="hot_nb">
+                <dt><strong>服务器排行榜</strong></dt>
+                <dd>
+                    <ul class="hot_nb2 switc">
+                        <li class="act" rel="p_w_s"><a class="lan">系列关注度</a></li>
+                        <li class="nor" rel="p_w_o" id="p_w_o_switc"><a class="lan">单品关注度</a></li>
+                        <li class="nor" rel="p_w_t"><a class="lan">新品</a></li>
+                    </ul>
+                    <div class="hot_nb_r"><div class="Ar_ul fa fal" id="p_w_s" style="clear:both;width:286px;margin:0 auto;float:none;display:block">
+               <div class="Ar_ln Ar_ln_art" > <em class="num1"></em>
+              <div class="r"><div class="C_22" style="width:30px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/7265_1.html">IBM x3650 M3系列</a><a href="http://detail.zol.com.cn/series/31/7265_1.html" class="show_pic"><img src="http://2e.zol-img.com.cn/product_small/2_80x60/890/ce1QCE86aFvIo.jpg" width=80 height=60 alt="IBM x3650 M3系列"/></a></div><div class="Ar_ln Ar_ln_art" > <em class="num2"></em>
+              <div class="r"><div class="C_22" style="width:18px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/5160_1.html">戴尔 R710系列</a></div><div class="Ar_ln Ar_ln_art" > <em class="num3"></em>
+              <div class="r"><div class="C_22" style="width:9px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/7207_1.html">HP DL388 G7系列</a></div><div class="Ar_ln Ar_ln_art" > <em class="num4"></em>
+              <div class="r"><div class="C_22" style="width:6px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/5600_1.html">联想 T168 G6系列</a></div><div class="Ar_ln Ar_ln_art" > <em class="num5"></em>
+              <div class="r"><div class="C_22" style="width:6px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/8000_1.html">浪潮 英信NP3020系列</a></div><div class="Ar_ln Ar_ln_art" > <em class="num6"></em>
+              <div class="r"><div class="C_22" style="width:3px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/5257_1.html">Sun M4000系列</a></div><div class="Ar_ln Ar_ln_art" > <em class="num7"></em>
+              <div class="r"><div class="C_22" style="width:2px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/7299_1.html">强氧 RS1500系列</a></div><div class="Ar_ln Ar_ln_art" > <em class="num8"></em>
+              <div class="r"><div class="C_22" style="width:2px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/8002_1.html">曙光 CB85-F系列</a></div><div class="Ar_ln Ar_ln_art" > <em class="num9"></em>
+              <div class="r"><div class="C_22" style="width:1px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/5256_1.html">华硕 RS520-E6/RS8系列</a></div><div class="Ar_ln Ar_ln_art"  style="background:none"> <em class="num10"></em>
+              <div class="r"><div class="C_22" style="width:1px"></div></div>
+              <a href="http://detail.zol.com.cn/series/31/8010_1.html">亿时空 SX1142系列</a></div></div><br clear="all" style="font:0/0 arial">
+            <div class="Ar_ul fa fal" id="p_w_o" style="clear:both;width:286px;margin:0 auto;float:none;">
+               
+                            <div class="Ar_ln Ar_ln_art"> <em class="num1"></em>
+                                <div class="Ar_ln1"> <a href="http://detail.zol.com.cn/server/index235010.shtml" > <img src="http://2a.zol-img.com.cn/product_small/2_80x60/890/ce1QCE86aFvIo.jpg" width="80" height="60" alt="IBM System x3650 M3(7945I01)"/> </a> <a href="http://detail.zol.com.cn/server/index235010.shtml" class="fb"   title="IBM System x3650 M3(7945I01)">IBM System x3650 M3(794</a><br />
+                                    <div>用户评分：</div>
+                                    <div class="Star Star_new" style="margin:0">
+                                        <div class="Star1 Star1_new" style="width:0px"></div>
+                                    </div>
+                                    <div class="Ar_ln11 hui9">
+                                        <div class="r">
+                                            <div class="C_22" style="width:30px"></div>
+                                        </div>
+                                        <a href="http://detail.zol.com.cn/236/235010/review.shtml" >用户点评 </a></div>
+                                    <br clear="all" />
+                                    <br /> </div>
+                            </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num2"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:26px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index245266.shtml"  title="IBM System x3650 M3(7945I75)">IBM System x3650 M3(7945</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num3"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:24px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index242693.shtml"  title="戴尔 PowerEdge T110(Xeon X3430/2GB/250GB)">戴尔 PowerEdge T110(Xeon</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num4"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:22px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index196075.shtml"  title="戴尔 PowerEdge R710(Xeon E5504/2GB/146GB/RAID6)">戴尔 PowerEdge R710(Xeon</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num5"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:20px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index235015.shtml"  title="IBM System x3400 M3(7379I01)">IBM System x3400 M3(7379</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num6"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:18px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index244351.shtml"  title="HP ProLiant DL388 G7(616660-AA1)">HP ProLiant DL388 G7(616</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num7"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:16px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index235891.shtml"  title="戴尔 PowerEdge R210(Xeon X3430/2GB/250GB)">戴尔 PowerEdge R210(Xeon</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num8"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:14px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index252315.shtml"  title="IBM System x3850 X5(7145N01)">IBM System x3850 X5(7145</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art" > <em class="num9"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:12px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index215198.shtml"  title="联想 万全T168 G6 S3430 2G/500S">联想 万全T168 G6 S3430 2</a>
+                        </div>
+                       <div class="Ar_ln Ar_ln_art"  style="background:none"> <em class="num10"></em>
+                          <div class="r">
+                            <div class="C_22" style="width:10px"></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index237077.shtml"  title="HP ProLiant ML110 G6(506667-AA1)">HP ProLiant ML110 G6(506</a>
+                        </div>
+            </div>
+            <br clear="all" style="font:0/0 arial">
+            <div class="Ar_ul fa fal" id="p_w_t" style="clear:both;width:286px;margin:0 auto;float:none;display:none">
+                
+                            <div class="Ar_ln Ar_ln_art"> <em class="num1"></em>
+                                <div class="Ar_ln1"> <a href="http://detail.zol.com.cn/server/index268193.shtml" > <img src="http://2a.zol-img.com.cn/product_small/3_80x60/732/cejEYGjm5Bhkw.jpg" width="80" height="60" alt="正睿 I2496186S-H"/> </a> <a href="http://detail.zol.com.cn/server/index268193.shtml" class="fb"  >正睿 I2496186S-H</a><br />
+                                    
+                                    <div class="hui9">参考价格：<span class="hof">￥12990</span></div>
+                                    <div class="Ar_ln11 hui9">
+                                        <div class="r">
+                                            <div class="C_2222" style="width:30px"></div>
+                                        </div>
+                                        上市时间： <span style="color:black">2011年</span></div>
+                                    <br clear="all" />
+                                    <br /> </div>
+                            </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num2"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/comment_262422.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index268118.shtml"  title="TigerPower R5600-12S(Xeon E5620/4GB/300GB)">TigerPower R5600-12S(Xeon E562</a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num3"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/comment_260599.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267998.shtml"  title="联想 万全R525 G3(2.5寸) S5506 2G/3*146ANFRP软导">联想 万全R525 G3(2.5寸) S5506 </a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num4"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/comment_260599.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267992.shtml"  title="联想 万全R525 G3(3.5寸) S5506 2G/3*300ANFRP软导">联想 万全R525 G3(3.5寸) S5506 </a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num5"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/comment_244308.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267989.shtml"  title="联想 万全T260 G3 S5506/2G/300ANR4">联想 万全T260 G3 S5506/2G/300A</a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num6"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/comment_215446.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267983.shtml"  title="联想 万全T100 G10 S5700 2G/500S">联想 万全T100 G10 S5700 2G/500</a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num7"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/xilie_list_31_20_5106.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267869.shtml"  title="浪潮 英信NF5220(Xeon E5506/2GB/500GB/8*HSB)">浪潮 英信NF5220(Xeon E5506/2GB</a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num8"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/comment_250901.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267864.shtml"  title="浪潮 英信NF5280M2(Xeon E5506/2GB/500GB)">浪潮 英信NF5280M2(Xeon E5506/2</a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art" > <em class="num9"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/comment_267542.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267542.shtml"  title="方正 圆明MR200 3220(Xeon E5506*2/6GB/3*300GB)">方正 圆明MR200 3220(Xeon E5506</a>
+                        </div>
+                      <div class="Ar_ln Ar_ln_art"  style="background:none"> <em class="num10"></em>
+                          <div class="r">
+                            <div class="C_222" style="width:30px;" ><a href="http://techbbs.zol.com.cn/xilie_list_31_21_5551.html" style="color:#319A00">论坛</a></div>
+                          </div>
+                          <a href="http://detail.zol.com.cn/server/index267447.shtml"  title="戴尔 PowerEdge T610(Xeon E5620*2/24GB/4*300GB/RAID 6)">戴尔 PowerEdge T610(Xeon E5620</a>
+                        </div>
+            </div>
+            <br clear="all" style="font:0/0 arial"></div>
+                </dd>
+            </dl>
+            <br clear="all" style="font:0/0 arial">
+            <!--new产品排行 stop--><script>
+if($('#p_w_s_manu').length==1) {
+    $('#p_w_o_switc').after('<li class="nor" rel="p_w_s_manu"><a class="lan">品牌系列</a></li>');
+}
+</script>
+      <div class="ri_ad" id="ra_eig"></div> 
+      
+        <!--new热门文章排行 start-->
+        <div class="Al0"></div>
+        <dl class="hot_art">
+            <dt></dt>
+            <dd>
+                <div class="Ar_ul fa Ar_ul1" style="width:288px;margin:0 auto;float:none;border:0">
+                 <div class="Ar_ln Ar_ln_art"> <em class="num1"></em>
+                <div class="r">
+                    <div class="C_22" style="width:30px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2118457.html" title="管中窥豹 从2010横评看国产服务器发展">管中窥豹 从2010横评看国产服务器发</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num2"></em>
+                <div class="r">
+                    <div class="C_22" style="width:25px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2117691.html" title="飞思卡尔发布4核ARM处理器方案i.MX 6">飞思卡尔发布4核ARM处理器方案i.MX </a> </div><div class="Ar_ln Ar_ln_art"> <em class="num3"></em>
+                <div class="r">
+                    <div class="C_22" style="width:24px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2119524.html" title="苏格兰科学家研制千核CPU 性能快20多倍">苏格兰科学家研制千核CPU 性能快20多</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num4"></em>
+                <div class="r">
+                    <div class="C_22" style="width:19px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2119529.html" title="2010十大危险IT技术 苹果Mac OS X上榜">2010十大危险IT技术 苹果Mac OS X上</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num5"></em>
+                <div class="r">
+                    <div class="C_22" style="width:16px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/212/2121384.html">NVIDIA将开发ARM架构CPU 适用服务器</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num6"></em>
+                <div class="r">
+                    <div class="C_22" style="width:14px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2115604.html" title="四核也高效！戴尔集群机R210仅售6500元">四核也高效！戴尔集群机R210仅售650</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num7"></em>
+                <div class="r">
+                    <div class="C_22" style="width:14px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/212/2120167.html" title="八核当道！戴尔R910新年再掀四路热潮">八核当道！戴尔R910新年再掀四路热潮</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num8"></em>
+                <div class="r">
+                    <div class="C_22" style="width:12px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2117701.html" title="2011年24个IT热点问题：下一代OS将到来">2011年24个IT热点问题：下一代OS将到</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num9"></em>
+                <div class="r">
+                    <div class="C_22" style="width:12px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2116165.html" title="迎新年特价！图腾A2.6642机柜仅1680元">迎新年特价！图腾A2.6642机柜仅1680</a> </div><div class="Ar_ln Ar_ln_art"> <em class="num10"></em>
+                <div class="r">
+                    <div class="C_22" style="width:11px"></div>
+                </div>
+                <a href="http://server.zol.com.cn/211/2115759.html" title="新年新价格 标配戴尔R710报价11200元">新年新价格 标配戴尔R710报价11200元</a> </div>
+                 <br clear="all" />
+                </div>
+            </dd>
+        </dl>
+        <br clear="all" style="font:0/0 arial">
+        <!--new热门文章排行 stop-->
+        
+      <div class="ri_ad" id="ra_thr"></div> 
+      
+      <div class="Al0"></div>
+<div class="biz_title">企业热门关键字</div>
+<div class="biz_con1">
+    <table width="100%" border="0" cellspacing="3" cellpadding="0">
+        <tr>
+            <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td height="60" class="biz_con11">服<br />务<br />器</td>
+                    <td class="lan"><a href="http://server.zol.com.cn/topic/1360053.html">虚拟化</a> | <a href="http://server.zol.com.cn/topic/1275317.html">至强5500</a> | <a href="http://server.zol.com.cn/more/3_2520.shtml">Oracle</a> | <a href="http://server.zol.com.cn/topic/1275317.html">Nehalem</a>| <a href="http://server.zol.com.cn/more/3_2517.shtml">Linux</a><br />
+                                    <a href="http://server.zol.com.cn/more/3_2516.shtml">Windows Server</a> | <a href="http://server.zol.com.cn/keyword/list_8599.shtml">云计算</a> | <a href="http://server.zol.com.cn/keyword/list_4795.shtml">45nm</a> | <a href="http://server.zol.com.cn/keyword/list_9708.shtml">SUSE Linux</a> | <a href="http://server.zol.com.cn/keyword/list_4386.shtml">四核</a> | <a href="http://server.zol.com.cn/keyword/list_4614.shtml">CPU</a></td>
+                </tr>
+            </table></td>
+        </tr><tr>
+            <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td height="60" class="biz_con11">网<br />络<br />设<br />备</td>
+                    <td class="lan"><a href="http://net.zol.com.cn/subcate_225.html">无线网卡</a> | <a href="http://net.zol.com.cn/subcate_227.html">无线路由器</a> | <a href="http://net.zol.com.cn/subcate_224.html">无线上网卡</a> | <a href="http://net.zol.com.cn/subcate_46.html">交换机</a> | <a href="http://net.zol.com.cn/more/3_2154.shtml">3G</a> | <a href="http://net.zol.com.cn/keyword/list_10052.shtml">3G路由器</a> | <a href="http://net.zol.com.cn/keyword/list_10051.shtml">3G上网卡</a> | <a href="http://net.zol.com.cn/keyword/list_3812.shtml">11N</a> | <a href="http://net.zol.com.cn/more/3_2153.shtml">通讯设备</a></td>
+                </tr>
+            </table></td>
+        </tr><tr>
+            <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td height="60" class="biz_con11">安<br />全</td>
+                    <td class="lan"><a href="http://safe.zol.com.cn/keyword/list_8659.shtml">安防监控</a> | <a href="http://safe.zol.com.cn/keyword/list_8660.shtml">防火墙</a> | <a href="http://safe.zol.com.cn/keyword/list_8661.shtml">防毒墙</a> | <a href="http://safe.zol.com.cn/keyword/list_8662.shtml">防盗报警</a>| <a href="http://safe.zol.com.cn/keyword/list_8661.shtml">入侵检测</a> | <a href="http://safe.zol.com.cn/more/3_2323.shtml">黑客</a> | <a href="http://safe.zol.com.cn/keyword/list_8918.shtml">漏洞</a> | <a href="http://safe.zol.com.cn/keyword/list_8909.shtml">UTM</a> | <a href="http://safe.zol.com.cn/keyword/list_8908.shtml">云安全</a> </td>
+                </tr>
+            </table></td>
+        </tr><tr>
+            <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td height="60" class="biz_con11">企<br />业<br />存<br />储</td>
+                    <td class="lan"><a href="http://stor.zol.com.cn/keyword/list_5745.shtml">网络存储 </a> | <a href="http://stor.zol.com.cn/keyword/list_5744.shtml">SAN</a> | <a href="http://stor.zol.com.cn/keyword/list_5743.shtml">NAS</a> | <a href="http://stor.zol.com.cn/keyword/list_8515.shtml">磁带库</a>| <a href="http://stor.zol.com.cn/keyword/list_8121.shtml">云存储 </a><br />
+                                    <a href="http://stor.zol.com.cn/keyword/list_8069.shtml">虚拟化</a> | <a href="http://stor.zol.com.cn/keyword/list_5755.shtml">存储技术</a> | <a href="http://stor.zol.com.cn/keyword/list_8614.shtml">固态硬盘</a> | <a href="http://stor.zol.com.cn/keyword/list_8617.shtml ">存储管理</a> | <a href="http://stor.zol.com.cn/keyword/list_8615.shtml">SSD</a> | <a href="http://stor.zol.com.cn/keyword/list_8587.shtml">iSCSI</a></td>
+                </tr>
+            </table></td>
+        </tr><tr>
+            <td bgcolor="#FFFFFF"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td height="60" class="biz_con11">C<br />I<br />O
+</td>
+                    <td class="lan"><a href="http://cio.zol.com.cn/more/2_1115.shtml">应用技巧</a> | <a href="http://cio.zol.com.cn/more/3_2076.shtml">saas</a> | <a href="http://cio.zol.com.cn/more/3_2060.shtml">维护经验</a> | <a href="http://cio.zol.com.cn/more/3_2074.shtml">soa</a>| <a href="http://cio.zol.com.cn/more/3_2059.shtml">招标采购</a><br />
+                                    <a href="http://cio.zol.com.cn/more/3_2073.shtml">ERP</a> | <a href="http://cio.zol.com.cn/more/3_2058.shtml">开发管理</a> | <a href="http://cio.zol.com.cn/more/3_2071.shtml">CRM</a> | <a href="http://cio.zol.com.cn/more/3_2057.shtml">规划选型</a> | <a href="http://cio.zol.com.cn/more/3_2077.shtml">OA</a> </td>
+                </tr>
+            </table></td>
+        </tr>
+    </table>
+</div><div class="Al0"></div>
+<div class="biz_title">企业风云人物</div>
+<div class="biz_con2">
+    <div class="biz_con21">
+            <a href="http://net.zol.com.cn/topic/2032827.html"><img src="http://dg3.zol-img.com.cn/207_module_images/11/4d0882466707b.jpg" alt="Belkin公司总裁兼首席执行官 Mark Reynoso" width="60" height="60" /></a>
+            <a href="http://net.zol.com.cn/topic/2032827.html" class="lanb">Belkin公司总裁兼首席执行官 Mark Reynoso</a><br />品牌并不是简单的LOGO，也不是简单的名字，是一种文化的体现……
+        </div><div class="biz_con21">
+            <a href="http://server.zol.com.cn/topic/1915180.html"><img src="http://dg2.zol-img.com.cn/207_module_images/11/4d08821cbf079.jpg" alt="思杰(Citrix)系统公司总裁兼首席执行官 邓普顿" width="60" height="60" /></a>
+            <a href="http://server.zol.com.cn/topic/1915180.html" class="lanb">思杰(Citrix)系统公司总裁兼首席执行官 邓普顿</a><br />我们今天的技术更加先进，更加发达了，我们可以看……
+        </div><div class="biz_con21">
+            <a href="http://server.zol.com.cn/topic/1877668.html"><img src="http://dg1.zol-img.com.cn/207_module_images/11/4d0881de88ddf.jpg" alt="曙光信息产业有限公司总裁 历军 " width="60" height="60" /></a>
+            <a href="http://server.zol.com.cn/topic/1877668.html" class="lanb">曙光信息产业有限公司总裁 历军 </a><br />所谓高性能计算是一个相对的概念，它一定相对于另外的一个低的……
+        </div>
+</div>
+      <div class="ri_ad" id="ra_fou"></div>   
+      
+                    <div class="Al0"></div>
+                    <div class="Ar_2" id="Ar_dhome">
+                        <div class="Ar_21">服务器</div>
+                        <ul class="r switc">
+                            <li class="act" rel="sw_one"><a>资讯</a></li>
+                            <li class="nor" rel="sw_two"><a>白皮书下载</a></li>
+                            <li class="nor" rel="sw_thr"><a>技术论坛</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="Ar_id fa" id="sw_one" style="display:block">
+                         	<div class="Ar_25">
+                      <div class="Ar_26"><a href="http://server.zol.com.cn/topic/1529165.html"><img src="http://dg6.zol-img.com.cn/207_module_images/9/4aeacedfe49c2.jpg"  alt="CDN沙龙专题" width="70" height="55"/></a><br /> <a href="http://server.zol.com.cn/topic/1529165.html"  title="CDN沙龙专题">CDN沙龙专</a></div>
+                      <ul>
+                        <li><a href="http://smb.zol.com.cn/131/1315166.html"  >电子信息产业出现回暖迹象</a></li> <li><a href="http://smb.zol.com.cn/131/1315164.html"  >中移动布局TD产品展开业务反击</a></li> <li><a href="http://smb.zol.com.cn/131/1315170.html"  title="工信部放行手机加WAPI 厂商忙软件升级">工信部放行手机加WAPI 厂商忙软件</a></li> <li><a href="http://smb.zol.com.cn/131/1313530.html"  >联通3G目标人群及解说词曝光</a></li>
+                      </ul>
+                     </div>
+                     <div class="Ar_25">
+                      <div class="Ar_26"><a href="http://smb.zol.com.cn/131/1315160.html"><img src="http://dg6.zol-img.com.cn/207_module_images/283.jpg"  alt="微软手机明年上市" width="70" height="55"/></a><br /> <a href="http://smb.zol.com.cn/131/1315160.html"  title="微软手机明年上市">微软手机明</a></div>
+                      <ul>
+                        <li><a href="http://smb.zol.com.cn/131/1313534.html"  title="联通3G启动前夜中移动阻击计划曝光">联通3G启动前夜中移动阻击计划曝光</a></li> <li><a href="http://smb.zol.com.cn/131/1313537.html"  title="百度MP3搜索带来营收和流量比例都下降">百度MP3搜索带来营收和流量比例都</a></li> <li><a href="http://smb.zol.com.cn/131/1313541.html"  title="北电请求延长破产保护期以制定重组计划">北电请求延长破产保护期以制定重组</a></li> <li><a href="http://smb.zol.com.cn/131/1313543.html"  title="揭秘Windows7修炼术：双子星敲定7计划">揭秘Windows7修炼术：双子星敲定7</a></li>
+                      </ul>
+                     </div>
+                     <ul class="Ar_24">
+                       <li>·<a href="http://gpsbbs.zol.com.cn/1/11_315.html"  >驾车冒险分享 凯立德有奖发帖活动开始</a></li> <li>·<a href="http://gpsbbs.zol.com.cn/1/93_120.html"  >艾滋病也需要关爱 Google地球进行统计</a></li>
+                 </ul>
+                    </div>
+                    <br clear="all" style="font:0/0 arial" />
+
+                    <dl class="Ar_biz" id="sw_two" style="display:none;height:219px">
+                         <dt><a>硬 件</a></dt>
+                 <dd class="fa"><A href="http://solution.zol.com.cn/down/subcate797_1.shtml">数字相机</A> │ <A href="http://solution.zol.com.cn/down/subcate796_1.shtml">接口/总线/I/O</A> │ <A href="http://solution.zol.com.cn/down/subcate795_1.shtml">多功能外设</A> │ <A href="http://solution.zol.com.cn/down/subcate794_1.shtml">打印机/绘图仪</A> │ <A href="http://solution.zol.com.cn/down/subcate793_1.shtml">触摸屏</A> │ <A href="http://solution.zol.com.cn/down/subcate792_1.shtml">投影机</A> │ <A href="http://solution.zol.com.cn/down/subcate791_1.shtml">显示器</A> | <A href="http://solution.zol.com.cn/">更多>></A> </dd>
+                 <dt><a>软 件</a></dt>
+                 <dd class="fa"><A href="http://solution.zol.com.cn/down/subcate843_1.shtml">CAD/CAM/CAPP</A> │ <A href="http://solution.zol.com.cn/down/subcate844_1.shtml">J2EE</A> │ <A href="http://solution.zol.com.cn/down/subcate844_1.shtml">Java</A> │ <A href="http://solution.zol.com.cn/down/subcate846_1.shtml">测试软件</A> │ <A href="http://solution.zol.com.cn/down/subcate847_1.shtml">发布系统</A> │ <A href="http://solution.zol.com.cn/down/subcate848_1.shtml">人工智能</A> │ <A href="http://solution.zol.com.cn/down/subcate849_1.shtml">软件开发工具</A> │ <A href="http://solution.zol.com.cn/down/subcate850_1.shtml">系统工具</A></dd>
+                 <dt><a>通 信</a></dt>
+                 <dd class="fa" style="border-bottom:0px"><A href="http://solution.zol.com.cn/down/subcate892_1.shtml">光纤网络</A> │ <A href="http://solution.zol.com.cn/down/subcate897_1.shtml">网卡</A> │ <A href="http://solution.zol.com.cn/down/subcate893_1.shtml">广域网</A> │ <A href="http://solution.zol.com.cn/down/subcate898_1.shtml">网络操作系统</A> │ <A href="http://solution.zol.com.cn/down/subcate889_1.shtml">MAN</A> │ <A href="http://solution.zol.com.cn/down/subcate894_1.shtml">交换机/集线器</A> │ <A href="http://solution.zol.com.cn/down/subcate899_1.shtml">以太网</A> │ <A href="http://solution.zol.com.cn/down/subcate890_1.shtml">VPN</A> │ <A href="http://solution.zol.com.cn/down/subcate895_1.shtml">局域网</A></dd>
+                    </dl>
+                    <br clear="all" style="font:0/0 arial" />
+
+                    <div class="Ar_22 fa" id="sw_thr" style="display:none">
+                         <div class="Ar_23"><a href="http://techbbs.zol.com.cn/1/8_885.html"><img src="http://dg4.zol-img.com.cn/207_module_images/285.jpg"  alt="设计者选择Mac五大理由" width="120" height="90"/></a><br /> <a href="http://techbbs.zol.com.cn/1/8_885.html"  title="设计者选择Mac五大理由">设计者选择Mac五大理</a></div><div class="Ar_23"><a href="http://techbbs.zol.com.cn/1/7_29.html"><img src="http://dg2.zol-img.com.cn/207_module_images/284.jpg"  alt="九步学会ASP.net Ajax" width="120" height="90"/></a><br /> <a href="http://techbbs.zol.com.cn/1/7_29.html"  title="九步学会ASP.net Ajax">九步学会ASP.net Aja</a></div>
+                        <ul class="Ar_24">
+                            <li>·<a href="http://techbbs.zol.com.cn/2/24_12758.html"  >给服务器找个舒适的家 浅谈机柜的选择</a></li><li>·<a href="http://techbbs.zol.com.cn/1/61_680.html"  title="浅析XSS(Cross Site Script:跨站式攻击)漏洞">浅析XSS(Cross Site Script:跨站式攻击)漏洞</a></li><li>·<a href="http://techbbs.zol.com.cn/1/8_510.html"  >如何迅速成为JAVA高手
+</a></li><li>·<a href="http://techbbs.zol.com.cn/1/8_508.html"  >菜鸟入门：Java语言学习六大要点</a></li>
+                        </ul>
+                    </div>
+                    <br clear="all" style="font:0/0 arial" />
+                    
+
+      
+      
+      
+      
+      
+      
+      <div class="ri_ad" id="ra_fiv"></div>
+      <div class="ri_ad" id="ra_six"><center><div id="AD29360" style="width:300px;height:252px;text-align:center;float:none"><iframe  marginheight="0"  marginwidth="0"  frameborder="0"  scrolling="no"  width="300"  height="250" src="http://pic.zol-img.com.cn/200906/baidu_0626.html"></iframe></div></center></div>
+    </div>
+  </div>
+  <div class="Ac_btm"></div>
+</div>
+<div class="div_body">
+  <script language="javascript" type="text/javascript"  src="http://search.zol.com.cn/assess/get_hits_new.php?document_id=1273903"></script><div class="footn">
+	<a href="http://www.zol.com.cn/" target="_self"><img src="http://icon.zol-img.com.cn/logo/logo.gif" alt="中关村在线" width="123" height="29" border="0"/></a>
+	<div class="pd5 r">
+		<form name="search_frmb" method="get" action="http://search.zol.com.cn/s/search.php">
+			<input name="keyword" class="putin" type="text" />
+			<input name="submit" type="submit" class="button" value="搜索" />
+		</form>
+	</div>
+</div>
+<div class="footnc">
+	<font color="#C8C8C8">
+      <a target="_top" href="http://www.zol.com.cn/marketing/" class="lan12i">ZOL简介</a> 
+	  | <a target="_top" href="http://service.zol.com.cn/user/register.php" class="lan12i">用户注册</a> 
+      | <a target="_top" href="http://www.zol.com.cn/marketing/ad_fou.html" class="lan12i">广告服务</a>
+      | <a target="_top" href="http://zhaopin.zol.com.cn/" class="lan12i">招聘</a><a class="hei12">(<script>document.write(new Date().getMonth()+1);</script>月)</a> 
+      | <a target="_top" href="http://www.zol.com.cn/marketing/marketing_milestone.html" class="lan12i">ZOL历程</a> 
+      | <a target="_top" href="http://www.zol.com.cn/marketing/marketing_zol.html" class="lan12i">互动营销</a> 
+      | <a target="_top" href="http://www.zol.com.cn/brand.html" class="lan12i">品牌大全</a> 
+      | <a target="_top" href="http://www.zol.com.cn/webcenter/map.html" class="lan12i">站点地图</a>
+      | <a target="_top" href="http://www.zol.com.cn/marketing/contact.html" class="lan12i">联系方式</a> 
+      | <a target="_top" href="http://rss.zol.com.cn/" class="lan12i">RSS订阅</a>
+      | <a target="_top" href="http://link.zol.com.cn/" class="lv12i">友情链接</a>
+	</font> <BR>北京海淀区知春路113号银网中心A座9F   传真：010-62529275 <a href="http://service.zol.com.cn/complain/" class="h12">反馈留言板</a> 欢迎批评指正
+	<BR>Copyright &copy; 1999 - <script>document.write(new Date().getFullYear());</script> ZOL. All rights reserved. 中关村在线 版权所有. <a href="http://www.miibeian.gov.cn" class="hei12" target="_blank">京ICP证010391号</a>
+</div>
+<script language="JavaScript" type="text/javascript" src="http://icon.zol-img.com.cn/public/js/web_foot.js"></script>
+
+</div>
+<script src="http://active.zol.com.cn/channel/dynamic.php?c=ff02L8bkOZibZGrxe%2FhH0F4FCf2Caoj9WeTKw3cRS5MTTsmNgaSUfkE"></script>
+<script language="javascript" type="text/javascript" src="http://icon.zol-img.com.cn/js/style_ctl.js"></script>
+
+<script language="javascript" type="text/javascript" src="/include/individual.js"></script>
+<script language="javascript" type="text/javascript" src="http://icon.zol-img.com.cn/js/public_switch.js"></script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try { var pageTracker = _gat._getTracker("UA-11044227-5");  pageTracker._trackPageview(); }
+catch(err) {}</script>
+
+
+</body>
+</html>

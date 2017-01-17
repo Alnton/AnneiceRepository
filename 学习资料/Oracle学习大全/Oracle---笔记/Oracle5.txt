@@ -1,0 +1,325 @@
+***********************************在一列或多列上创建索引
+ SQL> desc user_indexes ;
+ SQL> select index_name from user_indexes
+  2  where table_name like 'EMP' ;
+
+INDEX_NAME
+------------------------------
+EMP_INDEX
+EMP_IDX
+
+
+SQL> desc snow5 ;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ------------------
+ EMPNO                                     NOT NULL NUMBER(4)
+ SAL                                                NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+
+SQL> create index snow5_sal_idx
+  2  on snow5(sal)
+  3   ;
+
+Index created.
+
+SQL> select index_name from user_indexes
+  2  where table_name like 'SNOW5' ;
+
+INDEX_NAME
+------------------------------
+SNOW5_SAL_IDX
+
+
+. 全表扫描：FTS Full Table Scan
+  高水位线：曾经包含数据的最右边的块
+  将扫描高水位线以下的所有数据块
+. 通过rowid来扫描数据
+  rowid：标识一条记录的物理位置  
+
+SQL> select id , rowid from snow4 ;
+
+        ID ROWID
+---------- ------------------
+      7566 AAASt5AAEAAADF8AAC
+      7654 AAASt5AAEAAADF8AAA
+      7698 AAASt5AAEAAADF8AAD
+      7782 AAASt5AAEAAADF8AAE
+      7839 AAASt5AAEAAADF8AAF
+      7902 AAASt5AAEAAADF8AAG
+      9898 AAASt5AAEAAADF8AAB
+
+7 rows selected.
+
+SQL> select name , rowid from  snow4 ;
+
+NAME       ROWID
+---------- ------------------
+JIE        AAASt5AAEAAADF8AAA
+SCOTT      AAASt5AAEAAADF8AAB
+JONES      AAASt5AAEAAADF8AAC
+BLAKE      AAASt5AAEAAADF8AAD
+CLARK      AAASt5AAEAAADF8AAE
+KING       AAASt5AAEAAADF8AAF
+FORD       AAASt5AAEAAADF8AAG
+
+***************************************************创建视图
+create view v_emp_sal
+as 
+select empno , sal from emp ;
+
+
+
+select * from v_emp_sal ;
+
+SQL> create or replace view v_emp_sal
+  2  as
+  3  select empno , ename , sal
+  4  from emp ;
+
+
+
+
+
+
+
+create or replace view v_emp_sal
+(id , name , salary , bonus)
+as
+select empno , ename , sal , coalesce(comm, sal , 100)
+from emp_wang ;
+
+view_created.
+
+
+
+-  --在数据字典中查看视图
+   select text from user_views
+where view_name = 'V_EMP_SAL' ;
+
+---
+select count(*) from user_views ;
+
+
+
+create or replace view v_dept_sal
+as
+select dname ,avg(sal)  avg_sal
+from emp
+join dept
+on emp.deptno = dept.deptno
+group by dname ;
+
+
+
+---删除视图
+drop view v_dept_sal ;
+
+
+
+
+
+SQL> select ename , sal
+  2  from
+  3  (select ename , sal from emp
+  4  order by sal desc )
+  5  where rownum <=5 ;
+
+ENAME             SAL
+---------- ----------
+KING             5000
+FORD             3000
+SCOTT            2850
+BLAKE            2850
+CLARK            2450
+
+
+***************伪列--->rownum
+只有记录被返回时才有哦
+
+
+select ename , hiredate
+from (select ename , hiredate from emp
+order by hiredate)
+where rownum<=3;   ----------------->对的
+
+
+
+select ename , sal 
+from (select ename , sal , rownum rn from emp)
+where rn between 4 and 8 ;   因为就7行 所以 显示了四行 本来是五行显示的。
+ENAME             SAL
+---------- ----------
+BLAKE            2850
+CLARK            2450
+KING             5000
+FORD             3000
+
+
+
+SQL> select ename , sal , rownum
+  2  from
+  3  (select ename , sal from emp ) ;
+
+ENAME             SAL     ROWNUM
+---------- ---------- ----------
+JIE              1378          1
+SCOTT            2850          2
+JONES            2222          3
+BLAKE            2850          4
+CLARK            2450          5
+KING             5000          6
+FORD             3000          7
+
+7 rows selected.
+
+
+
+***********************************分页问题  返回的是某条记录 到某条记录
+select ename , sal
+from
+(select ename , sal, rownum rn
+ from
+ (select ename , sal from emp
+ order by sal ))
+ where rn between 4 and 7 ;
+
+*************************************序列
+SQL> create sequence seq_wang ;   起点是1 ， 步进是1.
+
+Sequence created.
+
+
+
+SQL> insert into snow4( id , name , sal )
+  2  values ( seq_wang.nextval , 'wang' , 4500) ;
+
+1 row created.
+
+SQL> commit ;
+
+Commit complete.
+
+SQL> select * from snow4
+  2  where name like 'wang' ;
+
+        ID NAME              SAL
+---------- ---------- ----------
+         1 wang             4500
+
+SQL> insert into snow4( id , name , sal )
+  2  values ( seq_wang.nextval , 'qian' , 5000) ;
+
+1 row created.
+
+SQL> commit ;
+
+Commit complete.
+
+SQL> select * from snow4
+  2  where name like 'qian' ;
+
+        ID NAME              SAL
+---------- ---------- ----------
+         2 qian             5000
+
+
+******************************以10开头(start with 10) 步进为10(increment by 10)
+SQL> create sequence d123
+  2  start with 10
+  3  increment by 10 ;
+
+Sequence created.
+
+
+**************************消耗一个序列
+select d123.nextval from dual ;
+
+
+
+******************************
+SQL> select seq_wang.currval from dual ;
+
+   CURRVAL
+----------
+         8
+
+SQL> /
+
+   CURRVAL
+----------
+         8
+
+SQL> /
+
+   CURRVAL
+----------
+
+         8
+
+
+
+
+SQL> create sequence m123 ;
+
+Sequence created.
+
+SQL> select m123.currval from dual ;
+select m123.currval from dual
+       *
+ERROR at line 1:
+ORA-08002: sequence M123.CURRVAL is not yet defined in this session
+
+SQL> select m123.nextval from dual ;
+
+   NEXTVAL
+----------
+         1
+
+SQL> select m123.currval from dual ;
+
+   CURRVAL
+----------
+         1
+
+
+SQL> drop sequence m123 ;
+
+Sequence dropped.
+
+
+
+
+****************************
+SQL> select d123.nextval from dual ;
+
+   NEXTVAL
+----------
+        10
+
+SQL> select d123.currval from dual ;
+
+   CURRVAL
+----------
+        10
+
+SQL> alter sequence d123 increment by 3 ;
+
+Sequence altered.
+
+SQL> select d123.currval from dual ;
+
+   CURRVAL
+----------
+        10
+
+SQL> select d123.nextval from dual ;
+
+   NEXTVAL
+----------
+        13
+
+SQL> select d123.currval from dual ;
+
+   CURRVAL
+----------
+        13

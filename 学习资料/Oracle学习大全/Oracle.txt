@@ -1,0 +1,897 @@
+SQL> desc(describe) emp(表名)----->查看某个表的结构     命令大小写都可以(是sqlplus命令,不需要分号)
+ select ENAME,JOB,SAL from emp;(是sql语句，必须加分号) 列名小写也可以
+ SQL> /----->查询上一条查询的东西
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+      7698 BLAKE      MANAGER         7839 01-MAY-81          2850         30
+      7782 CLARK      MANAGER         7839 09-JUN-81          2450         10
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+      7839 KING       PRESIDENT            17-NOV-81          5000         10
+      7902 FORD       ANALYST         7566 03-DEC-81          3000         20
+
+7 rows selected.
+
+SQL> describe emp
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+ SAL                                                NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+
+SQL> select count(*) from emp;
+
+  COUNT(*)
+----------
+         7
+
+SQL> select job from emp;
+
+JOB
+---------
+SALESMEN
+MANAGER
+MANAGER
+MANAGER
+ANALYST
+PRESIDENT
+ANALYST
+
+7 rows selected.
+
+SQL> /
+
+JOB
+---------
+SALESMEN
+MANAGER
+MANAGER
+MANAGER
+ANALYST
+PRESIDENT
+ANALYST
+
+7 rows selected.
+
+SQL> SELECT * FROM emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+      7698 BLAKE      MANAGER         7839 01-MAY-81          2850         30
+      7782 CLARK      MANAGER         7839 09-JUN-81          2450         10
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+      7839 KING       PRESIDENT            17-NOV-81          5000         10
+      7902 FORD       ANALYST         7566 03-DEC-81          3000         20
+
+7 rows selected.
+
+
+SQL> describe dept
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ENAME                                              VARCHAR2(10)
+ SAL                                                NUMBER(7,2)
+
+SQL> select count(*) from dept;
+
+  COUNT(*)
+----------
+         8
+
+SQL> select * from dept;
+
+ENAME             SAL
+---------- ----------
+JONES            2222
+BLAKE            2850
+CLARK            2450
+SCOTT            3000
+KING             5000
+FORD             3000
+HOT              6666
+JTL              8888
+
+8 rows selected.
+
+SQL> select count(*) from emp;
+
+  COUNT(*)
+----------
+         7
+
+SQL> select count(*) from dept;
+
+  COUNT(*)
+----------
+         8
+
+SQL> select * from empt;
+select * from empt
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+      7698 BLAKE      MANAGER         7839 01-MAY-81          2850         30
+      7782 CLARK      MANAGER         7839 09-JUN-81          2450         10
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+      7839 KING       PRESIDENT            17-NOV-81          5000         10
+      7902 FORD       ANALYST         7566 03-DEC-81          3000         20
+
+7 rows selected.
+
+SQL> select JOB from emp where ENAME like JIE;
+select JOB from emp where ENAME like JIE
+                                     *
+ERROR at line 1:
+ORA-00904: "JIE": invalid identifier
+
+
+SQL> /
+select JOB from emp where ENAME like JIE
+                                     *
+ERROR at line 1:
+ORA-00904: "JIE": invalid identifier
+
+
+SQL> select JOB from emp where ENAME = JIE;
+select JOB from emp where ENAME = JIE
+                                  *
+ERROR at line 1:
+ORA-00904: "JIE": invalid identifier
+
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+      7698 BLAKE      MANAGER         7839 01-MAY-81          2850         30
+      7782 CLARK      MANAGER         7839 09-JUN-81          2450         10
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+      7839 KING       PRESIDENT            17-NOV-81          5000         10
+      7902 FORD       ANALYST         7566 03-DEC-81          3000         20
+
+7 rows selected.
+
+SQL> select * from emp where ENAME = JIE;
+select * from emp where ENAME = JIE
+                                *
+ERROR at line 1:
+ORA-00904: "JIE": invalid identifier
+
+
+SQL> select * from dept;
+
+ENAME             SAL
+---------- ----------
+JONES            2222
+BLAKE            2850
+CLARK            2450
+SCOTT            3000
+KING             5000
+FORD             3000
+HOT              6666
+JTL              8888
+
+8 rows selected.
+
+SQL> select * from dept where SAL=2222;
+
+ENAME             SAL
+---------- ----------
+JONES            2222
+
+SQL> select * from dept where SAL = 3000;
+
+ENAME             SAL
+---------- ----------
+SCOTT            3000
+FORD             3000
+
+SQL> select * from dept where SAL like 3000;
+
+ENAME             SAL
+---------- ----------
+SCOTT            3000
+FORD             3000
+
+SQL> select ename,sal,sal*12 from dept;
+
+ENAME             SAL     SAL*12
+---------- ---------- ----------
+JONES            2222      26664
+BLAKE            2850      34200
+CLARK            2450      29400
+SCOTT            3000      36000
+KING             5000      60000
+FORD             3000      36000
+HOT              6666      79992
+JTL              8888     106656
+
+8 rows selected.
+
+SQL> select * from emp where ename like "JIE";
+select * from emp where ename like "JIE"
+                                   *
+ERROR at line 1:
+ORA-00904: "JIE": invalid identifier
+
+
+SQL> select * from emp where ename like 'JIE';
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+
+SQL> select * from emp where ename = 'JIE';
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+SQL> select * from emp where ename like 'J%';
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+
+SQL> select sal*12 year_sal from emp;
+
+  YEAR_SAL
+----------
+     16536
+     26664
+     34200
+     29400
+     36000
+     60000
+     36000
+
+7 rows selected.
+
+SQL> select sal*12 as year_s from emp;
+
+    YEAR_S
+----------
+     16536
+     26664
+     34200
+     29400
+     36000
+     60000
+     36000
+
+7 rows selected.
+
+SQL> select ename,sal as salary,sal*12 from emp;
+
+ENAME          SALARY     SAL*12
+---------- ---------- ----------
+JIE              1378      16536
+JONES            2222      26664
+BLAKE            2850      34200
+CLARK            2450      29400
+SCOTT            3000      36000
+KING             5000      60000
+FORD             3000      36000
+
+7 rows selected.
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+      7698 BLAKE      MANAGER         7839 01-MAY-81          2850         30
+      7782 CLARK      MANAGER         7839 09-JUN-81          2450         10
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+      7839 KING       PRESIDENT            17-NOV-81          5000         10
+      7902 FORD       ANALYST         7566 03-DEC-81          3000         20
+
+7 rows selected.
+
+SQL> select ename,sal as salary,sal*12 year_sal from emp;
+
+ENAME          SALARY   YEAR_SAL
+---------- ---------- ----------
+JIE              1378      16536
+JONES            2222      26664
+BLAKE            2850      34200
+CLARK            2450      29400
+SCOTT            3000      36000
+KING             5000      60000
+FORD             3000      36000
+
+7 rows selected.
+
+SQL> select ename as "Name",sal as "Salary",
+  2  sal*12 "Year Salary" from emp;
+
+Name           Salary Year Salary
+---------- ---------- -----------
+JIE              1378       16536
+JONES            2222       26664
+BLAKE            2850       34200
+CLARK            2450       29400
+SCOTT            3000       36000
+KING             5000       60000
+FORD             3000       36000
+
+7 rows selected.
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+      7698 BLAKE      MANAGER         7839 01-MAY-81          2850         30
+      7782 CLARK      MANAGER         7839 09-JUN-81          2450         10
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+      7839 KING       PRESIDENT            17-NOV-81          5000         10
+      7902 FORD       ANALYST         7566 03-DEC-81          3000         20
+
+SQL> select empno,ename,job,sal,sal+nvl(mgr,0) as year_salary from emp;
+nvl(x,y):是一个函数.x和y的数据类型必须一致。如果mgr这个字段的值为null,就赋值为0.
+null:不表示值为0,null值最大!!!
+
+     EMPNO ENAME      JOB              SAL YEAR_SALARY
+---------- ---------- --------- ---------- -----------
+      7654 JIE        SALESMEN        1378        9036
+      7566 JONES      MANAGER         2222       10061
+      7698 BLAKE      MANAGER         2850       10689
+      7782 CLARK      MANAGER         2450       10289
+      7788 SCOTT      ANALYST         3000       10566
+      7839 KING       PRESIDENT       5000        5000
+      7902 FORD       ANALYST         3000       10566
+
+7 rows selected.
+
+SQL> select ename || sal from emp;  "||":拼接运算符(串接).
+
+ENAME||SAL
+--------------------------------------------------
+JIE1378
+JONES2222
+BLAKE2850
+CLARK2450
+SCOTT3000
+KING5000
+FORD3000
+
+7 rows selected.
+
+
+SQL> select ename || '*****' || sal as employee from emp;
+
+EMPLOYEE
+-------------------------------------------------------
+JIE*****1378
+JONES*****2222
+BLAKE*****2850
+CLARK*****2450
+SCOTT*****3000
+KING*****5000
+FORD*****3000
+
+SQL> select sal from emp;
+
+       SAL
+----------
+      1378
+      2222
+      2850
+      2450
+      3000
+      5000
+      3000
+
+7 rows selected.
+
+SQL> select distince
+  2
+SQL> select distinct(sal) from emp
+
+       SAL
+----------
+      2850
+      2222
+      1378
+      5000
+      2450
+      3000
+
+6 rows selected.
+
+SQL> select distinct sal from emp;
+
+       SAL
+----------
+      2850
+      2222
+      1378
+      5000
+      2450
+      3000
+
+6 rows selected.
+
+SQL> select distinct deptno , job from emp order by deptno , job;
+
+    DEPTNO JOB
+---------- ---------
+        10 MANAGER
+        10 PRESIDENT
+        10 SALESMEN
+        20 ANALYST
+        20 MANAGER
+        30 MANAGER
+
+6 rows selected.
+
+SQL> select distinct job , deptno from emp order by job , deptno;
+
+JOB           DEPTNO
+--------- ----------
+ANALYST           20
+MANAGER           10
+MANAGER           20
+MANAGER           30
+PRESIDENT         10
+SALESMEN          10
+
+6 rows selected.
+
+SQL> select distinct job , deptno from emp order by deptno , job;
+
+JOB           DEPTNO
+--------- ----------
+MANAGER           10
+PRESIDENT         10
+SALESMEN          10
+ANALYST           20
+MANAGER           20
+MANAGER           30
+
+6 rows selected.
+
+SQL> select job , sal from emp
+  2  where sal > 2000
+  3  and job = 'MANAGER' ;
+
+JOB              SAL
+--------- ----------
+MANAGER         2222
+MANAGER         2850
+MANAGER         2450
+
+between ... and:是闭区间
+SQL> select sal from emp
+  2  where sal between 2000 and 3000 ;
+
+       SAL
+----------
+      2222
+      2850
+      2450
+      3000
+      3000
+
+IN：表示一个集合，是离散值。
+SQL> select sal from emp
+  2  where sal in (2000 , 3000 ) ;  ----》等价于:select sal from emp where sal = 2000 or sal = 3000 ;
+
+       SAL
+----------
+      3000
+      3000
+
+SQL> select ename from emp
+  2  where ename like 'A\_%' escape '\' ;
+
+ENAME
+----------
+A_a
+
+SQL> select * from emp
+  2  where mgr is null ;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      1234 A_a
+      7839 KING       PRESIDENT            17-NOV-81          5000         10
+      1222 A_JOLY
+
+
+
+SQL> select * from emp
+  2  where mgr is not null ;
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7654 JIE        SALESMEN        7658                    1378         10
+      7566 JONES      MANAGER         7839 02-APR-81          2222         20
+      7698 BLAKE      MANAGER         7839 01-MAY-81          2850         30
+      7782 CLARK      MANAGER         7839 09-JUN-81          2450         10
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+      7902 FORD       ANALYST         7566 03-DEC-81          3000         20
+
+6 rows selected.
+
+
+SQL> select ename , job
+  2  from emp
+  3  where job <> 'SALESMAN' ;
+
+ENAME      JOB
+---------- ---------
+JIE        SALESMEN
+JONES      MANAGER
+BLAKE      MANAGER
+CLARK      MANAGER
+SCOTT      ANALYST
+KING       PRESIDENT
+FORD       ANALYST
+
+7 rows selected.
+
+SQL> select ename , job
+  2  from emp
+  3  where job ! = 'SALESMAN' ;
+
+ENAME      JOB
+---------- ---------
+JIE        SALESMEN
+JONES      MANAGER
+BLAKE      MANAGER
+CLARK      MANAGER
+SCOTT      ANALYST
+KING       PRESIDENT
+FORD       ANALYST
+
+7 rows selected.
+
+SQL> select ename , sal
+  2  from emp
+  3  where sal not between 1000 and 3000 ;
+
+ENAME             SAL
+---------- ----------
+KING             5000
+
+SQL> select ename , deptno
+  2  from emp
+  3  where deptno not in (10,20) ;
+
+ENAME          DEPTNO
+---------- ----------
+BLAKE              30
+
+SQL> select ename , job
+  2  from emp
+  3  where job not in ('ANALYST','MANAGER','PRESIDENT') ;
+
+ENAME      JOB
+---------- ---------
+JIE        SALESMEN
+
+
+SQL> select hiredate from emp
+  2  order by hiredate asc;
+
+HIREDATE
+------------
+02-APR-81
+01-MAY-81
+09-JUN-81
+17-NOV-81
+03-DEC-81
+08-AUG-08
+
+
+SQL> select hiredate from emp
+  2  order by hiredate desc ;
+
+HIREDATE
+------------
+
+
+
+08-AUG-08
+03-DEC-81
+17-NOV-81
+09-JUN-81
+01-MAY-81
+02-APR-81
+
+9 rows selected.
+
+SQL> select ename , sal , sal * 12 as year_sal
+  2  from emp
+  3  order by year_sal desc ;
+
+ENAME             SAL   YEAR_SAL
+---------- ---------- ----------
+A_a
+A_JOLY
+KING             5000      60000
+FORD             3000      36000
+SCOTT            3000      36000
+BLAKE            2850      34200
+CLARK            2450      29400
+JONES            2222      26664
+JIE              1378      16536
+
+9 rows selected.
+
+SQL> select ename , sal
+  2  from emp
+  3  order by 2 desc ;
+
+ENAME             SAL
+---------- ----------
+A_a
+A_JOLY
+KING             5000
+FORD             3000
+SCOTT            3000
+BLAKE            2850
+CLARK            2450
+JONES            2222
+JIE              1378
+
+9 rows selected.
+
+SQL> select initcap ('hello wrold ') from dual ;
+
+INITCAP('HEL
+------------
+Hello Wrold
+
+SQL> select UPPER('hello world') from dual ;
+
+UPPER('HELL
+-----------
+HELLO WORLD
+
+SQL> select lower ('HELLO WORLD') from dual ;
+
+LOWER('HELL
+-----------
+hello world
+
+SQL> select * from emp
+  2  where lower(ename) = 'scott';
+
+     EMPNO ENAME      JOB              MGR HIREDATE            SAL     DEPTNO
+---------- ---------- --------- ---------- ------------ ---------- ----------
+      7788 SCOTT      ANALYST         7566 08-AUG-08          3000         20
+
+SQL> select concat ( concat('Hello ' , ' World'), 'Everyone') from dual ;
+
+CONCAT(CONCAT('HELLO
+--------------------
+Hello  WorldEveryone
+
+SQL> select substr('Hello World' , 2 ,6) from dual ;
+
+SUBSTR
+------
+ello W
+
+SQL> select length('Hello World') from dual ;
+
+LENGTH('HELLOWORLD')
+--------------------
+                  11
+
+SQL> select ename , length(ename) from emp;
+
+ENAME      LENGTH(ENAME)
+---------- -------------
+JIE                    3
+A_a                    3
+JONES                  5
+BLAKE                  5
+CLARK                  5
+SCOTT                  5
+KING                   4
+FORD                   4
+A_JOLY                 6
+
+
+SQL> select lpad ('hello' , 10 , '*') from dual ;
+
+LPAD('HELL
+----------
+*****hello
+
+SQL> select rpad ( 'hello' , 10 , '*') from dual ;
+
+RPAD('HELL
+----------
+hello*****
+
+
+SQL> select ename , lpad ( sal , 6 , '$') from emp ;
+
+ENAME      LPAD(SAL,6,'
+---------- ------------
+JIE        $$1378
+A_a
+JONES      $$2222
+BLAKE      $$2850
+CLARK      $$2450
+SCOTT      $$3000
+KING       $$5000
+FORD       $$3000
+A_JOLY
+
+9 rows selected.
+
+SQL> select instr ( 'helloworld' , 'w') from dual ;
+
+INSTR('HELLOWORLD','W')
+-----------------------
+                      6
+
+SQL> select instr ( 'wang' , 'an') from dual ;
+
+INSTR('WANG','AN')
+------------------
+                 2
+
+SQL> select trim('  He  ') from dual ;
+
+TR
+--
+He
+
+SQL> select round(45.678 , 2 ) from dual ;
+
+ROUND(45.678,2)
+---------------
+          45.68
+
+SQL> select round(45.678 , 0) from dual
+  2  ;
+
+ROUND(45.678,0)
+---------------
+             46
+
+SQL> select round( 45.378 , -1) from dual ;
+
+ROUND(45.378,-1)
+----------------
+              50
+
+SQL> select round(45.3242 , 5 ) from dual ;
+
+ROUND(45.3242,5)
+----------------
+         45.3242
+
+SQL> select trunc(45.678 , 2) from dual ;
+
+TRUNC(45.678,2)
+---------------
+          45.67
+
+SQL> select trunc(45.678 , -1) from dual ;
+
+TRUNC(45.678,-1)
+----------------
+              40
+
+SQL> select trunc ( 45.678 , 0 ) from dual ;
+
+TRUNC(45.678,0)
+---------------
+             45
+
+SQL> select replace ('Hello World' , 'll' , 'ww') from dual ;
+
+REPLACE('HE
+-----------
+Hewwo World
+
+SQL> select sysdate from dual ;
+
+SYSDATE
+------------
+04-JAN-11
+
+SQL> select sysdate +30 from dual ;
+
+SYSDATE+30
+------------
+03-FEB-11
+
+SQL> select ename , sysdate - hiredate from emp ;
+
+ENAME      SYSDATE-HIREDATE
+---------- ----------------
+JIE
+A_a
+JONES            10869.6539
+BLAKE            10840.6539
+CLARK            10801.6539
+SCOTT            879.653877
+KING             10640.6539
+FORD             10624.6539
+
+SQL> select months_between(sysdate , hiredate) from emp ;
+
+MONTHS_BETWEEN(SYSDATE,HIREDATE)
+--------------------------------
+
+
+                      357.085744
+                      356.118002
+                      354.859938
+                      28.8921957
+                      349.601873
+                      349.053486
+
+
+SQL> select add_months(sysdate , 6) from dual ;
+
+ADD_MONTHS(S
+------------
+04-JUL-11
+
+SQL> select next_day(sysdate , 'friday') from dual;
+
+NEXT_DAY(SYS
+------------
+07-JAN-11
+
+SQL> select to_char(sysdate , 'yyyy/MM/dd hh12:mm:ss am dy') from dual ;
+
+TO_CHAR(SYSDATE,'YYYY/MM/DDHH
+-----------------------------
+2011/01/04 04:01:11 pm tue
+
+SQL> select last_day(sysdate) from dual;
+
+LAST_DAY(SYS
+------------
+31-JAN-11
+
+SQL> select to_char(sysdate , 'yyyy/MM/dd hh:mm:ss') from dual;
+
+TO_CHAR(SYSDATE,'YY
+-------------------
+2011/01/04 04:01:34
+
+SQL> select to_char(sysdate , 'year-month-dd-day') from dual;
+
+TO_CHAR(SYSDATE,'YEAR-MONTH-DD-DAY')
+----------------------------------------------------------------
+twenty eleven-january  -04-tuesday
+
+SQL> select to_char ( sysdate , 'yyyy mon dy am') from dual ;
+
+TO_CHAR(SYSDATE,'YYYY
+---------------------
+2011 jan tue pm
